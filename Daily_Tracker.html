@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper:#F2F4F6; --paper-raised:#FFFFFF; --ink:#14213D; --ink-soft:#4A5568; --ink-faint:#8590A6;
+    --line:#DCE1E7; --line-strong:#C3CAD3;
+    --done:#2F6F4E; --done-bg:#E7F1EA; --progress:#A6631B; --progress-bg:#FBEEE1;
+    --pending:#9C3D3D; --pending-bg:#F8EAE9; --planned:#1E4E8C; --planned-bg:#E8EEF6;
+    --carried:#6B7280; --carried-bg:#EDEEF0;
+  }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  h1,h2,h3 { font-family:"Fraunces",Georgia,serif; margin:0; }
+  .wrap { max-width:880px; margin:0 auto; padding:3rem 1.5rem 5rem; }
+  .eyebrow { font-family:"IBM Plex Mono",monospace; font-size:.8rem; color:var(--ink-faint); letter-spacing:.02em; margin-bottom:.6rem; }
+  header h1 { font-size:2.35rem; font-weight:600; letter-spacing:-.01em; }
+  header p.sub { margin:.6rem 0 0; color:var(--ink-soft); max-width:62ch; }
+
+  .filter { position:sticky; top:0; z-index:5; background:var(--paper); padding:1rem 0 .9rem; margin-top:1.5rem; border-bottom:1px solid var(--line-strong); }
+  .filter .label { font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--ink-faint); letter-spacing:.04em; margin-bottom:.5rem; }
+  .chips { display:flex; flex-wrap:wrap; gap:.5rem; }
+  .chip-btn { font:inherit; font-size:.88rem; font-weight:500; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line-strong); border-radius:100px; padding:.4rem .95rem; cursor:pointer; }
+  .chip-btn small { font-size:.72rem; color:var(--ink-faint); margin-left:.35rem; font-weight:400; }
+  .chip-btn:hover { border-color:var(--ink); }
+  .chip-btn.active { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .chip-btn.active small { color:#C9D2DE; }
+  .chip-btn:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+
+  .day { margin-top:2.75rem; }
+  .day-head { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:.5rem; }
+  .day-head h2 { font-size:1.6rem; font-weight:600; }
+  .kind { font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.05em; padding:.2rem .6rem; border-radius:100px; }
+  .kind.Summary { background:var(--done-bg); color:var(--done); }
+  .kind.Planned { background:var(--planned-bg); color:var(--planned); }
+  .summary { display:flex; border:1px solid var(--line); border-radius:4px; overflow:hidden; margin:1rem 0 0; background:var(--paper-raised); }
+  .summary .stat { flex:1; padding:.85rem 1.1rem; border-right:1px solid var(--line); }
+  .summary .stat:last-child { border-right:none; }
+  .summary .num { font-family:"Fraunces",serif; font-size:1.6rem; font-weight:600; line-height:1; }
+  .summary .lbl { font-size:.78rem; color:var(--ink-soft); margin-top:.3rem; }
+  .summary .done .num { color:var(--done); } .summary .progress .num { color:var(--progress); }
+  .summary .pending .num { color:var(--pending); } .summary .planned .num { color:var(--planned); }
+
+  .person { margin-top:2rem; }
+  .person-head { border-bottom:1px solid var(--line-strong); padding-bottom:.5rem; margin-bottom:1rem; }
+  .person-head h3 { font-size:1.2rem; font-weight:600; }
+  .task { border-left:3px solid var(--line-strong); background:var(--paper-raised); border-top:1px solid var(--line); border-right:1px solid var(--line); border-bottom:1px solid var(--line); border-radius:0 3px 3px 0; padding:.9rem 1.15rem; margin-bottom:.65rem; }
+  .task.s-done { border-left-color:var(--done); } .task.s-progress { border-left-color:var(--progress); }
+  .task.s-pending { border-left-color:var(--pending); } .task.s-planned { border-left-color:var(--planned); }
+  .task.s-standing { border-left-color:var(--carried); }
+  .task-top { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; }
+  .task-title { font-weight:600; font-size:.97rem; }
+  .pill { flex-shrink:0; font-size:.7rem; font-weight:600; padding:.2rem .55rem; border-radius:100px; white-space:nowrap; }
+  .pill.done { background:var(--done-bg); color:var(--done); } .pill.progress { background:var(--progress-bg); color:var(--progress); }
+  .pill.pending { background:var(--pending-bg); color:var(--pending); } .pill.planned { background:var(--planned-bg); color:var(--planned); }
+  .pill.standing { background:var(--carried-bg); color:var(--carried); }
+  .rows { margin-top:.45rem; font-size:.9rem; }
+  .row { display:flex; gap:.5rem; margin-top:.2rem; }
+  .row .k { flex-shrink:0; width:5.6rem; color:var(--ink-faint); font-size:.78rem; padding-top:.1rem; }
+  .row .v { color:var(--ink-soft); }
+  .row .v a { color:var(--planned); text-decoration:none; font-weight:600; }
+  .row .v a:hover { text-decoration:underline; }
+  .empty { margin-top:2rem; color:var(--ink-faint); font-size:.9rem; }
+  footer { margin-top:3.5rem; padding-top:1.25rem; border-top:1px solid var(--line); font-size:.8rem; color:var(--ink-faint); }
+
+  @media (max-width:600px) {
+    .wrap { padding:2rem 1.1rem 4rem; } header h1 { font-size:1.85rem; }
+    .summary { flex-direction:column; } .summary .stat { border-right:none; border-bottom:1px solid var(--line); } .summary .stat:last-child { border-bottom:none; }
+    .row { flex-direction:column; gap:.1rem; } .row .k { width:auto; }
+  }
+  @media print {
+    html, body { background:var(--paper); -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .wrap { padding:1.2rem 1.2rem 1.5rem; max-width:100%; }
+    .filter { display:none; }
+    .day { display:block !important; margin-top:1.6rem; }
+    .day + .day { break-before:page; page-break-before:always; }
+    .task, .summary { break-inside:avoid; page-break-inside:avoid; }
+    .person-head, .day-head { break-after:avoid; page-break-after:avoid; }
+    .person { margin-top:1.2rem; } .task { margin-bottom:.45rem; padding:.7rem 1rem; }
+    footer { display:none; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="eyebrow" id="eyebrow"></div>
+    <h1>Daily Tracker</h1>
+    <p class="sub">One page for every day. Pick a date to see what landed, or what is planned.</p>
+  </header>
+
+  <div class="filter">
+    <div class="label">FILTER BY DATE</div>
+    <div class="chips" id="chips"></div>
+  </div>
+
+  <main id="app"></main>
+
+  <footer>
+    To add a day, copy a block in the DAYS list at the bottom of this file and change the date and tasks. Or ask Claude to add it.
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   DATA. To update the tracker, edit this list.
+   status: done | progress | pending | planned
+   rows: [label, text] pairs. A row whose text starts with "PROD-" becomes a Jira link.
+   ============================================================ */
+const JIRA = "https://canaryai.atlassian.net/browse/";
+const DAYS = [
+ { date:"2026-10-06", short:"Tue 6 Oct", long:"Tuesday, 6 Oct 2026", kind:"Summary", people:[
+  { name:"Sumit & Aditi", tasks:[
+   { t:"Custom email templates for other companies", s:"progress", rows:[["Context","Only Care Advantage is done so far."],["Due","Feature closure by DEV, Aditi and Sumit: 7 Oct EOD."]] },
+   { t:"GAuth and code review changes for E-Verify", s:"done", rows:[["Landed","Completed 6 Oct."]] } ]},
+  { name:"Abhishek", tasks:[
+   { t:"GAuth delivery: E-Verify", s:"done", rows:[["Landed","Completed 6 Oct."]] },
+   { t:"GAuth delivery: all other products", s:"pending", rows:[["Status","Rest all pending. I9 is next, 7 Oct."]] },
+   { t:"Test the deployment pipeline", s:"progress", rows:[["Due","Closure 6 Oct EOD, 8 PM IST."]] },
+   { t:"QA bug fixes: Dashboard, SuperAdmin, then Retention", s:"pending", rows:[["Status","Not picked yet."]] } ]},
+  { name:"Nikita", tasks:[
+   { t:"CR requests from U.S. team", s:"progress", rows:[["Ticket","PROD-3529"],["Status","6 done as of 6 Oct, deployment pending."],["Next","2 estimated to be fixed and deployed by 9 Oct. Estimate is to close every task under the parent story."]] },
+   { t:"Respond to Proliant", s:"pending", rows:[["Status","DEV waiting on feedback from the Proliant team. Latest outbound: 6 Oct."],["Next","Set up the query."]] },
+   { t:"Code review", s:"pending", rows:[["Ticket","PROD-3594"],["Condition","Picked in Sprint 21 only if DEV finishes, in order: Proliant, CRs from U.S. team, then code review."]] } ]},
+  { name:"Chetan", tasks:[
+   { t:"Jira", s:"done", rows:[["Landed","Jira for both sprints is up to date from the Scrum manager."]] },
+   { t:"Test Remote I9, to UAT", s:"progress", rows:[] },
+   { t:"Code review and GAuth changes to Prod", s:"progress", rows:[["Scope","I9, E-Verify, Canary Dashboard and Tax Nav."]] } ]},
+  { name:"Rushi", tasks:[
+   { t:"Vertex AI build", s:"pending", rows:[["Status","As of 6 Oct, 7:00 PM IST only I9 is complete."],["Blocked on","Approval from Abhishek that the change works, before moving to other products."]] },
+   { t:"Env vs action Excel for each product", s:"progress", rows:[["Purpose","Future clarity on what runs where."]] } ]}
+ ]},
+ { date:"2026-10-07", short:"Wed 7 Oct", long:"Wednesday, 7 Oct 2026", kind:"Planned", people:[
+  { name:"Sumit & Aditi", tasks:[
+   { t:"I9 and E-Verify Playwright failures", s:"planned", rows:[["Owner","Aditi needs to look into it."]] },
+   { t:"Custom email templates for other companies", s:"planned", rows:[["Due","Feature closure by 7 Oct EOD."],["Owner","Aditi and Sumit."]] } ]},
+  { name:"Abhishek", tasks:[
+   { t:"Vertex AI build", s:"planned", rows:[["Time","2:00 PM IST."],["Note","Approval needed from Abhishek before Rushikesh can apply this change to other products."]] },
+   { t:"GAuth I9 build", s:"planned", rows:[["Due","By 7 Oct EOD."]] },
+   { t:"QA bug fixes: Dashboard, SuperAdmin, then Retention", s:"planned", rows:[] } ]},
+  { name:"Nikita", tasks:[
+   { t:"1. Proliant", s:"planned", rows:[] },
+   { t:"2. CRs from U.S. team", s:"planned", rows:[["Ticket","PROD-3529"]] },
+   { t:"3. Code review", s:"planned", rows:[["Ticket","PROD-3594"],["Condition","Only after Proliant and the CRs are done."]] } ]},
+  { name:"Rushi", tasks:[
+   { t:"Vertex AI build, remaining products", s:"planned", rows:[["Status","Only I9 complete as of 6 Oct, 7:00 PM IST."],["Needs","Abhishek's approval that the I9 change works."]] },
+   { t:"Set up AWS Session Manager, SOC2 compliant", s:"planned", rows:[["For","Nikita.DEV and Piyushh.DEV."]] } ]}
+ ]},
+ { date:"2026-10-08", short:"Thu 8 Oct", long:"Thursday, 8 Oct 2026", kind:"Planned", people:[
+  { name:"Sumit & Aditi", tasks:[
+   { t:"GAuth and code review changes for I9", s:"planned", rows:[] },
+   { t:"Remote I9 bugs logged by QA", s:"planned", rows:[["Count","5 in total."]] } ]}
+ ]}
+];
+const STANDING = [
+ { name:"Sumit & Aditi", items:["I9 in Onboarding, picked up after I9 Remote delivery","UI for key generation"] },
+ { name:"Abhishek", items:["Take over the Retention-Prediction portfolio","GAuth and code review delivery: 5 Oct, 6 Oct, 9 Oct","Retention and Tax Agent to code complete"] },
+ { name:"Nikita", items:["Proliant release: picked up 6 Oct if Proliant replies","Plan for Applicant flow","Indeed, make it work for UAT (separate from PROD-3591), Sprint 22"] },
+ { name:"Chetan", items:["Test overall I9 and release","Code review and Google Auth fixes release (not today)"] },
+ { name:"Rushi", items:["Security controls","Demo phone numbers for testing"] }
+];
+const LABEL = { done:"Done", progress:"In progress", pending:"Pending", planned:"Planned" };
+
+/* ===================== rendering ===================== */
+const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const linkify = v => esc(v).replace(/PROD-\d+/g, m => `<a href="${JIRA}${m}" target="_blank" rel="noopener">${m}</a>`);
+const card = (t, st, rows) => `<div class="task s-${st}"><div class="task-top"><div class="task-title">${esc(t)}</div><span class="pill ${st}">${LABEL[st]||'Standing'}</span></div>` +
+  (rows && rows.length ? `<div class="rows">${rows.map(r => `<div class="row"><div class="k">${esc(r[0])}</div><div class="v">${linkify(r[1])}</div></div>`).join('')}</div>` : '') + `</div>`;
+
+function dayHTML(d) {
+  const all = d.people.flatMap(p => p.tasks);
+  const cnt = k => all.filter(x => x.s === k).length;
+  const stats = ["done","progress","pending","planned"].filter(k => cnt(k) > 0)
+    .map(k => `<div class="stat ${k}"><div class="num">${cnt(k)}</div><div class="lbl">${LABEL[k]}</div></div>`).join('');
+  return `<section class="day" data-key="${d.date}"><div class="day-head"><h2>${d.long}</h2><span class="kind ${d.kind}">${d.kind.toUpperCase()}</span></div>
+    <div class="summary">${stats}</div>
+    ${d.people.map(p => `<div class="person"><div class="person-head"><h3>${esc(p.name)}</h3></div>${p.tasks.map(t => card(t.t, t.s, t.rows)).join('')}</div>`).join('')}</section>`;
+}
+function standingHTML() {
+  return `<section class="day" data-key="standing"><div class="day-head"><h2>Rest of week and standing items</h2><span class="kind Planned">STANDING</span></div>
+    ${STANDING.map(p => `<div class="person"><div class="person-head"><h3>${esc(p.name)}</h3></div>${p.items.map(i => card(i, 'standing', [])).join('')}</div>`).join('')}</section>`;
+}
+document.getElementById('app').innerHTML = DAYS.map(dayHTML).join('') + standingHTML();
+
+const chips = [{key:'all', label:'All dates', sub:''}].concat(DAYS.map(d => ({key:d.date, label:d.short, sub:d.kind}))).concat([{key:'standing', label:'Standing', sub:''}]);
+const chipBox = document.getElementById('chips');
+chipBox.innerHTML = chips.map(c => `<button class="chip-btn" data-key="${c.key}">${c.label}${c.sub ? `<small>${c.sub}</small>` : ''}</button>`).join('');
+
+function show(key) {
+  document.querySelectorAll('.chip-btn').forEach(b => b.classList.toggle('active', b.dataset.key === key));
+  document.querySelectorAll('.day').forEach(s => { s.style.display = (key === 'all' || s.dataset.key === key) ? '' : 'none'; });
+  const d = DAYS.find(x => x.date === key);
+  document.getElementById('eyebrow').textContent = d ? d.long.toUpperCase() : 'ALL DATES';
+  if (history.replaceState) history.replaceState(null, '', '#' + key);
+}
+chipBox.addEventListener('click', e => { const b = e.target.closest('.chip-btn'); if (b) show(b.dataset.key); });
+const start = location.hash.slice(1);
+show(chips.some(c => c.key === start) ? start : 'all');
+</script>
+</body>
+</html>
