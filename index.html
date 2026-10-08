@@ -39,26 +39,30 @@
   .kind { font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.05em; padding:.2rem .6rem; border-radius:100px; }
   .kind.Summary { background:var(--done-bg); color:var(--done); }
   .kind.Planned { background:var(--planned-bg); color:var(--planned); }
+  .kind.Update { background:var(--done-bg); color:var(--done); }
   .summary { display:flex; border:1px solid var(--line); border-radius:4px; overflow:hidden; margin:1rem 0 0; background:var(--paper-raised); }
   .summary .stat { flex:1; padding:.85rem 1.1rem; border-right:1px solid var(--line); }
   .summary .stat:last-child { border-right:none; }
   .summary .num { font-family:"Fraunces",serif; font-size:1.6rem; font-weight:600; line-height:1; }
   .summary .lbl { font-size:.78rem; color:var(--ink-soft); margin-top:.3rem; }
-  .summary .done .num { color:var(--done); } .summary .progress .num { color:var(--progress); }
+  .summary .closed .num { color:var(--done); } .summary .notstarted .num { color:var(--planned); } .summary .done .num { color:var(--done); } .summary .progress .num { color:var(--progress); }
   .summary .pending .num { color:var(--pending); } .summary .planned .num { color:var(--planned); }
 
   .person { margin-top:2rem; }
   .person-head { border-bottom:1px solid var(--line-strong); padding-bottom:.5rem; margin-bottom:1rem; }
   .person-head h3 { font-size:1.2rem; font-weight:600; }
+  .grp, .meta, .none { break-inside:avoid; }
   .task { border-left:3px solid var(--line-strong); background:var(--paper-raised); border-top:1px solid var(--line); border-right:1px solid var(--line); border-bottom:1px solid var(--line); border-radius:0 3px 3px 0; padding:.9rem 1.15rem; margin-bottom:.65rem; }
   .task.s-done { border-left-color:var(--done); } .task.s-progress { border-left-color:var(--progress); }
-  .task.s-pending { border-left-color:var(--pending); } .task.s-planned { border-left-color:var(--planned); }
+  .task.s-pending { border-left-color:var(--pending); } .task.s-planned, .task.s-notstarted { border-left-color:var(--planned); }
+  .task.s-closed { border-left-color:var(--done); }
   .task.s-standing { border-left-color:var(--carried); }
   .task-top { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; }
   .task-title { font-weight:600; font-size:.97rem; }
   .pill { flex-shrink:0; font-size:.7rem; font-weight:600; padding:.2rem .55rem; border-radius:100px; white-space:nowrap; }
   .pill.done { background:var(--done-bg); color:var(--done); } .pill.progress { background:var(--progress-bg); color:var(--progress); }
-  .pill.pending { background:var(--pending-bg); color:var(--pending); } .pill.planned { background:var(--planned-bg); color:var(--planned); }
+  .pill.pending { background:var(--pending-bg); color:var(--pending); } .pill.planned, .pill.notstarted { background:var(--planned-bg); color:var(--planned); }
+  .pill.closed { background:var(--done-bg); color:var(--done); }
   .pill.standing { background:var(--carried-bg); color:var(--carried); }
   .rows { margin-top:.45rem; font-size:.9rem; }
   .row { display:flex; gap:.5rem; margin-top:.2rem; }
@@ -66,7 +70,14 @@
   .row .v { color:var(--ink-soft); }
   .row .v a { color:var(--planned); text-decoration:none; font-weight:600; }
   .row .v a:hover { text-decoration:underline; }
-  .empty { margin-top:2rem; color:var(--ink-faint); font-size:.9rem; }
+  .grp { margin-top:1.1rem; }
+  .grp-head { display:flex; align-items:center; gap:.6rem; margin-bottom:.55rem; }
+  .grp-head .gname { font-family:"IBM Plex Mono",monospace; font-size:.74rem; letter-spacing:.06em; font-weight:500; }
+  .grp-head .gcount { font-size:.74rem; color:var(--ink-faint); }
+  .grp.closed .gname { color:var(--done); } .grp.progress .gname { color:var(--progress); } .grp.notstarted .gname { color:var(--planned); }
+  .meta { font-size:.82rem; color:var(--ink-soft); margin:-.4rem 0 .2rem; }
+  .meta b { color:var(--ink); font-weight:600; }
+  .none { font-size:.88rem; color:var(--ink-faint); font-style:italic; margin-top:.8rem; }
   footer { margin-top:3.5rem; padding-top:1.25rem; border-top:1px solid var(--line); font-size:.8rem; color:var(--ink-faint); }
 
   @media (max-width:600px) {
@@ -92,7 +103,7 @@
   <header>
     <div class="eyebrow" id="eyebrow"></div>
     <h1>Daily Tracker</h1>
-    <p class="sub">One page for every day. Pick a date to see what landed, or what is planned.</p>
+    <p class="sub">Pick a date. Each person shows what closed and what is still in progress.</p>
   </header>
 
   <div class="filter">
@@ -103,105 +114,117 @@
   <main id="app"></main>
 
   <footer>
-    To add a day, copy a block in the DAYS list at the bottom of this file and change the date and tasks. Or ask Claude to add it.
+    To add a day, copy a block in the DAYS list at the bottom of this file and change the date and tasks. Or send Claude the next day's notes.
   </footer>
 </div>
 
 <script>
 /* ============================================================
    DATA. To update the tracker, edit this list.
-   status: done | progress | pending | planned
-   rows: [label, text] pairs. A row whose text starts with "PROD-" becomes a Jira link.
+   For each person, three groups: closed, progress, notstarted.
+   A task is [title, rows]. rows are [label, text] pairs.
+   Text containing PROD-1234 becomes a Jira link.
    ============================================================ */
 const JIRA = "https://canaryai.atlassian.net/browse/";
+const NAMES = ["Sumit & Aditi","Abhishek","Nikita","Chetan","Rushi"];
 const DAYS = [
- { date:"2026-10-06", short:"Tue 6 Oct", long:"Tuesday, 6 Oct 2026", kind:"Summary", people:[
-  { name:"Sumit & Aditi", tasks:[
-   { t:"Custom email templates for other companies", s:"progress", rows:[["Context","Only Care Advantage is done so far."],["Due","Feature closure by DEV, Aditi and Sumit: 7 Oct EOD."]] },
-   { t:"GAuth and code review changes for E-Verify", s:"done", rows:[["Landed","Completed 6 Oct."]] } ]},
-  { name:"Abhishek", tasks:[
-   { t:"GAuth delivery: E-Verify", s:"done", rows:[["Landed","Completed 6 Oct."]] },
-   { t:"GAuth delivery: all other products", s:"pending", rows:[["Status","Rest all pending. I9 is next, 7 Oct."]] },
-   { t:"Test the deployment pipeline", s:"progress", rows:[["Due","Closure 6 Oct EOD, 8 PM IST."]] },
-   { t:"QA bug fixes: Dashboard, SuperAdmin, then Retention", s:"pending", rows:[["Status","Not picked yet."]] } ]},
-  { name:"Nikita", tasks:[
-   { t:"CR requests from U.S. team", s:"progress", rows:[["Ticket","PROD-3529"],["Status","6 done as of 6 Oct, deployment pending."],["Next","2 estimated to be fixed and deployed by 9 Oct. Estimate is to close every task under the parent story."]] },
-   { t:"Respond to Proliant", s:"pending", rows:[["Status","DEV waiting on feedback from the Proliant team. Latest outbound: 6 Oct."],["Next","Set up the query."]] },
-   { t:"Code review", s:"pending", rows:[["Ticket","PROD-3594"],["Condition","Picked in Sprint 21 only if DEV finishes, in order: Proliant, CRs from U.S. team, then code review."]] } ]},
-  { name:"Chetan", tasks:[
-   { t:"Jira", s:"done", rows:[["Landed","Jira for both sprints is up to date from the Scrum manager."]] },
-   { t:"Test Remote I9, to UAT", s:"progress", rows:[] },
-   { t:"Code review and GAuth changes to Prod", s:"progress", rows:[["Scope","I9, E-Verify, Canary Dashboard and Tax Nav."]] } ]},
-  { name:"Rushi", tasks:[
-   { t:"Vertex AI build", s:"pending", rows:[["Status","As of 6 Oct, 7:00 PM IST only I9 is complete."],["Blocked on","Approval from Abhishek that the change works, before moving to other products."]] },
-   { t:"Env vs action Excel for each product", s:"progress", rows:[["Purpose","Future clarity on what runs where."]] } ]}
- ]},
- { date:"2026-10-07", short:"Wed 7 Oct", long:"Wednesday, 7 Oct 2026", kind:"Planned", people:[
-  { name:"Sumit & Aditi", tasks:[
-   { t:"I9 and E-Verify Playwright failures", s:"planned", rows:[["Owner","Aditi needs to look into it."]] },
-   { t:"Custom email templates for other companies", s:"planned", rows:[["Due","Feature closure by 7 Oct EOD."],["Owner","Aditi and Sumit."]] } ]},
-  { name:"Abhishek", tasks:[
-   { t:"Vertex AI build", s:"planned", rows:[["Time","2:00 PM IST."],["Note","Approval needed from Abhishek before Rushikesh can apply this change to other products."]] },
-   { t:"GAuth I9 build", s:"planned", rows:[["Due","By 7 Oct EOD."]] },
-   { t:"QA bug fixes: Dashboard, SuperAdmin, then Retention", s:"planned", rows:[] } ]},
-  { name:"Nikita", tasks:[
-   { t:"1. Proliant", s:"planned", rows:[] },
-   { t:"2. CRs from U.S. team", s:"planned", rows:[["Ticket","PROD-3529"]] },
-   { t:"3. Code review", s:"planned", rows:[["Ticket","PROD-3594"],["Condition","Only after Proliant and the CRs are done."]] } ]},
-  { name:"Rushi", tasks:[
-   { t:"Vertex AI build, remaining products", s:"planned", rows:[["Status","Only I9 complete as of 6 Oct, 7:00 PM IST."],["Needs","Abhishek's approval that the I9 change works."]] },
-   { t:"Set up AWS Session Manager, SOC2 compliant", s:"planned", rows:[["For","Nikita.DEV and Piyushh.DEV."]] } ]}
- ]},
- { date:"2026-10-08", short:"Thu 8 Oct", long:"Thursday, 8 Oct 2026", kind:"Planned", people:[
-  { name:"Sumit & Aditi", tasks:[
-   { t:"GAuth and code review changes for I9", s:"planned", rows:[] },
-   { t:"Remote I9 bugs logged by QA", s:"planned", rows:[["Count","5 in total."]] } ]}
- ]}
+ { date:"2026-10-06", short:"Tue 6 Oct", long:"Tuesday, 6 Oct 2026", people:{
+  "Sumit & Aditi":{ closed:[["GAuth and code review changes for E-Verify",[["Landed","Completed 6 Oct."]]]],
+    progress:[["Custom email templates for other companies",[["Context","Only Care Advantage was done so far."],["Due","Feature closure by DEV, Aditi and Sumit: 7 Oct EOD."]]]], notstarted:[] },
+  "Abhishek":{ closed:[["GAuth delivery: E-Verify",[["Landed","Completed 6 Oct."]]]],
+    progress:[["Test the deployment pipeline",[["Due","Closure 6 Oct EOD, 8 PM IST."]]],["Vertex AI build",[["Status","DEV picked it up on 6 Oct."]]]],
+    notstarted:[["GAuth delivery: all other products",[["Status","Rest all pending. I9 is next."]]],["QA bug fixes: Dashboard, SuperAdmin, then Retention",[["Status","Not picked yet."]]]] },
+  "Nikita":{ closed:[],
+    progress:[["CR requests from U.S. team",[["Ticket","PROD-3529"],["Status","6 done as of 6 Oct, deployment pending."],["Next","2 estimated to be fixed and deployed by 9 Oct."]]],["Respond to Proliant",[["Status","Waiting on feedback from the Proliant team. Latest outbound: 6 Oct."]]]],
+    notstarted:[["Code review",[["Ticket","PROD-3594"],["Condition","Picked in Sprint 21 only after Proliant and the CRs from U.S. team are done."]]]] },
+  "Chetan":{ closed:[],
+    progress:[["Jira management",[]],["Test Remote I9, to UAT",[]]], notstarted:[] },
+  "Rushi":{ closed:[],
+    progress:[["Vertex AI build",[["Status","As of 6 Oct, 7:00 PM IST only I9 is complete."],["Blocked on","Abhishek's approval that the change works, before other products."]]],["Env vs action Excel for each product",[["Purpose","Future clarity on what runs where."]]]], notstarted:[] }
+ }},
+ { date:"2026-10-07", short:"Wed 7 Oct", long:"Wednesday, 7 Oct 2026", people:{
+  "Sumit & Aditi":{ closed:[["Custom email templates for other companies",[["Landed","Code complete and DEV testing done on 7 Oct."],["Note","Sunil has a new ask."]]]], progress:[], notstarted:[] },
+  "Abhishek":{ closed:[["GAuth delivery: Retention",[["Landed","Completed 7 Oct."]]],["GAuth delivery: Canary Dashboard",[["Landed","Completed 7 Oct."]]],["SuperAdmin QA bugs",[["Landed","5 bugs fixed on 7 Oct."]]]],
+    progress:[["GAuth delivery: I9",[["Blocked on","Could not deliver. Failures while deploying."]]],["Vertex AI build",[["Status","One final closure step pending. It can only be done after I9 is deployed to UAT."],["Missed","7 Oct 2:00 PM IST deadline, due to the deployment failure."]]],["Test the deployment pipeline",[["Status","Approval was given on a success scenario, but it started failing again on 7 Oct."],["Impact","Hampered delivery dates."]]]],
+    notstarted:[["QA bug fixes: Dashboard and Retention",[["Status","Not picked yet."]]]] },
+  "Nikita":{ closed:[],
+    progress:[["CR requests from U.S. team",[["Ticket","PROD-3529"],["Status","DEV worked primarily on resolving these tasks on 7 Oct."]]]], notstarted:[] },
+  "Chetan":{ leave:true, closed:[], progress:[], notstarted:[] },
+  "Rushi":{ closed:[],
+    progress:[["Vertex AI build",[["Status","Infra's share of work is near closure. Only a sync activity is required."]]],["Deployment pipeline for I9",[]]], notstarted:[] }
+ }},
+ { date:"2026-10-08", short:"Thu 8 Oct", long:"Thursday, 8 Oct 2026", people:{
+  "Sumit & Aditi":{ jira:"Aditi and Sumit: time logging and status updates done.",
+    closed:[["Custom email template feature",[["Landed","Delivered to Sunil."]]]],
+    progress:[["Remote I9 bugs logged by QA",[["Count","5 in total."],["Due","Picked up 8 Oct. To be closed by 9 Oct EOD."]]]],
+    notstarted:[["GAuth and code review changes for I9",[["Status","Not picked, because of the deployment failure."],["Next","Delivered after QA approval on UAT: I9 Remote build plus GAuth and code review changes."]]],["New ask from Sunil: invite on phone number only, no email",[["Effort","DEV needs 5 hrs."]]]] },
+  "Abhishek":{ jira:"All tasks up to date on Jira.", closed:[],
+    progress:[["SuperAdmin bugs",[["Count","Roughly 15 pending."]]]],
+    notstarted:[["Dashboard bugs",[["Status","Starts once the SuperAdmin bugs are fixed."]]]] },
+  "Nikita":{ jira:"Pending.",
+    closed:[["CR requests from U.S. team",[["Ticket","PROD-3529"],["Landed","All issues raised until 8 Oct, 11:00 AM IST resolved by DEV."],["Note","Deployment status not reported."]]]],
+    progress:[["Respond to Proliant",[["Update","Proliant emailed. They are facing an issue setting up the webhook."],["Needs","DEV test of the sub-product and DEV approval. One round of testing from Robert before the official communication to Proliant."]]]],
+    notstarted:[["Code review",[["Ticket","PROD-3594"],["Next","Ticket needs to be updated. Activity scheduled to be picked up on 8 Oct."]]]] },
+  "Chetan":{ jira:"Pending.", closed:[],
+    progress:[["Jira management",[]],["Email template testing",[]],["Test Remote I9, to UAT",[["Bugs","As of 8 Oct, 80 logged and 75 solved."]]]], notstarted:[] },
+  "Rushi":{ jira:"All tasks up to date on Jira.", closed:[],
+    progress:[["Deployment pipeline for I9",[]],["Set up AWS Session Manager, SOC2 compliant",[["For","Nikita.DEV and Piyushh.DEV."]]],["Excel for Vertex AI build",[]]], notstarted:[] }
+ }}
 ];
 const STANDING = [
  { name:"Sumit & Aditi", items:["I9 in Onboarding, picked up after I9 Remote delivery","UI for key generation"] },
  { name:"Abhishek", items:["Take over the Retention-Prediction portfolio","GAuth and code review delivery: 5 Oct, 6 Oct, 9 Oct","Retention and Tax Agent to code complete"] },
- { name:"Nikita", items:["Proliant release: picked up 6 Oct if Proliant replies","Plan for Applicant flow","Indeed, make it work for UAT (separate from PROD-3591), Sprint 22"] },
- { name:"Chetan", items:["Test overall I9 and release","Code review and Google Auth fixes release (not today)"] },
+ { name:"Nikita", items:["Proliant release","Plan for Applicant flow","Indeed, make it work for UAT (separate from PROD-3591), Sprint 22"] },
+ { name:"Chetan", items:["Work towards code review and Google Auth fixes release (not to be picked up today)"] },
  { name:"Rushi", items:["Security controls","Demo phone numbers for testing"] }
 ];
-const LABEL = { done:"Done", progress:"In progress", pending:"Pending", planned:"Planned" };
+const GROUPS = [["closed","CLOSED"],["progress","IN PROGRESS"],["notstarted","NOT STARTED"]];
+const PILL = { closed:"Closed", progress:"In progress", notstarted:"Not started" };
 
 /* ===================== rendering ===================== */
 const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const linkify = v => esc(v).replace(/PROD-\d+/g, m => `<a href="${JIRA}${m}" target="_blank" rel="noopener">${m}</a>`);
-const card = (t, st, rows) => `<div class="task s-${st}"><div class="task-top"><div class="task-title">${esc(t)}</div><span class="pill ${st}">${LABEL[st]||'Standing'}</span></div>` +
+const card = (t, st, rows, pill) => `<div class="task s-${st}"><div class="task-top"><div class="task-title">${esc(t)}</div><span class="pill ${st}">${pill}</span></div>` +
   (rows && rows.length ? `<div class="rows">${rows.map(r => `<div class="row"><div class="k">${esc(r[0])}</div><div class="v">${linkify(r[1])}</div></div>`).join('')}</div>` : '') + `</div>`;
 
+function personHTML(name, p) {
+  const total = p.closed.length + p.progress.length + p.notstarted.length;
+  let h = `<div class="person"><div class="person-head"><h3>${esc(name)}</h3></div>`;
+  if (p.jira) h += `<div class="meta"><b>Jira:</b> ${esc(p.jira)}</div>`;
+  if (p.leave) return h + `<div class="none">On leave.</div></div>`;
+  if (!total) return h + `<div class="none">No update reported.</div></div>`;
+  GROUPS.forEach(([k, label]) => {
+    if (!p[k].length) return;
+    h += `<div class="grp ${k}"><div class="grp-head"><span class="gname">${label}</span><span class="gcount">${p[k].length}</span></div>` +
+         p[k].map(t => card(t[0], k, t[1], PILL[k])).join('') + `</div>`;
+  });
+  return h + `</div>`;
+}
 function dayHTML(d) {
-  const all = d.people.flatMap(p => p.tasks);
-  const cnt = k => all.filter(x => x.s === k).length;
-  const stats = ["done","progress","pending","planned"].filter(k => cnt(k) > 0)
-    .map(k => `<div class="stat ${k}"><div class="num">${cnt(k)}</div><div class="lbl">${LABEL[k]}</div></div>`).join('');
-  return `<section class="day" data-key="${d.date}"><div class="day-head"><h2>${d.long}</h2><span class="kind ${d.kind}">${d.kind.toUpperCase()}</span></div>
-    <div class="summary">${stats}</div>
-    ${d.people.map(p => `<div class="person"><div class="person-head"><h3>${esc(p.name)}</h3></div>${p.tasks.map(t => card(t.t, t.s, t.rows)).join('')}</div>`).join('')}</section>`;
+  const cnt = k => NAMES.reduce((n, nm) => n + d.people[nm][k].length, 0);
+  const stats = GROUPS.map(([k, label]) => `<div class="stat ${k}"><div class="num">${cnt(k)}</div><div class="lbl">${PILL[k]}</div></div>`).join('');
+  return `<section class="day" data-key="${d.date}"><div class="day-head"><h2>${d.long}</h2><span class="kind Update">DAY UPDATE</span></div>
+    <div class="summary">${stats}</div>${NAMES.map(nm => personHTML(nm, d.people[nm])).join('')}</section>`;
 }
 function standingHTML() {
   return `<section class="day" data-key="standing"><div class="day-head"><h2>Rest of week and standing items</h2><span class="kind Planned">STANDING</span></div>
-    ${STANDING.map(p => `<div class="person"><div class="person-head"><h3>${esc(p.name)}</h3></div>${p.items.map(i => card(i, 'standing', [])).join('')}</div>`).join('')}</section>`;
+    ${STANDING.map(p => `<div class="person"><div class="person-head"><h3>${esc(p.name)}</h3></div>${p.items.map(i => card(i, 'standing', [], 'Standing')).join('')}</div>`).join('')}</section>`;
 }
 document.getElementById('app').innerHTML = DAYS.map(dayHTML).join('') + standingHTML();
 
-const chips = [{key:'all', label:'All dates', sub:''}].concat(DAYS.map(d => ({key:d.date, label:d.short, sub:d.kind}))).concat([{key:'standing', label:'Standing', sub:''}]);
+const chips = [{key:'all', label:'All dates'}].concat(DAYS.map(d => ({key:d.date, label:d.short}))).concat([{key:'standing', label:'Standing'}]);
 const chipBox = document.getElementById('chips');
-chipBox.innerHTML = chips.map(c => `<button class="chip-btn" data-key="${c.key}">${c.label}${c.sub ? `<small>${c.sub}</small>` : ''}</button>`).join('');
-
+chipBox.innerHTML = chips.map(c => `<button class="chip-btn" data-key="${c.key}">${c.label}</button>`).join('');
 function show(key) {
   document.querySelectorAll('.chip-btn').forEach(b => b.classList.toggle('active', b.dataset.key === key));
   document.querySelectorAll('.day').forEach(s => { s.style.display = (key === 'all' || s.dataset.key === key) ? '' : 'none'; });
   const d = DAYS.find(x => x.date === key);
-  document.getElementById('eyebrow').textContent = d ? d.long.toUpperCase() : 'ALL DATES';
+  document.getElementById('eyebrow').textContent = d ? d.long.toUpperCase() : (key === 'standing' ? 'STANDING ITEMS' : 'ALL DATES');
   if (history.replaceState) history.replaceState(null, '', '#' + key);
 }
 chipBox.addEventListener('click', e => { const b = e.target.closest('.chip-btn'); if (b) show(b.dataset.key); });
 const start = location.hash.slice(1);
-show(chips.some(c => c.key === start) ? start : 'all');
+show(chips.some(c => c.key === start) ? start : DAYS[DAYS.length - 1].date);
 </script>
 </body>
 </html>
