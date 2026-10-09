@@ -1,90 +1,3 @@
-
-/
-Ran a command, read a file
-Rendering is clean. Shipping.
-
-Ran a command, shared files
-I've updated Daily_Tracker.html and the PDF with the evening notes for 8 Oct. The 8 Oct tag now reads "EVENING UPDATE", and 6 and 7 Oct are unchanged. The PDF is now 8 pages instead of 7.
-
-8 Oct now shows 4 Closed, 9 In progress and 5 Not started.
-
-Sumit & Aditi: 1 P2 bug is still pending from the Remote I9 QA bugs. The I9 GAuth and code review changes go to UAT the morning of 9 Oct, by 2 PM IST. Sunil's phone-number-only invite is due code complete Tuesday EOD for QA.
-Abhishek: he owns the 1 P1 bug, Go to Dashboard SSO. The SuperAdmin bugs on his side need full closure by Friday 9 Oct EOD, and Sumit's bugs move to Sprint 22. Dashboard bugs are not picked.
-Nikita: the CRs logged before 7 Oct are closed, with 1 pending CR raised by Sunil.
-The Proliant response is in progress. It needs DEV's green signal and Robert's final call, and it stretches to Sprint 22.
-Code review is not started. It has the 16 hr scope and is picked up only if no priority item is in the plan.
-Rushi:
-The plan expiry issues in the I9 deployment pipeline are closed. The AWS Session Manager setup is closed, and DEV testing is still pending.
-The Excel for the Vertex AI build is in progress.
-Exercising the deployment pathway across the product suite needs 40 to 50 hrs and sits in Sprint 22, so I put it under Not started.
-Chetan: unchanged from earlier.
-I made two calls where your notes were open. The I9 GAuth and code review changes are under Not started because your daytime note said they weren't picked, and the evening note only gives a delivery time. Your notes didn't say who owns the Vertex AI Excel, so I put it under Rushi. Say if either is wrong.
-
-
-Daily tracker
-Code·HTML 
-
-Daily tracker 6 8oct2026
-Document·PDF 
-abhishek's task order
-go to superAdmin
-i9 SSO
-superAdmin bugs
-Dashboard bugs
-retention bugs
-
-nikita's 
-https://canaryai.atlassian.net/browse/PROD-3602: This was raised on 8th Oct
-Respond to Proliant: New communication receieved but research needs to be done.
-
-Code review: Test code review changes
-
-chetan
-Test Remote I9, to UAT: needs BVT run before 1 PM from Chetan
-Automation for I9 -- preparing test cases -- task for Chetan
-
-9th morning update give planner
-
-Thought for 17s
-Atlassian Rovo icon
-Atlassian Rovo
-getJiraIssue
-
-Claude’s response was interrupted.
-i need daily tracker
-
-Building a daily tracker with the latest morning plan.
-Building a daily tracker with the latest morning plan.
-On it. I'll add 9 Oct as a morning plan, with each person's tasks in the order you gave.
-
-Ran 4 commands, read a file, shared files
-I added Friday 9 Oct as a "Morning plan" in Daily_Tracker.html, and the page now opens on that day. It has a new chip, Fri 9 Oct, and 14 planned tasks. I also regenerated the PDF as Daily_Tracker_6-9Oct2026.pdf, which is 9 pages with each date starting on its own page. I removed the old 6-8 Oct PDF.
-
-Abhishek: the five tasks are in your order: Go to SuperAdmin, I9 SSO, SuperAdmin bugs (closure by Friday 9 Oct EOD), Dashboard bugs, Retention bugs.
-Nikita:
-PROD-3602 is first. The Jira title is "Kanban resume view needs a full screen option", and it's a sub-task under PROD-3529 raised on 8 Oct.
-Respond to Proliant is second, with the new communication needing research.
-Code review (PROD-3594) is third, to test the code review changes.
-Chetan: Test Remote I9 to UAT, with a BVT run needed before 1 PM, then preparing test cases for I9 automation. Jira management and email template testing aren't in your morning list, so I didn't carry them over.
-Sumit & Aditi and Rushi: your message had no plan for them. I carried forward their open items from last night's update and marked each one "Carried from the 8 Oct evening update".
-Sumit & Aditi: the GAuth and code review delivery to UAT by 2 PM IST, and the 1 P2 Remote I9 bug.
-Rushi: the Excel for the Vertex AI build and the pending DEV testing of AWS Session Manager.
-Send me their real morning plans and I'll replace those.
-The 6, 7 and 8 Oct days are unchanged. If your GitHub page still shows the old tracker, upload this new file over the old one. The View page source search from earlier still applies; search for MORNING PLAN.
-
-
-Daily tracker
-Code·HTML 
-
-Daily tracker 6 9oct2026
-Document·PDF 
-
-
-
-Claude is AI and can make mistakes. Please double-check responses.
-
-
-Daily tracker · HTML
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -109,7 +22,7 @@ Daily tracker · HTML
   .eyebrow { font-family:"IBM Plex Mono",monospace; font-size:.8rem; color:var(--ink-faint); letter-spacing:.02em; margin-bottom:.6rem; }
   header h1 { font-size:2.35rem; font-weight:600; letter-spacing:-.01em; }
   header p.sub { margin:.6rem 0 0; color:var(--ink-soft); max-width:62ch; }
- 
+
   .filter { position:sticky; top:0; z-index:5; background:var(--paper); padding:1rem 0 .9rem; margin-top:1.5rem; border-bottom:1px solid var(--line-strong); }
   .filter .label { font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--ink-faint); letter-spacing:.04em; margin-bottom:.5rem; }
   .chips { display:flex; flex-wrap:wrap; gap:.5rem; }
@@ -119,7 +32,7 @@ Daily tracker · HTML
   .chip-btn.active { background:var(--ink); color:#fff; border-color:var(--ink); }
   .chip-btn.active small { color:#C9D2DE; }
   .chip-btn:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
- 
+
   .day { margin-top:2.75rem; }
   .day-head { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:.5rem; }
   .day-head h2 { font-size:1.6rem; font-weight:600; }
@@ -134,7 +47,7 @@ Daily tracker · HTML
   .summary .lbl { font-size:.78rem; color:var(--ink-soft); margin-top:.3rem; }
   .summary .plan .num { color:var(--planned); } .summary .closed .num { color:var(--done); } .summary .notstarted .num { color:var(--planned); } .summary .done .num { color:var(--done); } .summary .progress .num { color:var(--progress); }
   .summary .pending .num { color:var(--pending); } .summary .planned .num { color:var(--planned); }
- 
+
   .person { margin-top:2rem; }
   .person-head { border-bottom:1px solid var(--line-strong); padding-bottom:.5rem; margin-bottom:1rem; }
   .person-head h3 { font-size:1.2rem; font-weight:600; }
@@ -166,7 +79,7 @@ Daily tracker · HTML
   .meta b { color:var(--ink); font-weight:600; }
   .none { font-size:.88rem; color:var(--ink-faint); font-style:italic; margin-top:.8rem; }
   footer { margin-top:3.5rem; padding-top:1.25rem; border-top:1px solid var(--line); font-size:.8rem; color:var(--ink-faint); }
- 
+
   @media (max-width:600px) {
     .wrap { padding:2rem 1.1rem 4rem; } header h1 { font-size:1.85rem; }
     .summary { flex-direction:column; } .summary .stat { border-right:none; border-bottom:1px solid var(--line); } .summary .stat:last-child { border-bottom:none; }
@@ -192,19 +105,19 @@ Daily tracker · HTML
     <h1>Daily Tracker</h1>
     <p class="sub">Pick a date. Each person shows what closed and what is in progress, and the plan for the day.</p>
   </header>
- 
+
   <div class="filter">
     <div class="label">FILTER BY DATE</div>
     <div class="chips" id="chips"></div>
   </div>
- 
+
   <main id="app"></main>
- 
+
   <footer>
     To add a day, copy a block in the DAYS list at the bottom of this file and change the date and tasks. Or send Claude the next day's notes.
   </footer>
 </div>
- 
+
 <script>
 /* ============================================================
    DATA. To update the tracker, edit this list.
@@ -291,13 +204,13 @@ const STANDING = [
 ];
 const GROUPS = [["closed","CLOSED"],["progress","IN PROGRESS"],["notstarted","NOT STARTED"],["plan","PLANNED TODAY"]];
 const PILL = { closed:"Closed", progress:"In progress", notstarted:"Not started", plan:"Planned" };
- 
+
 /* ===================== rendering ===================== */
 const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const linkify = v => esc(v).replace(/PROD-\d+/g, m => `<a href="${JIRA}${m}" target="_blank" rel="noopener">${m}</a>`);
 const card = (t, st, rows, pill) => `<div class="task s-${st}"><div class="task-top"><div class="task-title">${esc(t)}</div><span class="pill ${st}">${pill}</span></div>` +
   (rows && rows.length ? `<div class="rows">${rows.map(r => `<div class="row"><div class="k">${esc(r[0])}</div><div class="v">${linkify(r[1])}</div></div>`).join('')}</div>` : '') + `</div>`;
- 
+
 function personHTML(name, p) {
   const total = GROUPS.reduce((n, g) => n + (p[g[0]] || []).length, 0);
   let h = `<div class="person"><div class="person-head"><h3>${esc(name)}</h3></div>`;
@@ -323,7 +236,7 @@ function standingHTML() {
     ${STANDING.map(p => `<div class="person"><div class="person-head"><h3>${esc(p.name)}</h3></div>${p.items.map(i => card(i, 'standing', [], 'Standing')).join('')}</div>`).join('')}</section>`;
 }
 document.getElementById('app').innerHTML = DAYS.map(dayHTML).join('') + standingHTML();
- 
+
 const chips = [{key:'all', label:'All dates'}].concat(DAYS.map(d => ({key:d.date, label:d.short}))).concat([{key:'standing', label:'Standing'}]);
 const chipBox = document.getElementById('chips');
 chipBox.innerHTML = chips.map(c => `<button class="chip-btn" data-key="${c.key}">${c.label}</button>`).join('');
@@ -340,18 +253,3 @@ show(chips.some(c => c.key === start) ? start : DAYS[DAYS.length - 1].date);
 </script>
 </body>
 </html>
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Claude finished the response
