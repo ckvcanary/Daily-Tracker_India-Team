@@ -9,92 +9,115 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper:#F2F4F6; --paper-raised:#FFFFFF; --ink:#14213D; --ink-soft:#4A5568; --ink-faint:#8590A6;
-    --line:#DCE1E7; --line-strong:#C3CAD3;
-    --done:#2F6F4E; --done-bg:#E7F1EA; --progress:#A6631B; --progress-bg:#FBEEE1;
-    --pending:#9C3D3D; --pending-bg:#F8EAE9; --planned:#1E4E8C; --planned-bg:#E8EEF6;
-    --carried:#6B7280; --carried-bg:#EDEEF0;
+    --paper:#F2F4F6; --raised:#FFFFFF; --ink:#14213D; --soft:#4A5568; --faint:#8590A6;
+    --line:#DCE1E7; --line2:#C3CAD3;
+    --done:#2F6F4E; --done-bg:#E7F1EA; --prog:#A6631B; --prog-bg:#FBEEE1;
+    --plan:#1E4E8C; --plan-bg:#E8EEF6; --carry:#6B7280; --carry-bg:#EDEEF0;
   }
   * { box-sizing:border-box; }
   body { margin:0; background:var(--paper); color:var(--ink); font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,sans-serif; line-height:1.5; -webkit-font-smoothing:antialiased; }
   h1,h2,h3 { font-family:"Fraunces",Georgia,serif; margin:0; }
+  button { font:inherit; cursor:pointer; }
+  button:focus-visible, a:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
   .wrap { max-width:880px; margin:0 auto; padding:3rem 1.5rem 5rem; }
-  .eyebrow { font-family:"IBM Plex Mono",monospace; font-size:.8rem; color:var(--ink-faint); letter-spacing:.02em; margin-bottom:.6rem; }
+  .eyebrow { font-family:"IBM Plex Mono",monospace; font-size:.8rem; color:var(--faint); letter-spacing:.02em; margin-bottom:.6rem; }
   header h1 { font-size:2.35rem; font-weight:600; letter-spacing:-.01em; }
-  header p.sub { margin:.6rem 0 0; color:var(--ink-soft); max-width:62ch; }
+  header p.sub { margin:.6rem 0 0; color:var(--soft); max-width:62ch; }
 
-  .filter { position:sticky; top:0; z-index:5; background:var(--paper); padding:1rem 0 .9rem; margin-top:1.5rem; border-bottom:1px solid var(--line-strong); }
-  .filter .label { font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--ink-faint); letter-spacing:.04em; margin-bottom:.5rem; }
-  .chips { display:flex; flex-wrap:wrap; gap:.5rem; }
-  .chip-btn { font:inherit; font-size:.88rem; font-weight:500; color:var(--ink-soft); background:var(--paper-raised); border:1px solid var(--line-strong); border-radius:100px; padding:.4rem .95rem; cursor:pointer; }
-  .chip-btn small { font-size:.72rem; color:var(--ink-faint); margin-left:.35rem; font-weight:400; }
-  .chip-btn:hover { border-color:var(--ink); }
-  .chip-btn.active { background:var(--ink); color:#fff; border-color:var(--ink); }
-  .chip-btn.active small { color:#C9D2DE; }
-  .chip-btn:focus-visible { outline:2px solid var(--ink); outline-offset:2px; }
+  /* filter */
+  .filter { position:sticky; top:0; z-index:20; background:var(--paper); padding:1rem 0 .9rem; margin-top:1.5rem; border-bottom:1px solid var(--line2); }
+  .filter .label { font-family:"IBM Plex Mono",monospace; font-size:.72rem; color:var(--faint); letter-spacing:.04em; margin-bottom:.5rem; }
+  .frow { display:flex; flex-wrap:wrap; align-items:center; gap:.6rem; }
+  .ddwrap { position:relative; }
+  .ddbtn { display:inline-flex; align-items:center; gap:.65rem; min-width:15.5rem; background:var(--raised); border:1px solid var(--line2); border-radius:8px; padding:.55rem .85rem; color:var(--ink); font-size:.95rem; font-weight:500; text-align:left; }
+  .ddbtn:hover, .ddbtn[aria-expanded="true"] { border-color:var(--ink); }
+  .ddbtn svg { flex-shrink:0; color:var(--soft); }
+  .ddbtn .lab { flex:1; }
+  .ddbtn .lab.muted { color:var(--faint); font-weight:400; }
+  .ddbtn .chev { transition:transform .15s; } .ddbtn[aria-expanded="true"] .chev { transform:rotate(180deg); }
+  .ddpanel { position:absolute; left:0; top:calc(100% + .4rem); z-index:30; width:min(24rem,92vw); max-height:min(26rem,70vh); overflow:auto; background:var(--raised); border:1px solid var(--line2); border-radius:10px; box-shadow:0 14px 40px rgba(20,33,61,.18); padding:.5rem .5rem .9rem; }
+  .ddpanel[hidden] { display:none; }
+  .ddall { display:block; width:100%; text-align:left; border:none; background:transparent; padding:.55rem .7rem; border-radius:6px; font-weight:600; font-size:.92rem; color:var(--ink); }
+  .ddall:hover { background:var(--paper); } .ddall.on { background:var(--ink); color:#fff; }
+  .ddyear { font-family:"Fraunces",Georgia,serif; font-size:1.05rem; font-weight:600; padding:.8rem .7rem .15rem; border-top:1px solid var(--line); margin-top:.45rem; }
+  .ddmonth { font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.05em; color:var(--faint); text-transform:uppercase; padding:.5rem .7rem .3rem; }
+  .ddgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(3.6rem,1fr)); gap:.4rem; padding:0 .5rem; }
+  .ddday { display:flex; flex-direction:column; align-items:center; gap:0; border:1px solid var(--line2); background:var(--raised); border-radius:8px; padding:.35rem 0; color:var(--ink); line-height:1.15; }
+  .ddday b { font-size:1rem; font-weight:600; } .ddday span { font-size:.68rem; color:var(--faint); }
+  .ddday:hover { border-color:var(--ink); }
+  .ddday.on { background:var(--ink); border-color:var(--ink); color:#fff; } .ddday.on span { color:#C9D2DE; }
+  .pagebtn { font-size:.9rem; font-weight:500; color:var(--soft); background:var(--raised); border:1px solid var(--line2); border-radius:8px; padding:.55rem 1rem; }
+  .pagebtn:hover { border-color:var(--ink); color:var(--ink); }
+  .pagebtn.on { background:var(--ink); border-color:var(--ink); color:#fff; }
 
+  /* days */
   .day { margin-top:2.75rem; }
-  .day-head { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; gap:.5rem; }
+  .day-head { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.6rem; }
   .day-head h2 { font-size:1.6rem; font-weight:600; }
   .kind { font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.05em; padding:.2rem .6rem; border-radius:100px; }
-  .kind.Summary { background:var(--done-bg); color:var(--done); }
-  .kind.Planned { background:var(--planned-bg); color:var(--planned); }
-  .kind.Update { background:var(--done-bg); color:var(--done); } .kind.Plan { background:var(--planned-bg); color:var(--planned); }
-  .summary { display:flex; border:1px solid var(--line); border-radius:4px; overflow:hidden; margin:1rem 0 0; background:var(--paper-raised); }
-  .summary .stat { flex:1; padding:.85rem 1.1rem; border-right:1px solid var(--line); }
-  .summary .stat:last-child { border-right:none; }
+  .kind.Update { background:var(--done-bg); color:var(--done); } .kind.Plan { background:var(--plan-bg); color:var(--plan); }
+  .lead { margin:.7rem 0 0; color:var(--soft); font-size:.92rem; max-width:70ch; }
+  .summary { display:flex; border:1px solid var(--line); border-radius:4px; overflow:hidden; margin-top:1rem; background:var(--raised); }
+  .summary .stat { flex:1; padding:.85rem 1.1rem; border-right:1px solid var(--line); } .summary .stat:last-child { border-right:none; }
   .summary .num { font-family:"Fraunces",serif; font-size:1.6rem; font-weight:600; line-height:1; }
-  .summary .lbl { font-size:.78rem; color:var(--ink-soft); margin-top:.3rem; }
-  .summary .plan .num { color:var(--planned); } .summary .closed .num { color:var(--done); } .summary .notstarted .num { color:var(--planned); } .summary .done .num { color:var(--done); } .summary .progress .num { color:var(--progress); }
-  .summary .pending .num { color:var(--pending); } .summary .planned .num { color:var(--planned); }
-
+  .summary .lbl { font-size:.78rem; color:var(--soft); margin-top:.3rem; }
+  .summary .closed .num { color:var(--done); } .summary .progress .num { color:var(--prog); } .summary .notstarted .num, .summary .plan .num { color:var(--plan); }
   .person { margin-top:2rem; }
-  .person-head { border-bottom:1px solid var(--line-strong); padding-bottom:.5rem; margin-bottom:1rem; }
+  .person-head { border-bottom:1px solid var(--line2); padding-bottom:.5rem; margin-bottom:1rem; }
   .person-head h3 { font-size:1.2rem; font-weight:600; }
-  .grp, .meta, .none { break-inside:avoid; }
-  .task { border-left:3px solid var(--line-strong); background:var(--paper-raised); border-top:1px solid var(--line); border-right:1px solid var(--line); border-bottom:1px solid var(--line); border-radius:0 3px 3px 0; padding:.9rem 1.15rem; margin-bottom:.65rem; }
-  .task.s-done { border-left-color:var(--done); } .task.s-progress { border-left-color:var(--progress); }
-  .task.s-pending { border-left-color:var(--pending); } .task.s-planned, .task.s-notstarted { border-left-color:var(--planned); }
-  .task.s-closed { border-left-color:var(--done); } .task.s-plan { border-left-color:var(--planned); }
-  .task.s-standing { border-left-color:var(--carried); }
+  .meta { font-size:.82rem; color:var(--soft); margin:-.4rem 0 .2rem; } .meta b { color:var(--ink); font-weight:600; }
+  .grp { margin-top:1.1rem; }
+  .grp-head { display:flex; align-items:center; gap:.6rem; margin-bottom:.55rem; }
+  .gname { font-family:"IBM Plex Mono",monospace; font-size:.74rem; letter-spacing:.06em; font-weight:500; } .gcount { font-size:.74rem; color:var(--faint); }
+  .grp.closed .gname { color:var(--done); } .grp.progress .gname { color:var(--prog); } .grp.notstarted .gname, .grp.plan .gname { color:var(--plan); }
+  .none { font-size:.88rem; color:var(--faint); font-style:italic; margin-top:.8rem; }
+  .task { border-left:3px solid var(--line2); background:var(--raised); border-top:1px solid var(--line); border-right:1px solid var(--line); border-bottom:1px solid var(--line); border-radius:0 3px 3px 0; padding:.9rem 1.15rem; margin-bottom:.65rem; }
+  .task.s-closed { border-left-color:var(--done); } .task.s-progress { border-left-color:var(--prog); }
+  .task.s-notstarted, .task.s-plan { border-left-color:var(--plan); } .task.s-standing { border-left-color:var(--carry); }
   .task-top { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; }
   .task-title { font-weight:600; font-size:.97rem; }
   .pill { flex-shrink:0; font-size:.7rem; font-weight:600; padding:.2rem .55rem; border-radius:100px; white-space:nowrap; }
-  .pill.done { background:var(--done-bg); color:var(--done); } .pill.progress { background:var(--progress-bg); color:var(--progress); }
-  .pill.pending { background:var(--pending-bg); color:var(--pending); } .pill.planned, .pill.notstarted { background:var(--planned-bg); color:var(--planned); }
-  .pill.closed { background:var(--done-bg); color:var(--done); } .pill.plan { background:var(--planned-bg); color:var(--planned); }
-  .pill.standing { background:var(--carried-bg); color:var(--carried); }
+  .pill.closed { background:var(--done-bg); color:var(--done); } .pill.progress { background:var(--prog-bg); color:var(--prog); }
+  .pill.notstarted, .pill.plan { background:var(--plan-bg); color:var(--plan); } .pill.standing { background:var(--carry-bg); color:var(--carry); }
+  .since { margin-top:.3rem; font-size:.8rem; color:var(--carry); }
+  .since b { font-weight:600; color:var(--ink); }
   .rows { margin-top:.45rem; font-size:.9rem; }
   .row { display:flex; gap:.5rem; margin-top:.2rem; }
-  .row .k { flex-shrink:0; width:5.6rem; color:var(--ink-faint); font-size:.78rem; padding-top:.1rem; }
-  .row .v { color:var(--ink-soft); }
-  .row .v a { color:var(--planned); text-decoration:none; font-weight:600; }
-  .row .v a:hover { text-decoration:underline; }
-  .grp { margin-top:1.1rem; }
-  .grp-head { display:flex; align-items:center; gap:.6rem; margin-bottom:.55rem; }
-  .grp-head .gname { font-family:"IBM Plex Mono",monospace; font-size:.74rem; letter-spacing:.06em; font-weight:500; }
-  .grp-head .gcount { font-size:.74rem; color:var(--ink-faint); }
-  .grp.plan .gname { color:var(--planned); } .grp.closed .gname { color:var(--done); } .grp.progress .gname { color:var(--progress); } .grp.notstarted .gname { color:var(--planned); }
-  .meta { font-size:.82rem; color:var(--ink-soft); margin:-.4rem 0 .2rem; }
-  .meta b { color:var(--ink); font-weight:600; }
-  .none { font-size:.88rem; color:var(--ink-faint); font-style:italic; margin-top:.8rem; }
-  footer { margin-top:3.5rem; padding-top:1.25rem; border-top:1px solid var(--line); font-size:.8rem; color:var(--ink-faint); }
+  .row .k { flex-shrink:0; width:5.6rem; color:var(--faint); font-size:.78rem; padding-top:.1rem; }
+  .row .v { color:var(--soft); overflow-wrap:anywhere; }
+  .row .v a, .task-title a { color:var(--plan); text-decoration:none; font-weight:600; } .row .v a:hover, .task-title a:hover { text-decoration:underline; }
+
+  /* efficiency */
+  .effctl { display:flex; flex-wrap:wrap; gap:.8rem; margin-top:1rem; }
+  .seg { display:inline-flex; border:1px solid var(--line2); border-radius:100px; overflow:hidden; background:var(--raised); }
+  .segb { border:none; background:transparent; font-size:.85rem; font-weight:500; color:var(--soft); padding:.4rem 1.05rem; } .segb.on { background:var(--ink); color:#fff; }
+  .effmeta { margin-top:.9rem; font-size:.86rem; color:var(--soft); }
+  .effgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:1rem; margin-top:1.1rem; }
+  .effcard { background:var(--raised); border:1px solid var(--line); border-radius:6px; padding:1.1rem 1rem 1rem; text-align:center; break-inside:avoid; }
+  .effname { font-family:"Fraunces",Georgia,serif; font-size:1.15rem; font-weight:600; }
+  .pie { width:130px; height:130px; margin:.7rem auto .4rem; display:block; }
+  .effpct { font-family:"Fraunces",Georgia,serif; font-size:1.7rem; font-weight:600; color:var(--done); line-height:1.1; }
+  .efflbl { font-size:.82rem; color:var(--soft); margin-top:.15rem; }
+  .effleg { display:flex; justify-content:center; gap:.9rem; flex-wrap:wrap; margin-top:.6rem; font-size:.76rem; color:var(--soft); }
+  .effleg i { display:inline-block; width:.7rem; height:.7rem; border-radius:2px; margin-right:.3rem; vertical-align:-1px; }
+  .effteam { display:flex; gap:1.6rem; align-items:baseline; flex-wrap:wrap; margin-top:1.1rem; padding:.8rem 1.1rem; background:var(--raised); border:1px solid var(--line); border-radius:4px; }
+  .effteam b { font-family:"Fraunces",Georgia,serif; font-size:1.5rem; font-weight:600; color:var(--done); margin-right:.4rem; }
+  .effnote { margin-top:1.2rem; font-size:.82rem; color:var(--faint); max-width:78ch; }
+  footer { margin-top:3.5rem; padding-top:1.25rem; border-top:1px solid var(--line); font-size:.8rem; color:var(--faint); }
 
   @media (max-width:600px) {
     .wrap { padding:2rem 1.1rem 4rem; } header h1 { font-size:1.85rem; }
+    .filter { position:static; } .ddbtn { min-width:0; width:100%; } .ddwrap { width:100%; }
     .summary { flex-direction:column; } .summary .stat { border-right:none; border-bottom:1px solid var(--line); } .summary .stat:last-child { border-bottom:none; }
     .row { flex-direction:column; gap:.1rem; } .row .k { width:auto; }
   }
   @media print {
     html, body { background:var(--paper); -webkit-print-color-adjust:exact; print-color-adjust:exact; }
     .wrap { padding:1.2rem 1.2rem 1.5rem; max-width:100%; }
-    .filter { display:none; }
-    .day { display:block !important; margin-top:1.6rem; }
-    .day + .day { break-before:page; page-break-before:always; }
-    .task, .summary { break-inside:avoid; page-break-inside:avoid; }
-    .person-head, .day-head { break-after:avoid; page-break-after:avoid; }
+    .filter, footer, .effctl { display:none !important; } .effgrid { grid-template-columns:repeat(3,1fr); }
+    .day { display:block !important; margin-top:1.6rem; } .day + .day { break-before:page; page-break-before:always; }
+    .task, .summary { break-inside:avoid; page-break-inside:avoid; } .person-head, .day-head { break-after:avoid; page-break-after:avoid; }
     .person { margin-top:1.2rem; } .task { margin-bottom:.45rem; padding:.7rem 1rem; }
-    footer { display:none; }
   }
 </style>
 </head>
@@ -103,170 +126,2752 @@
   <header>
     <div class="eyebrow" id="eyebrow"></div>
     <h1>Daily Tracker</h1>
-    <p class="sub">Pick a date. Each person shows what closed and what is in progress, and the plan for the day.</p>
+    <p class="sub">Pick a date. Each person shows what closed, what is in progress and what is planned.</p>
   </header>
 
-  <div class="filter">
+  <div class="filter" id="filter">
     <div class="label">FILTER BY DATE</div>
-    <div class="chips" id="chips"></div>
+    <div class="frow">
+      <div class="ddwrap">
+        <button class="ddbtn" id="ddBtn" type="button" aria-haspopup="true" aria-expanded="false">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><rect x="2" y="3" width="12" height="11" rx="2"/><path d="M2 6.5h12M5.5 1.5v3M10.5 1.5v3"/></svg>
+          <span class="lab" id="ddLabel"></span>
+          <svg class="chev" width="12" height="8" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M1 1l5 5 5-5"/></svg>
+        </button>
+        <div class="ddpanel" id="ddPanel" hidden></div>
+      </div>
+      <button class="pagebtn" type="button" data-page="standing">Standing items</button>
+      <button class="pagebtn" type="button" data-page="efficiency">Team efficiency</button>
+    </div>
   </div>
 
   <main id="app"></main>
-
-  <footer>
-    To add a day, copy a block in the DAYS list at the bottom of this file and change the date and tasks. Or send Claude the next day's notes. Version: 9 Oct morning plan.
-  </footer>
+  <footer>Version: 21 Oct, read-only tracker.</footer>
 </div>
+<script type="application/json" id="seed">{
+ "updated": "2026-10-21T09:00:00.000Z",
+ "names": [
+  "Sumit & Aditi",
+  "Abhishek",
+  "Nikita",
+  "Chetan",
+  "Rushi"
+ ],
+ "days": [
+  {
+   "date": "2026-10-06",
+   "tag": "DAY UPDATE",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [
+      {
+       "id": "t001",
+       "t": "GAuth and code review changes for E-Verify",
+       "rows": [
+        [
+         "Landed",
+         "Completed 6 Oct."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "t002",
+       "t": "Custom email templates for other companies",
+       "rows": [
+        [
+         "Context",
+         "Only Care Advantage was done so far."
+        ],
+        [
+         "Due",
+         "Feature closure by DEV, Aditi and Sumit: 7 Oct EOD."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Abhishek": {
+     "closed": [
+      {
+       "id": "t003",
+       "t": "GAuth delivery: E-Verify",
+       "rows": [
+        [
+         "Landed",
+         "Completed 6 Oct."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "t004",
+       "t": "Test the deployment pipeline",
+       "rows": [
+        [
+         "Due",
+         "Closure 6 Oct EOD, 8 PM IST."
+        ]
+       ]
+      },
+      {
+       "id": "t005",
+       "t": "Vertex AI build",
+       "rows": [
+        [
+         "Status",
+         "DEV picked it up on 6 Oct."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "t006",
+       "t": "GAuth delivery: all other products",
+       "rows": [
+        [
+         "Status",
+         "Rest all pending. I9 is next."
+        ]
+       ]
+      },
+      {
+       "id": "t007",
+       "t": "QA bug fixes: Dashboard, SuperAdmin, then Retention",
+       "rows": [
+        [
+         "Status",
+         "Not picked yet."
+        ]
+       ]
+      }
+     ],
+     "plan": []
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "t008",
+       "t": "CR requests from U.S. team",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3529"
+        ],
+        [
+         "Status",
+         "6 done as of 6 Oct, deployment pending."
+        ],
+        [
+         "Next",
+         "2 estimated to be fixed and deployed by 9 Oct."
+        ]
+       ]
+      },
+      {
+       "id": "t009",
+       "t": "Respond to Proliant",
+       "rows": [
+        [
+         "Status",
+         "Waiting on feedback from the Proliant team. Latest outbound: 6 Oct."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "t00a",
+       "t": "Code review",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3594"
+        ],
+        [
+         "Condition",
+         "Picked in Sprint 21 only after Proliant and the CRs from U.S. team are done."
+        ]
+       ]
+      }
+     ],
+     "plan": []
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "t00b",
+       "t": "Jira management",
+       "rows": []
+      },
+      {
+       "id": "t00c",
+       "t": "Test Remote I9, to UAT",
+       "rows": []
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Rushi": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "t00d",
+       "t": "Vertex AI build",
+       "rows": [
+        [
+         "Status",
+         "As of 6 Oct, 7:00 PM IST only I9 is complete."
+        ],
+        [
+         "Blocked on",
+         "Abhishek's approval that the change works, before other products."
+        ]
+       ]
+      },
+      {
+       "id": "t00e",
+       "t": "Env vs action Excel for each product",
+       "rows": [
+        [
+         "Purpose",
+         "Future clarity on what runs where."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    }
+   }
+  },
+  {
+   "date": "2026-10-07",
+   "tag": "DAY UPDATE",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [
+      {
+       "id": "t00f",
+       "t": "Custom email templates for other companies",
+       "rows": [
+        [
+         "Landed",
+         "Code complete and DEV testing done on 7 Oct."
+        ],
+        [
+         "Note",
+         "Sunil has a new ask."
+        ]
+       ]
+      }
+     ],
+     "progress": [],
+     "notstarted": [],
+     "plan": []
+    },
+    "Abhishek": {
+     "closed": [
+      {
+       "id": "t00g",
+       "t": "GAuth delivery: Retention",
+       "rows": [
+        [
+         "Landed",
+         "Completed 7 Oct."
+        ]
+       ]
+      },
+      {
+       "id": "t00h",
+       "t": "GAuth delivery: Canary Dashboard",
+       "rows": [
+        [
+         "Landed",
+         "Completed 7 Oct."
+        ]
+       ]
+      },
+      {
+       "id": "t00i",
+       "t": "SuperAdmin QA bugs",
+       "rows": [
+        [
+         "Landed",
+         "5 bugs fixed on 7 Oct."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "t00j",
+       "t": "GAuth delivery: I9",
+       "rows": [
+        [
+         "Blocked on",
+         "Could not deliver. Failures while deploying."
+        ]
+       ]
+      },
+      {
+       "id": "t00k",
+       "t": "Vertex AI build",
+       "rows": [
+        [
+         "Status",
+         "One final closure step pending. It can only be done after I9 is deployed to UAT."
+        ],
+        [
+         "Missed",
+         "7 Oct 2:00 PM IST deadline, due to the deployment failure."
+        ]
+       ]
+      },
+      {
+       "id": "t00l",
+       "t": "Test the deployment pipeline",
+       "rows": [
+        [
+         "Status",
+         "Approval was given on a success scenario, but it started failing again on 7 Oct."
+        ],
+        [
+         "Impact",
+         "Hampered delivery dates."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "t00m",
+       "t": "QA bug fixes: Dashboard and Retention",
+       "rows": [
+        [
+         "Status",
+         "Not picked yet."
+        ]
+       ]
+      }
+     ],
+     "plan": []
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "t00n",
+       "t": "CR requests from U.S. team",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3529"
+        ],
+        [
+         "Status",
+         "DEV worked primarily on resolving these tasks on 7 Oct."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [],
+     "leave": true
+    },
+    "Rushi": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "t00o",
+       "t": "Vertex AI build",
+       "rows": [
+        [
+         "Status",
+         "Infra's share of work is near closure. Only a sync activity is required."
+        ]
+       ]
+      },
+      {
+       "id": "t00p",
+       "t": "Deployment pipeline for I9",
+       "rows": []
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    }
+   }
+  },
+  {
+   "date": "2026-10-08",
+   "tag": "EVENING UPDATE",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [
+      {
+       "id": "t00q",
+       "t": "Custom email template feature",
+       "rows": [
+        [
+         "Landed",
+         "Delivered to Sunil."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "t00r",
+       "t": "Remote I9 bugs logged by QA",
+       "rows": [
+        [
+         "Pending",
+         "1 P2 pending from Aditi and Sumit."
+        ],
+        [
+         "Also open",
+         "1 P1 sits with Abhishek: Go to Dashboard SSO."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "t00s",
+       "t": "GAuth and code review changes for I9",
+       "rows": [
+        [
+         "Due",
+         "To be delivered to UAT on the morning of 9 Oct, by 2 PM IST."
+        ],
+        [
+         "Earlier",
+         "Not picked on 8 Oct because of the deployment failure."
+        ]
+       ]
+      },
+      {
+       "id": "t00t",
+       "t": "New ask from Sunil: invite on phone number only, no email",
+       "rows": [
+        [
+         "Timeline",
+         "Vague. Code complete by Tuesday EOD (13 Oct) for QA."
+        ],
+        [
+         "Effort",
+         "DEV needs 5 hrs."
+        ]
+       ]
+      }
+     ],
+     "plan": [],
+     "jira": "Aditi and Sumit: time logging and status updates done."
+    },
+    "Abhishek": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "t00u",
+       "t": "Remote I9 bug: Go to Dashboard SSO",
+       "rows": [
+        [
+         "Priority",
+         "P1, pending from Abhishek's end."
+        ]
+       ]
+      },
+      {
+       "id": "t00v",
+       "t": "SuperAdmin bugs",
+       "rows": [
+        [
+         "Due",
+         "Bugs still pending on Abhishek's side need full closure by Friday, 9 Oct EOD."
+        ],
+        [
+         "Moved",
+         "Bugs that fall in Sumit's court are picked up in Sprint 22."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "t00w",
+       "t": "Dashboard bugs",
+       "rows": [
+        [
+         "Status",
+         "Not picked."
+        ]
+       ]
+      }
+     ],
+     "plan": [],
+     "jira": "All tasks up to date on Jira."
+    },
+    "Nikita": {
+     "closed": [
+      {
+       "id": "t00x",
+       "t": "CR requests from U.S. team, logged before 7 Oct",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3529"
+        ],
+        [
+         "Landed",
+         "All of those are closed."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "t00y",
+       "t": "CR request raised by Sunil",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3529"
+        ],
+        [
+         "Status",
+         "1 pending."
+        ]
+       ]
+      },
+      {
+       "id": "t00z",
+       "t": "Respond to Proliant",
+       "rows": [
+        [
+         "Status",
+         "Everything is falling in place. DEV has captured no issues or concerns."
+        ],
+        [
+         "Needs",
+         "Webhook and webhook integration, and their next step, need a green signal from DEV and a final call on delivery from Robert."
+        ],
+        [
+         "Timeline",
+         "This stretches to Sprint 22."
+        ],
+        [
+         "Note",
+         "The India team got the first update on the 28 Sept query on the morning of 8 Oct. DEV introduced no blocker or delay."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "t010",
+       "t": "Code review",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3594"
+        ],
+        [
+         "Scope",
+         "DEV selected the review tasks that fit the 16 hr estimate for Sprint 21."
+        ],
+        [
+         "Condition",
+         "Picked up only if there is no priority item in the plan."
+        ]
+       ]
+      }
+     ],
+     "plan": [],
+     "jira": "Pending."
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "t011",
+       "t": "Jira management",
+       "rows": []
+      },
+      {
+       "id": "t012",
+       "t": "Email template testing",
+       "rows": []
+      },
+      {
+       "id": "t013",
+       "t": "Test Remote I9, to UAT",
+       "rows": [
+        [
+         "Bugs",
+         "As of 8 Oct, 80 logged and 75 solved."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": [],
+     "jira": "Pending."
+    },
+    "Rushi": {
+     "closed": [
+      {
+       "id": "t014",
+       "t": "Deployment pipeline for I9: plan expiry issues",
+       "rows": [
+        [
+         "Landed",
+         "Fixed."
+        ]
+       ]
+      },
+      {
+       "id": "t015",
+       "t": "Set up AWS Session Manager, SOC2 compliant",
+       "rows": [
+        [
+         "For",
+         "Nikita.DEV and Piyushh.DEV."
+        ],
+        [
+         "Landed",
+         "Closed."
+        ],
+        [
+         "Pending",
+         "Testing from DEV."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "t016",
+       "t": "Excel for Vertex AI build",
+       "rows": []
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "t017",
+       "t": "Deployment pathway across the product suite",
+       "rows": [
+        [
+         "Scope",
+         "Plan and exercise the deployment pathway for every product."
+        ],
+        [
+         "Effort",
+         "DEV needs 40 to 50 hrs, in Sprint 22."
+        ]
+       ]
+      }
+     ],
+     "plan": [],
+     "jira": "All tasks up to date on Jira."
+    }
+   }
+  },
+  {
+   "date": "2026-10-09",
+   "tag": "EVENING UPDATE",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [
+      {
+       "id": "n1001",
+       "t": "Remote I9 bugs logged by QA",
+       "rows": [
+        [
+         "Landed",
+         "All resolved until the previous day."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1002",
+       "t": "SuperAdmin bugs, Sumit's side",
+       "rows": [
+        [
+         "Status",
+         "Pending."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Abhishek": {
+     "closed": [
+      {
+       "id": "n1003",
+       "t": "GAuth and code review changes for I9",
+       "rows": [
+        [
+         "Landed",
+         "Done."
+        ]
+       ]
+      },
+      {
+       "id": "n1004",
+       "t": "SuperAdmin bugs, Abhishek's side",
+       "rows": [
+        [
+         "Landed",
+         "All done."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1005",
+       "t": "Go to SuperAdmin",
+       "rows": [
+        [
+         "Status",
+         "RCA analysis done. To be fixed on Monday (Pauline)."
+        ]
+       ]
+      },
+      {
+       "id": "n1006",
+       "t": "I9 SSO from the Dashboard",
+       "rows": [
+        [
+         "Status",
+         "In progress."
+        ]
+       ]
+      },
+      {
+       "id": "n1007",
+       "t": "Dashboard bugs",
+       "rows": [
+        [
+         "Status",
+         "4 of 7 resolved, 3 pending."
+        ],
+        [
+         "Due",
+         "Estimated closure: Monday."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "n1008",
+       "t": "Retention bugs",
+       "rows": [
+        [
+         "Status",
+         "Not picked."
+        ]
+       ]
+      }
+     ],
+     "plan": []
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "n1009",
+       "t": "PROD-3602: Kanban full screen icon for the resume",
+       "rows": [
+        [
+         "Status",
+         "Locally done. QA testing required."
+        ]
+       ]
+      },
+      {
+       "id": "n1010",
+       "t": "PROD-3602: Thumbs Up moves the applicant to a new column",
+       "rows": [
+        [
+         "Status",
+         "Not reported as locally done."
+        ]
+       ]
+      },
+      {
+       "id": "n1011",
+       "t": "PROD-3602: Thumbs Down below and in grey in the Applicant pool grid",
+       "rows": [
+        [
+         "Status",
+         "Locally done. QA testing required."
+        ]
+       ]
+      },
+      {
+       "id": "n1012",
+       "t": "PROD-3602: Set Kanban as default view",
+       "rows": [
+        [
+         "Status",
+         "Locally done. QA testing required."
+        ]
+       ]
+      },
+      {
+       "id": "n1013",
+       "t": "Respond to Proliant",
+       "rows": [
+        [
+         "Status",
+         "DEV needs to respond."
+        ]
+       ]
+      },
+      {
+       "id": "n1014",
+       "t": "Code review: test the code review changes",
+       "rows": [
+        [
+         "Status",
+         "Locally done."
+        ],
+        [
+         "Due",
+         "Deployment to UAT marked for 9 Oct EOD."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": []
+    },
+    "Rushi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": []
+    }
+   }
+  },
+  {
+   "date": "2026-10-12",
+   "tag": "MORNING PLAN",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1015",
+       "t": "No email: R&D and DEV work",
+       "rows": []
+      }
+     ]
+    },
+    "Abhishek": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1016",
+       "t": "Remaining Dashboard bugs",
+       "rows": []
+      },
+      {
+       "id": "n1017",
+       "t": "Retention bugs",
+       "rows": []
+      },
+      {
+       "id": "n1018",
+       "t": "Test: Vertex AI Build",
+       "rows": []
+      }
+     ]
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1019",
+       "t": "PROD-3602: DEV testing of the four Kanban sub-tasks",
+       "rows": [
+        [
+         "Items",
+         "Full screen icon for the resume. Thumbs Up moves the applicant to a new column. Thumbs Down below and in grey. Set Kanban as default view."
+        ]
+       ]
+      }
+     ]
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": []
+    },
+    "Rushi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1020",
+       "t": "Changes to I9 deployment pipeline",
+       "rows": []
+      },
+      {
+       "id": "n1021",
+       "t": "Vertex AI Build readiness",
+       "rows": []
+      }
+     ]
+    }
+   }
+  },
+  {
+   "date": "2026-10-13",
+   "tag": "EVENING UPDATE",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [
+      {
+       "id": "n1022",
+       "t": "Check RCA for the Tax Nav dashboard SSO bug",
+       "rows": [
+        [
+         "Landed",
+         "RCA shared with Abhishek."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1023",
+       "t": "No email: R&D and DEV work",
+       "rows": [
+        [
+         "DEV testing and deployment",
+         "Ready for QA testing."
+        ],
+        [
+         "Edgar",
+         "Connect planned by the India team on 13 Oct."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Abhishek": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "n1024",
+       "t": "Remaining Dashboard bugs",
+       "rows": [
+        [
+         "Status",
+         "1 remaining (P0). Approval from Aditi required before a change in local."
+        ],
+        [
+         "Next",
+         "Review the RCA provided by Aditi."
+        ]
+       ]
+      },
+      {
+       "id": "n1025",
+       "t": "Test: Vertex AI Build",
+       "rows": [
+        [
+         "Sprint",
+         "Next sprint."
+        ],
+        [
+         "Status",
+         "Findings shared with Rushikesh."
+        ]
+       ]
+      },
+      {
+       "id": "n1026",
+       "t": "Retention bugs",
+       "rows": [
+        [
+         "Sprint",
+         "Moving to Sprint 22."
+        ],
+        [
+         "Due",
+         "The 8 remaining close by 14 Oct EOD."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "n1027",
+       "t": "PROD-3602",
+       "rows": [
+        [
+         "Status",
+         "QA testing scheduled for all four Kanban changes on 14 Oct, 11:30 AM (DEV env)."
+        ]
+       ]
+      },
+      {
+       "id": "n1028",
+       "t": "Follow-up with Pauline for the Applicant workflow",
+       "rows": [
+        [
+         "Status",
+         "Spec in progress. Final spec needed."
+        ]
+       ]
+      },
+      {
+       "id": "n1029",
+       "t": "Proliant",
+       "rows": [
+        [
+         "Status",
+         "Under development. No communication from their team as of 13 Oct."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": []
+    },
+    "Rushi": {
+     "closed": [
+      {
+       "id": "n1030",
+       "t": "Clean up the DSS footprint (Nitin's ask for 321 forms)",
+       "rows": [
+        [
+         "Landed",
+         "Completely done."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1031",
+       "t": "Changes to I9 deployment pipeline",
+       "rows": [
+        [
+         "Status",
+         "Halfway done."
+        ],
+        [
+         "Due",
+         "To be closed by 14 Oct, 4 PM."
+        ]
+       ]
+      },
+      {
+       "id": "n1032",
+       "t": "Vertex AI Build readiness",
+       "rows": [
+        [
+         "Status",
+         "Findings provided by Abhishek are in progress."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    }
+   }
+  },
+  {
+   "date": "2026-10-14",
+   "tag": "MORNING PLAN",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1033",
+       "t": "No email: R&D and DEV work",
+       "rows": [
+        [
+         "DEV testing and deployment",
+         "Ready for QA testing."
+        ],
+        [
+         "Edgar",
+         "DEV needs to prepare test cases for automation testing (Sumit)."
+        ]
+       ]
+      },
+      {
+       "id": "n1034",
+       "t": "Check RCA for the Tax Nav dashboard SSO bug (Aditi)",
+       "rows": [
+        [
+         "Status",
+         "RCA shared with Abhishek."
+        ]
+       ]
+      },
+      {
+       "id": "n1035",
+       "t": "SA bugs (Sumit)",
+       "rows": []
+      },
+      {
+       "id": "n1036",
+       "t": "UI key generation (Aditi)",
+       "rows": []
+      }
+     ]
+    },
+    "Abhishek": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1037",
+       "t": "Remaining Dashboard bugs",
+       "rows": [
+        [
+         "Status",
+         "1 remaining (P0). Approval from Aditi required before a change in local."
+        ],
+        [
+         "Next",
+         "Review the RCA provided by Aditi."
+        ]
+       ]
+      },
+      {
+       "id": "n1038",
+       "t": "Test: Vertex AI Build",
+       "rows": [
+        [
+         "Sprint",
+         "Next sprint."
+        ],
+        [
+         "Status",
+         "Findings shared with Rushikesh."
+        ]
+       ]
+      },
+      {
+       "id": "n1039",
+       "t": "Retention bugs",
+       "rows": [
+        [
+         "Sprint",
+         "Moving to Sprint 22."
+        ],
+        [
+         "Due",
+         "The 8 remaining close by 14 Oct EOD."
+        ]
+       ]
+      }
+     ]
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1040",
+       "t": "PROD-3602",
+       "rows": [
+        [
+         "Status",
+         "QA testing scheduled for all four Kanban changes on 14 Oct, 11:30 AM (DEV env)."
+        ]
+       ]
+      },
+      {
+       "id": "n1041",
+       "t": "Follow-up with Pauline for the Applicant workflow",
+       "rows": [
+        [
+         "Status",
+         "Spec in progress."
+        ]
+       ]
+      },
+      {
+       "id": "n1042",
+       "t": "Proliant",
+       "rows": [
+        [
+         "Status",
+         "Under development. No communication as of 13 Oct."
+        ]
+       ]
+      },
+      {
+       "id": "n1043",
+       "t": "CRs and bugs from the U.S. team",
+       "rows": []
+      }
+     ]
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": []
+    },
+    "Rushi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1044",
+       "t": "Changes to I9 deployment pipeline",
+       "rows": [
+        [
+         "Status",
+         "Halfway done."
+        ],
+        [
+         "Due",
+         "To be closed by 14 Oct, 4 PM."
+        ]
+       ]
+      },
+      {
+       "id": "n1045",
+       "t": "Vertex AI Build readiness",
+       "rows": [
+        [
+         "Status",
+         "Findings provided by Abhishek are in progress."
+        ],
+        [
+         "Order",
+         "Onboarding, E-Verify, WOTC, Canary Dashboard."
+        ]
+       ]
+      },
+      {
+       "id": "n1046",
+       "t": "Security controls",
+       "rows": []
+      }
+     ]
+    }
+   }
+  },
+  {
+   "date": "2026-10-15",
+   "tag": "EVENING UPDATE",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [
+      {
+       "id": "n1047",
+       "t": "Check RCA for the Tax Nav dashboard SSO bug (Aditi)",
+       "rows": [
+        [
+         "Landed",
+         "Deployment done on the UAT environment."
+        ]
+       ]
+      },
+      {
+       "id": "n1048",
+       "t": "SA bugs (Sumit)",
+       "rows": [
+        [
+         "Landed",
+         "500 Internal Server validation issues resolved and deployed to the test environment."
+        ]
+       ]
+      },
+      {
+       "id": "n1049",
+       "t": "AWS access for 321 Onboarding",
+       "rows": [
+        [
+         "Landed",
+         "Done."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1050",
+       "t": "No email: R&D and DEV work",
+       "rows": [
+        [
+         "QA testing",
+         "Ongoing. Marked for 16 Oct, as 15 Oct was used for I9 Audit Agent testing."
+        ],
+        [
+         "Edgar",
+         "DEV needs to prepare automation test cases. Prepared from Sumit's end, pending from Edgar's end."
+        ]
+       ]
+      },
+      {
+       "id": "n1051",
+       "t": "UI key generation (Aditi)",
+       "rows": [
+        [
+         "Status",
+         "Deployed to the test environment. DEV testing and QA testing pending."
+        ],
+        [
+         "Next",
+         "DEV needs to run it in the I-frame (fms) for testing with the same key."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Abhishek": {
+     "closed": [
+      {
+       "id": "n1052",
+       "t": "Remaining Dashboard bugs",
+       "rows": [
+        [
+         "Landed",
+         "Deployed to the UAT environment, along with Tax Nav."
+        ],
+        [
+         "Note",
+         "GAuth for Tax Nav was also marked for delivery on 15 Oct. Aditi's effort was required."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1053",
+       "t": "Test: Vertex AI Build",
+       "rows": [
+        [
+         "Status",
+         "Whole end to end flow for I9 is complete. Deployment pending."
+        ],
+        [
+         "Next",
+         "Full closure for I9 Vertex activity: 30 to 45 minutes."
+        ]
+       ]
+      },
+      {
+       "id": "n1054",
+       "t": "Retention bugs",
+       "rows": [
+        [
+         "Sprint",
+         "Moving to Sprint 22."
+        ],
+        [
+         "Status",
+         "All resolved and in local. To be deployed to the test environment on 15 Oct."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "n1055",
+       "t": "Audit Agent bugs",
+       "rows": []
+      }
+     ],
+     "plan": []
+    },
+    "Nikita": {
+     "closed": [
+      {
+       "id": "n1056",
+       "t": "PROD-3602",
+       "rows": [
+        [
+         "Landed",
+         "All items raised in the ticket are deployed to the Prod environment."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1057",
+       "t": "Follow-up with Pauline for the Applicant workflow",
+       "rows": [
+        [
+         "Status",
+         "Communication dates to be finalized, to avoid a bad impact on DEV's delivery."
+        ],
+        [
+         "Ticket",
+         "PROD-3654"
+        ]
+       ]
+      },
+      {
+       "id": "n1058",
+       "t": "Proliant",
+       "rows": [
+        [
+         "Status",
+         "Under development. No communication as of 14 Oct, 7:00 PM IST. Outbound scheduled for 14 Oct, 7:30 PM IST."
+        ]
+       ]
+      },
+      {
+       "id": "n1059",
+       "t": "CRs and bugs from the U.S. team",
+       "rows": [
+        [
+         "Next",
+         "India team needs to instruct Caroline on the workflow for raising bugs."
+        ],
+        [
+         "Note",
+         "The bug raised by Caroline came through chat."
+        ]
+       ]
+      },
+      {
+       "id": "n1060",
+       "t": "PROD-3657",
+       "rows": [
+        [
+         "Next",
+         "Needs review by Chetan."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "n1061",
+       "t": "PROD-3654: review the registration flow spec and trackers",
+       "rows": [
+        [
+         "Source",
+         "Raised in the Nikita follow-up with Pauline."
+        ]
+       ]
+      },
+      {
+       "id": "n1062",
+       "t": "PROD-3657: review",
+       "rows": [
+        [
+         "Source",
+         "Needs review by Chetan."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Rushi": {
+     "closed": [
+      {
+       "id": "n1063",
+       "t": "Changes to I9 deployment pipeline",
+       "rows": [
+        [
+         "Landed",
+         "Done on the DEV environment."
+        ],
+        [
+         "Next",
+         "DEV aims to fix this deployment issue across all environments (I9 and Canary Dashboard)."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1064",
+       "t": "Vertex AI Build readiness",
+       "rows": [
+        [
+         "Status",
+         "Abhishek gave his inputs on 14 Oct. Closure date: 15 Oct (deployment day for this fix)."
+        ],
+        [
+         "Next",
+         "E-Verify is picked today for the Vertex activity."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "n1065",
+       "t": "Security controls",
+       "rows": [
+        [
+         "Condition",
+         "Picked up if the two tasks above are near closure."
+        ]
+       ]
+      }
+     ],
+     "plan": []
+    }
+   }
+  },
+  {
+   "date": "2026-10-16",
+   "tag": "EVENING UPDATE",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [
+      {
+       "id": "n1066",
+       "t": "Jira estimations for all Sprint 22 tasks",
+       "rows": [
+        [
+         "Landed",
+         "Aditi and Sumit are done."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1067",
+       "t": "No email: R&D and DEV work",
+       "rows": [
+        [
+         "Bugs",
+         "10 logged: 9 India team, 1 Edgar. QA testing completed with 6 bugs logged."
+        ],
+        [
+         "Status",
+         "1 falls in Edgar's court, 3 in the India team's. The India team's bugs are resolved."
+        ],
+        [
+         "Edgar",
+         "DEV needs to prepare automation test cases. Prepared from Sumit's end, pending from Edgar's end."
+        ]
+       ]
+      },
+      {
+       "id": "n1068",
+       "t": "SA bugs (Sumit)",
+       "rows": [
+        [
+         "Status",
+         "Bugs that fell in Sumit's court need a formal review by Abhishek before deploying to Prod: Canary Dashboard."
+        ]
+       ]
+      },
+      {
+       "id": "n1069",
+       "t": "UI key generation (Aditi)",
+       "rows": [
+        [
+         "Status",
+         "QA testing pending. Deployment pending for Prod."
+        ]
+       ]
+      },
+      {
+       "id": "n1070",
+       "t": "Deployment of two I9 remote bugs to Prod",
+       "rows": [
+        [
+         "Status",
+         "QA testing pending. Deployment pending for Prod."
+        ]
+       ]
+      },
+      {
+       "id": "n1071",
+       "t": "Vertex AI Build DEV sync with Rushikesh",
+       "rows": [
+        [
+         "Status",
+         "Onboarding and E-Verify are reviewed. The WOTC document needs rectification from Infra's end."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": [],
+     "jira": "Estimates for Sprint 22: Aditi done, Sumit done."
+    },
+    "Abhishek": {
+     "closed": [
+      {
+       "id": "n1072",
+       "t": "Retention bugs",
+       "rows": [
+        [
+         "Landed",
+         "Delivered to Prod."
+        ],
+        [
+         "Note",
+         "Bug acceptance rate above 95%."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1073",
+       "t": "Test: Vertex AI Build (I9)",
+       "rows": [
+        [
+         "Status",
+         "Changes are already in the test environment. Delivery to Prod for I9 in the next two days, along with the changes by Sumit and Aditi."
+        ],
+        [
+         "Note",
+         "I9 front-end changes need to be taken into account."
+        ]
+       ]
+      },
+      {
+       "id": "n1074",
+       "t": "SuperAdmin and Dashboard DEV testing",
+       "rows": [
+        [
+         "Bugs",
+         "28 bugs were logged via automation and need to be taken care of."
+        ]
+       ]
+      },
+      {
+       "id": "n1075",
+       "t": "Jira estimations for all Sprint 22 tasks",
+       "rows": [
+        [
+         "Status",
+         "Pending."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "n1076",
+       "t": "Audit Agent bugs",
+       "rows": [
+        [
+         "Status",
+         "Not to be picked, as DEV's capacity is used under retail."
+        ]
+       ]
+      }
+     ],
+     "plan": [],
+     "jira": "Estimates for Sprint 22: pending."
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "n1077",
+       "t": "Follow-up with Pauline for the Applicant workflow (registration flow)",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3654"
+        ],
+        [
+         "Status",
+         "Communication dates to be finalized. QA and DEV both need to give final remarks on the spec."
+        ],
+        [
+         "Due",
+         "Monday, first half: Chetan to give remarks."
+        ]
+       ]
+      },
+      {
+       "id": "n1078",
+       "t": "Proliant",
+       "rows": [
+        [
+         "Status",
+         "Inbound received on 16 Oct from their end. The ask is raised in the email."
+        ],
+        [
+         "Due",
+         "DEV needs to reply by 16 Oct EOD."
+        ]
+       ]
+      },
+      {
+       "id": "n1079",
+       "t": "PROD-3657",
+       "rows": [
+        [
+         "Next",
+         "Needs review by Chetan."
+        ],
+        [
+         "Note",
+         "Sunil's bug: he tried it on the Director of Finance job for Canary and it did not work for him."
+        ]
+       ]
+      },
+      {
+       "id": "n1080",
+       "t": "Jira estimations for all Sprint 22 tasks",
+       "rows": [
+        [
+         "Status",
+         "Pending, blocked due to sprint scope."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": [],
+     "jira": "Estimates for Sprint 22: pending, blocked due to sprint scope."
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "n1081",
+       "t": "PROD-3654: remarks on the registration flow spec",
+       "rows": [
+        [
+         "Due",
+         "Monday, first half."
+        ]
+       ]
+      },
+      {
+       "id": "n1082",
+       "t": "PROD-3657: review",
+       "rows": [
+        [
+         "Note",
+         "Sunil's bug on the Director of Finance job."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Rushi": {
+     "closed": [
+      {
+       "id": "n1083",
+       "t": "Changes to I9 deployment pipeline",
+       "rows": [
+        [
+         "Landed",
+         "Fixed for I9 and Canary Dashboard on the Test and DEV environments."
+        ]
+       ]
+      },
+      {
+       "id": "n1084",
+       "t": "Jira estimations for all Sprint 22 tasks",
+       "rows": [
+        [
+         "Landed",
+         "All original estimates up to date."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n1085",
+       "t": "Vertex AI Build readiness",
+       "rows": [
+        [
+         "Status",
+         "I9 changes for the test environment are done, pending for Prod. Details shared with Aditi and Sumit for E-Verify, Onboarding and WOTC."
+        ],
+        [
+         "Due",
+         "Closure: Monday, 19 Oct."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "n1086",
+       "t": "Security controls",
+       "rows": [
+        [
+         "Condition",
+         "Picked up if the two tasks above are near closure."
+        ],
+        [
+         "Blocked on",
+         "Approval from Edgar for the closure activities."
+        ]
+       ]
+      }
+     ],
+     "plan": [],
+     "jira": "Estimates for Sprint 22: all original estimates up to date."
+    }
+   }
+  },
+  {
+   "date": "2026-10-19",
+   "tag": "MORNING PLAN",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1087",
+       "t": "No email: R&D and DEV work",
+       "rows": [
+        [
+         "Bugs",
+         "10 logged: 9 India team, 1 Edgar. QA testing completed with 6 bugs logged. The India team's bugs are resolved."
+        ],
+        [
+         "Edgar",
+         "Test cases prepared from Sumit's end, pending from Edgar's end. We can pick the test cases Edgar picked."
+        ],
+        [
+         "Next",
+         "Discussion with Nitin. Email communication to be reviewed by Chetan."
+        ],
+        [
+         "Status",
+         "Parked until further notice, until Wednesday."
+        ]
+       ]
+      },
+      {
+       "id": "n1088",
+       "t": "SA bugs (Sumit)",
+       "rows": [
+        [
+         "Status",
+         "All resolved. Deployment for Prod pending."
+        ]
+       ]
+      },
+      {
+       "id": "n1089",
+       "t": "UI key generation (Aditi)",
+       "rows": [
+        [
+         "Status",
+         "QA testing pending. Deployment pending for Prod."
+        ],
+        [
+         "Next",
+         "If the Onboarding task is on track for closure by EOD, Chetan and Aditi should connect with M."
+        ]
+       ]
+      },
+      {
+       "id": "n1090",
+       "t": "Deployment of two I9 remote bugs to Prod",
+       "rows": [
+        [
+         "Status",
+         "Deployment pending."
+        ]
+       ]
+      },
+      {
+       "id": "n1091",
+       "t": "Vertex AI Build DEV sync with Rushikesh",
+       "rows": [
+        [
+         "Status",
+         "DEV needs this only for WOTC and WOTC automation. To be shared by Rushikesh in the first half."
+        ]
+       ]
+      }
+     ],
+     "jira": "Estimates for Sprint 22: Aditi done, Sumit done."
+    },
+    "Abhishek": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1092",
+       "t": "Test: Vertex AI Build (I9)",
+       "rows": [
+        [
+         "Due",
+         "Should be deployed by Monday EOD."
+        ],
+        [
+         "Note",
+         "I9 front-end changes need to be taken into account."
+        ]
+       ]
+      },
+      {
+       "id": "n1093",
+       "t": "Audit Agent bugs",
+       "rows": [
+        [
+         "Status",
+         "Not to be picked, as DEV's capacity is used under retail."
+        ],
+        [
+         "Next",
+         "Picked after Abhishek is done with the Onboarding upload task."
+        ]
+       ]
+      },
+      {
+       "id": "n1094",
+       "t": "SuperAdmin and Dashboard DEV testing",
+       "rows": [
+        [
+         "Bugs",
+         "28 bugs were logged via automation and need to be taken care of."
+        ],
+        [
+         "Next",
+         "Picked after the first two tasks."
+        ]
+       ]
+      }
+     ],
+     "jira": "Estimates for Sprint 22: up to date."
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1095",
+       "t": "Follow-up with Pauline for the Applicant workflow (registration flow)",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3654"
+        ],
+        [
+         "Status",
+         "Communication dates to be finalized. QA and DEV both need to give final remarks on the spec."
+        ],
+        [
+         "Due",
+         "Monday, first half: Chetan to give remarks. Meeting with Nitin by Monday EOD."
+        ]
+       ]
+      },
+      {
+       "id": "n1096",
+       "t": "Proliant",
+       "rows": [
+        [
+         "Status",
+         "Inbound received on 16 Oct. DEV to reply to the ask. In Testing."
+        ]
+       ]
+      },
+      {
+       "id": "n1097",
+       "t": "PROD-3657",
+       "rows": [
+        [
+         "Next",
+         "Needs review by Chetan."
+        ],
+        [
+         "Note",
+         "Sunil's bug on the Director of Finance job for Canary."
+        ]
+       ]
+      }
+     ],
+     "jira": "Estimates for Sprint 22: pending, blocked due to sprint scope."
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1098",
+       "t": "PROD-3654: remarks on the registration flow spec",
+       "rows": [
+        [
+         "Due",
+         "Monday, first half."
+        ]
+       ]
+      },
+      {
+       "id": "n1099",
+       "t": "PROD-3657: review",
+       "rows": []
+      },
+      {
+       "id": "n1100",
+       "t": "No email: review the email communication",
+       "rows": []
+      },
+      {
+       "id": "n1101",
+       "t": "UI key generation: connect with M",
+       "rows": [
+        [
+         "Condition",
+         "If the Onboarding task is on track for closure by EOD."
+        ]
+       ]
+      }
+     ]
+    },
+    "Rushi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1102",
+       "t": "P0: certificates in sync with their timelines",
+       "rows": []
+      },
+      {
+       "id": "n1103",
+       "t": "P0: HR2 servers sanity check",
+       "rows": []
+      },
+      {
+       "id": "n1104",
+       "t": "Vertex AI Build readiness",
+       "rows": [
+        [
+         "Status",
+         "All changes are in the test environment. Deployment planned for Wednesday. E-Verify and Onboarding done."
+        ],
+        [
+         "Due",
+         "WOTC scheduled for Monday EOD."
+        ]
+       ]
+      },
+      {
+       "id": "n1105",
+       "t": "Security controls",
+       "rows": [
+        [
+         "Condition",
+         "Picked up if the Vertex AI Build is near closure."
+        ],
+        [
+         "Blocked on",
+         "Approval from Edgar for the closure activities."
+        ],
+        [
+         "Status",
+         "In the loop and in progress along with other tasks."
+        ]
+       ]
+      }
+     ],
+     "jira": "Estimates for Sprint 22: all original estimates up to date."
+    }
+   }
+  },
+  {
+   "date": "2026-10-20",
+   "tag": "HOLIDAY",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [],
+     "leave": true
+    },
+    "Abhishek": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [],
+     "leave": true
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [],
+     "leave": true
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [],
+     "leave": true
+    },
+    "Rushi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [],
+     "leave": true
+    }
+   }
+  },
+  {
+   "date": "2026-10-21",
+   "tag": "MORNING PLAN",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1106",
+       "t": "Priority: automate the test cases for Onboarding (Edgar cases)",
+       "rows": []
+      },
+      {
+       "id": "n1107",
+       "t": "Priority: deploy the doc upload feature for Onboarding",
+       "rows": [
+        [
+         "Next",
+         "Doc upload, then QA testing, then the custom page."
+        ],
+        [
+         "Input",
+         "U.S. team: create doc_upload as a custom page, initiated from the employer. The type also needs to be specified."
+        ]
+       ]
+      },
+      {
+       "id": "n1108",
+       "t": "UI key generation (Aditi)",
+       "rows": [
+        [
+         "Status",
+         "Making the label changes Michele asked for."
+        ]
+       ]
+      },
+      {
+       "id": "n1109",
+       "t": "Vertex AI Build DEV sync with Rushikesh",
+       "rows": [
+        [
+         "Status",
+         "DEV needs this only for WOTC and WOTC automation. Yet to be shared, marked for Wednesday."
+        ]
+       ]
+      },
+      {
+       "id": "n1110",
+       "t": "No email: R&D and DEV work",
+       "rows": [
+        [
+         "Status",
+         "Parked until Thursday. 10 bugs logged: 9 India team, 1 Edgar. QA testing completed with 6 bugs logged."
+        ]
+       ]
+      },
+      {
+       "id": "n1111",
+       "t": "Full I9 in Onboarding",
+       "rows": [
+        [
+         "Sprint",
+         "Next sprint task."
+        ]
+       ]
+      }
+     ],
+     "jira": "Estimates for Sprint 22: Aditi done, Sumit done."
+    },
+    "Abhishek": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1112",
+       "t": "Priority: resolve the Audit Agent bugs and deploy to UAT",
+       "rows": [
+        [
+         "Status",
+         "4 of 16 resolved. Marked for Wednesday EOD."
+        ]
+       ]
+      },
+      {
+       "id": "n1113",
+       "t": "SuperAdmin and Dashboard DEV testing",
+       "rows": [
+        [
+         "Bugs",
+         "28 bugs were logged via automation and need to be taken care of."
+        ]
+       ]
+      },
+      {
+       "id": "n1114",
+       "t": "Delivery of the two tasks above",
+       "rows": [
+        [
+         "Due",
+         "Friday this week."
+        ]
+       ]
+      }
+     ],
+     "jira": "Estimates for Sprint 22: done."
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1115",
+       "t": "Priority: Jira task creation for the Zippy ATS registration flow",
+       "rows": []
+      },
+      {
+       "id": "n1116",
+       "t": "Priority: remove Michele's number from WOTC and Zippy reminders",
+       "rows": []
+      },
+      {
+       "id": "n1117",
+       "t": "SMS in Zippy ATS",
+       "rows": []
+      },
+      {
+       "id": "n1118",
+       "t": "Proliant",
+       "rows": [
+        [
+         "Status",
+         "Inbound received on 16 Oct, ask raised in the email."
+        ],
+        [
+         "Next",
+         "Review the testing done by Robert."
+        ]
+       ]
+      },
+      {
+       "id": "n1119",
+       "t": "Follow-up with Pauline for the registration workflow",
+       "rows": [
+        [
+         "Status",
+         "Communication dates to be finalized. QA and DEV both need to give final remarks on the spec."
+        ],
+        [
+         "Due",
+         "Task estimations in progress, by Wednesday first half."
+        ]
+       ]
+      },
+      {
+       "id": "n1120",
+       "t": "CRs by the U.S. team for Zippy ATS",
+       "rows": []
+      }
+     ],
+     "jira": "Estimates for Sprint 22: pending, blocked due to sprint scope."
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1121",
+       "t": "QA work for the custom page",
+       "rows": []
+      },
+      {
+       "id": "n1122",
+       "t": "Jira work for the ATS tasks",
+       "rows": []
+      },
+      {
+       "id": "n1123",
+       "t": "Audit Agent bugs review",
+       "rows": [
+        [
+         "Status",
+         "4 of 16 were resolved on Monday."
+        ]
+       ]
+      },
+      {
+       "id": "n1124",
+       "t": "Demo for I9 Remote with Kevin and Eddie",
+       "rows": []
+      }
+     ]
+    },
+    "Rushi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n1125",
+       "t": "P0: Infra Audit for Creslane",
+       "rows": [
+        [
+         "Owner",
+         "CTO: Alexi."
+        ]
+       ]
+      },
+      {
+       "id": "n1126",
+       "t": "Priority: Creslane's task",
+       "rows": []
+      },
+      {
+       "id": "n1127",
+       "t": "Priority: Vertex AI changes delivery to Prod for WOTC, E-Verify and Onboarding",
+       "rows": [
+        [
+         "Status",
+         "All changes are in the test environment. Details shared with Aditi and Sumit. Prod items marked for deployment on Wednesday."
+        ]
+       ]
+      },
+      {
+       "id": "n1128",
+       "t": "Security controls",
+       "rows": [
+        [
+         "Condition",
+         "Picked up if the Vertex AI Build is near closure."
+        ],
+        [
+         "Blocked on",
+         "Approval from Edgar for the closure activities."
+        ],
+        [
+         "Status",
+         "In the loop and in progress along with other tasks."
+        ]
+       ]
+      }
+     ],
+     "jira": "Estimates for Sprint 22: all original estimates up to date."
+    }
+   }
+  }
+ ],
+ "standing": {
+  "Sumit & Aditi": [
+   {
+    "id": "n1129",
+    "t": "Full I9 in Onboarding (next sprint)",
+    "rows": [],
+    "since": "2026-10-06"
+   },
+   {
+    "id": "n1130",
+    "t": "UI for key generation",
+    "rows": [],
+    "since": "2026-10-06"
+   }
+  ],
+  "Abhishek": [
+   {
+    "id": "t01o",
+    "t": "Take over the Retention-Prediction portfolio",
+    "rows": [],
+    "since": "2026-10-06"
+   },
+   {
+    "id": "t01p",
+    "t": "GAuth and code review delivery: 5 Oct, 6 Oct, 9 Oct",
+    "rows": [],
+    "since": "2026-10-06"
+   },
+   {
+    "id": "t01q",
+    "t": "Retention and Tax Agent to code complete",
+    "rows": [],
+    "since": "2026-10-06"
+   }
+  ],
+  "Nikita": [
+   {
+    "id": "t01r",
+    "t": "Proliant release",
+    "rows": [],
+    "since": "2026-10-06"
+   },
+   {
+    "id": "t01s",
+    "t": "Plan for Applicant flow",
+    "rows": [],
+    "since": "2026-10-06"
+   },
+   {
+    "id": "t01t",
+    "t": "Indeed, make it work for UAT (separate from PROD-3591), Sprint 22",
+    "rows": [],
+    "since": "2026-10-06"
+   }
+  ],
+  "Chetan": [
+   {
+    "id": "t01u",
+    "t": "Work towards code review and Google Auth fixes release (not to be picked up today)",
+    "rows": [],
+    "since": "2026-10-06"
+   }
+  ],
+  "Rushi": [
+   {
+    "id": "t01v",
+    "t": "Security controls",
+    "rows": [],
+    "since": "2026-10-06"
+   },
+   {
+    "id": "t01w",
+    "t": "Demo phone numbers for testing",
+    "rows": [],
+    "since": "2026-10-06"
+   }
+  ]
+ },
+ "efficiency": {
+  "asOf": "2026-10-21",
+  "sprints": [
+   {
+    "id": "s21",
+    "name": "Sprint 21",
+    "dates": "28 Sep to 9 Oct 2026",
+    "status": "Closed",
+    "note": "Closed means a ticket was in a final stage (Deployed to UAT, Deployed to Prod, In Documentation, or Technical Review where no deployment is involved) when Sprint 21 was closed out. Open means the ticket moved to Sprint 22. Hours are Jira original estimates.",
+    "people": {
+     "Sumit": {
+      "closedTasks": 25,
+      "openTasks": 4,
+      "closedHours": 103.0,
+      "openHours": 10.0
+     },
+     "Aditi": {
+      "closedTasks": 32,
+      "openTasks": 4,
+      "closedHours": 82.0,
+      "openHours": 20.0
+     },
+     "Abhishek": {
+      "closedTasks": 15,
+      "openTasks": 4,
+      "closedHours": 88.0,
+      "openHours": 34.0
+     },
+     "Nikita": {
+      "closedTasks": 23,
+      "openTasks": 12,
+      "closedHours": 46.5,
+      "openHours": 39.5
+     },
+     "Chetan": {
+      "closedTasks": 3,
+      "openTasks": 0,
+      "closedHours": 39.0,
+      "openHours": 0
+     },
+     "Rushikesh": {
+      "closedTasks": 8,
+      "openTasks": 9,
+      "closedHours": 67.0,
+      "openHours": 56.0
+     }
+    }
+   },
+   {
+    "id": "s22",
+    "name": "Sprint 22",
+    "dates": "12 to 26 Oct 2026",
+    "status": "In progress, as of 21 Oct",
+    "note": "Sprint 22 is still running, so these are progress figures and will rise. Hours are Jira original estimates, so people with unestimated tickets show fewer hours. One unassigned ticket is not counted.",
+    "people": {
+     "Sumit": {
+      "closedTasks": 0,
+      "openTasks": 6,
+      "closedHours": 0.0,
+      "openHours": 34.0
+     },
+     "Aditi": {
+      "closedTasks": 0,
+      "openTasks": 21,
+      "closedHours": 0.0,
+      "openHours": 50.0
+     },
+     "Abhishek": {
+      "closedTasks": 2,
+      "openTasks": 3,
+      "closedHours": 22.0,
+      "openHours": 12.0
+     },
+     "Nikita": {
+      "closedTasks": 1,
+      "openTasks": 16,
+      "closedHours": 16.0,
+      "openHours": 23.5
+     },
+     "Chetan": {
+      "closedTasks": 0,
+      "openTasks": 3,
+      "closedHours": 0.0,
+      "openHours": 0.0
+     },
+     "Rushikesh": {
+      "closedTasks": 1,
+      "openTasks": 15,
+      "closedHours": 16.0,
+      "openHours": 76.0
+     }
+    }
+   }
+  ]
+ }
+}</script>
 
 <script>
-/* ============================================================
-   DATA. To update the tracker, edit this list.
-   For each person, three groups: closed, progress, notstarted.
-   A task is [title, rows]. rows are [label, text] pairs.
-   Text containing PROD-1234 becomes a Jira link.
-   ============================================================ */
+const BUILD = "2026-10-21-viewer-1";
 const JIRA = "https://canaryai.atlassian.net/browse/";
-const NAMES = ["Sumit & Aditi","Abhishek","Nikita","Chetan","Rushi"];
-const DAYS = [
- { date:"2026-10-06", short:"Tue 6 Oct", long:"Tuesday, 6 Oct 2026", people:{
-  "Sumit & Aditi":{ closed:[["GAuth and code review changes for E-Verify",[["Landed","Completed 6 Oct."]]]],
-    progress:[["Custom email templates for other companies",[["Context","Only Care Advantage was done so far."],["Due","Feature closure by DEV, Aditi and Sumit: 7 Oct EOD."]]]], notstarted:[] },
-  "Abhishek":{ closed:[["GAuth delivery: E-Verify",[["Landed","Completed 6 Oct."]]]],
-    progress:[["Test the deployment pipeline",[["Due","Closure 6 Oct EOD, 8 PM IST."]]],["Vertex AI build",[["Status","DEV picked it up on 6 Oct."]]]],
-    notstarted:[["GAuth delivery: all other products",[["Status","Rest all pending. I9 is next."]]],["QA bug fixes: Dashboard, SuperAdmin, then Retention",[["Status","Not picked yet."]]]] },
-  "Nikita":{ closed:[],
-    progress:[["CR requests from U.S. team",[["Ticket","PROD-3529"],["Status","6 done as of 6 Oct, deployment pending."],["Next","2 estimated to be fixed and deployed by 9 Oct."]]],["Respond to Proliant",[["Status","Waiting on feedback from the Proliant team. Latest outbound: 6 Oct."]]]],
-    notstarted:[["Code review",[["Ticket","PROD-3594"],["Condition","Picked in Sprint 21 only after Proliant and the CRs from U.S. team are done."]]]] },
-  "Chetan":{ closed:[],
-    progress:[["Jira management",[]],["Test Remote I9, to UAT",[]]], notstarted:[] },
-  "Rushi":{ closed:[],
-    progress:[["Vertex AI build",[["Status","As of 6 Oct, 7:00 PM IST only I9 is complete."],["Blocked on","Abhishek's approval that the change works, before other products."]]],["Env vs action Excel for each product",[["Purpose","Future clarity on what runs where."]]]], notstarted:[] }
- }},
- { date:"2026-10-07", short:"Wed 7 Oct", long:"Wednesday, 7 Oct 2026", people:{
-  "Sumit & Aditi":{ closed:[["Custom email templates for other companies",[["Landed","Code complete and DEV testing done on 7 Oct."],["Note","Sunil has a new ask."]]]], progress:[], notstarted:[] },
-  "Abhishek":{ closed:[["GAuth delivery: Retention",[["Landed","Completed 7 Oct."]]],["GAuth delivery: Canary Dashboard",[["Landed","Completed 7 Oct."]]],["SuperAdmin QA bugs",[["Landed","5 bugs fixed on 7 Oct."]]]],
-    progress:[["GAuth delivery: I9",[["Blocked on","Could not deliver. Failures while deploying."]]],["Vertex AI build",[["Status","One final closure step pending. It can only be done after I9 is deployed to UAT."],["Missed","7 Oct 2:00 PM IST deadline, due to the deployment failure."]]],["Test the deployment pipeline",[["Status","Approval was given on a success scenario, but it started failing again on 7 Oct."],["Impact","Hampered delivery dates."]]]],
-    notstarted:[["QA bug fixes: Dashboard and Retention",[["Status","Not picked yet."]]]] },
-  "Nikita":{ closed:[],
-    progress:[["CR requests from U.S. team",[["Ticket","PROD-3529"],["Status","DEV worked primarily on resolving these tasks on 7 Oct."]]]], notstarted:[] },
-  "Chetan":{ leave:true, closed:[], progress:[], notstarted:[] },
-  "Rushi":{ closed:[],
-    progress:[["Vertex AI build",[["Status","Infra's share of work is near closure. Only a sync activity is required."]]],["Deployment pipeline for I9",[]]], notstarted:[] }
- }},
- { date:"2026-10-08", short:"Thu 8 Oct", long:"Thursday, 8 Oct 2026", tag:"EVENING UPDATE", people:{
-  "Sumit & Aditi":{ jira:"Aditi and Sumit: time logging and status updates done.",
-    closed:[["Custom email template feature",[["Landed","Delivered to Sunil."]]]],
-    progress:[["Remote I9 bugs logged by QA",[["Pending","1 P2 pending from Aditi and Sumit."],["Also open","1 P1 sits with Abhishek: Go to Dashboard SSO."]]]],
-    notstarted:[["GAuth and code review changes for I9",[["Due","To be delivered to UAT on the morning of 9 Oct, by 2 PM IST."],["Earlier","Not picked on 8 Oct because of the deployment failure."]]],["New ask from Sunil: invite on phone number only, no email",[["Timeline","Vague. Code complete by Tuesday EOD (13 Oct) for QA."],["Effort","DEV needs 5 hrs."]]]] },
-  "Abhishek":{ jira:"All tasks up to date on Jira.", closed:[],
-    progress:[["Remote I9 bug: Go to Dashboard SSO",[["Priority","P1, pending from Abhishek's end."]]],["SuperAdmin bugs",[["Due","Bugs still pending on Abhishek's side need full closure by Friday, 9 Oct EOD."],["Moved","Bugs that fall in Sumit's court are picked up in Sprint 22."]]]],
-    notstarted:[["Dashboard bugs",[["Status","Not picked."]]]] },
-  "Nikita":{ jira:"Pending.",
-    closed:[["CR requests from U.S. team, logged before 7 Oct",[["Ticket","PROD-3529"],["Landed","All of those are closed."]]]],
-    progress:[["CR request raised by Sunil",[["Ticket","PROD-3529"],["Status","1 pending."]]],["Respond to Proliant",[["Status","Everything is falling in place. DEV has captured no issues or concerns."],["Needs","Webhook and webhook integration, and their next step, need a green signal from DEV and a final call on delivery from Robert."],["Timeline","This stretches to Sprint 22."],["Note","The India team got the first update on the 28 Sept query on the morning of 8 Oct. DEV introduced no blocker or delay."]]]],
-    notstarted:[["Code review",[["Ticket","PROD-3594"],["Scope","DEV selected the review tasks that fit the 16 hr estimate for Sprint 21."],["Condition","Picked up only if there is no priority item in the plan."]]]] },
-  "Chetan":{ jira:"Pending.", closed:[],
-    progress:[["Jira management",[]],["Email template testing",[]],["Test Remote I9, to UAT",[["Bugs","As of 8 Oct, 80 logged and 75 solved."]]]], notstarted:[] },
-  "Rushi":{ jira:"All tasks up to date on Jira.",
-    closed:[["Deployment pipeline for I9: plan expiry issues",[["Landed","Fixed."]]],["Set up AWS Session Manager, SOC2 compliant",[["For","Nikita.DEV and Piyushh.DEV."],["Landed","Closed."],["Pending","Testing from DEV."]]]],
-    progress:[["Excel for Vertex AI build",[]]],
-    notstarted:[["Deployment pathway across the product suite",[["Scope","Plan and exercise the deployment pathway for every product."],["Effort","DEV needs 40 to 50 hrs, in Sprint 22."]]]] }
- }}
-,
- { date:"2026-10-09", short:"Fri 9 Oct", long:"Friday, 9 Oct 2026", tag:"MORNING PLAN", plan:true, people:{
-  "Sumit & Aditi":{ plan:[
-    ["1. GAuth and code review changes for I9",[["Due","Deliver to UAT on the morning of 9 Oct, by 2 PM IST."],["Source","Carried from the 8 Oct evening update."]]],
-    ["2. Remote I9 bugs logged by QA",[["Pending","1 P2 from Aditi and Sumit."],["Source","Carried from the 8 Oct evening update."]]] ] },
-  "Abhishek":{ plan:[
-    ["1. Go to SuperAdmin",[]],
-    ["2. I9 SSO",[]],
-    ["3. SuperAdmin bugs",[["Due","Bugs still pending on Abhishek's side need full closure by Friday, 9 Oct EOD."]]],
-    ["4. Dashboard bugs",[]],
-    ["5. Retention bugs",[]] ] },
-  "Nikita":{ plan:[
-    ["1. PROD-3602: Kanban resume view needs a full screen option",[["Ticket","PROD-3602"],["Raised","8 Oct. Sub-task under PROD-3529."]]],
-    ["2. Respond to Proliant",[["Status","New communication received. Research needs to be done."]]],
-    ["3. Code review: test the code review changes",[["Ticket","PROD-3594"]]] ] },
-  "Chetan":{ plan:[
-    ["1. Test Remote I9, to UAT",[["Due","BVT run needed from Chetan before 1 PM."]]],
-    ["2. Automation for I9",[["Status","Preparing test cases."]]] ] },
-  "Rushi":{ plan:[
-    ["Excel for Vertex AI build",[["Status","In progress."],["Source","Carried from the 8 Oct evening update."]]],
-    ["AWS Session Manager, SOC2 compliant",[["Pending","Testing from DEV."],["Source","Carried from the 8 Oct evening update."]]] ] }
- }}
-];
-const STANDING = [
- { name:"Sumit & Aditi", items:["I9 in Onboarding, picked up after I9 Remote delivery","UI for key generation"] },
- { name:"Abhishek", items:["Take over the Retention-Prediction portfolio","GAuth and code review delivery: 5 Oct, 6 Oct, 9 Oct","Retention and Tax Agent to code complete"] },
- { name:"Nikita", items:["Proliant release","Plan for Applicant flow","Indeed, make it work for UAT (separate from PROD-3591), Sprint 22"] },
- { name:"Chetan", items:["Work towards code review and Google Auth fixes release (not to be picked up today)"] },
- { name:"Rushi", items:["Security controls","Demo phone numbers for testing"] }
-];
-const GROUPS = [["closed","CLOSED"],["progress","IN PROGRESS"],["notstarted","NOT STARTED"],["plan","PLANNED TODAY"]];
-const PILL = { closed:"Closed", progress:"In progress", notstarted:"Not started", plan:"Planned" };
+const GROUPS = [["closed","CLOSED","Closed"],["progress","IN PROGRESS","In progress"],["notstarted","NOT STARTED","Not started"],["plan","PLANNED","Planned"]];
+const GKEYS = GROUPS.map(g => g[0]), LABEL = Object.fromEntries(GROUPS.map(g => [g[0], g[2]]));
+const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const MONFULL = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const WD = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+let DATA = null, active = '', EFF = { sprint:'s21', metric:'tasks' };
+const $ = id => document.getElementById(id);
+const SEED = JSON.parse($('seed').textContent);
 
-/* ===================== rendering ===================== */
-const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+/* ---------- helpers ---------- */
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const linkify = v => esc(v).replace(/PROD-\d+/g, m => `<a href="${JIRA}${m}" target="_blank" rel="noopener">${m}</a>`);
-const card = (t, st, rows, pill) => `<div class="task s-${st}"><div class="task-top"><div class="task-title">${esc(t)}</div><span class="pill ${st}">${pill}</span></div>` +
-  (rows && rows.length ? `<div class="rows">${rows.map(r => `<div class="row"><div class="k">${esc(r[0])}</div><div class="v">${linkify(r[1])}</div></div>`).join('')}</div>` : '') + `</div>`;
+const dparts = d => { const [y, m, dd] = d.split('-').map(Number); return { y, m, d:dd, wd:new Date(Date.UTC(y, m - 1, dd)).getUTCDay() }; };
+const longDate = d => { const p = dparts(d); return `${WD[p.wd]}, ${p.d} ${MON[p.m - 1]} ${p.y}`; };
+const dmy = d => { const p = dparts(d); return `${p.d} ${MON[p.m - 1]} ${p.y}`; };
+const fullShort = d => { const p = dparts(d); return `${WD[p.wd].slice(0, 3)} ${p.d} ${MON[p.m - 1]} ${p.y}`; };
+const dayCount = d => { const p = dparts(d), n = new Date(); return Math.max(0, Math.round((Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()) - Date.UTC(p.y, p.m - 1, p.d)) / 86400000)); };
+const isPlan = day => /PLAN/i.test(day.tag || '');
+const person = (day, nm) => day.people[nm] || {};
+const hasUpdate = d => DATA.names.some(nm => { const p = d.people[nm]; return p && GKEYS.some(k => (p[k] || []).length); });
+const shownDays = () => DATA.days.filter(hasUpdate).sort((a, b) => a.date < b.date ? -1 : 1);
 
-function personHTML(name, p) {
-  const total = GROUPS.reduce((n, g) => n + (p[g[0]] || []).length, 0);
+/* ---------- days ---------- */
+function card(t, st) {
+  const since = (st === 'standing' && t.since) ? (() => { const n = dayCount(t.since); return `<div class="since">Standing since <b>${dmy(t.since)}</b>, ${n} day${n === 1 ? '' : 's'} so far</div>`; })() : '';
+  return `<div class="task s-${st}"><div class="task-top"><div class="task-title">${linkify(t.t)}</div><span class="pill ${st}">${st === 'standing' ? 'Standing' : LABEL[st]}</span></div>${since}` +
+    (t.rows && t.rows.length ? `<div class="rows">${t.rows.map(r => `<div class="row"><div class="k">${esc(r[0])}</div><div class="v">${linkify(r[1])}</div></div>`).join('')}</div>` : '') + `</div>`;
+}
+function personHTML(day, name) {
+  const p = person(day, name), total = GKEYS.reduce((n, k) => n + (p[k] || []).length, 0);
   let h = `<div class="person"><div class="person-head"><h3>${esc(name)}</h3></div>`;
   if (p.jira) h += `<div class="meta"><b>Jira:</b> ${esc(p.jira)}</div>`;
-  if (p.leave) return h + `<div class="none">On leave.</div></div>`;
-  if (!total) return h + `<div class="none">${p.plan ? 'No plan reported.' : 'No update reported.'}</div></div>`;
+  if (p.leave) return h + `<div class="none">${/HOLIDAY/i.test(day.tag) ? 'Holiday.' : 'On leave.'}</div></div>`;
+  if (!total) return h + `<div class="none">${isPlan(day) ? 'No plan reported.' : 'No update reported.'}</div></div>`;
   GROUPS.forEach(([k, label]) => {
-    if (!(p[k] || []).length) return;
-    h += `<div class="grp ${k}"><div class="grp-head"><span class="gname">${label}</span><span class="gcount">${p[k].length}</span></div>` +
-         p[k].map(t => card(t[0], k, t[1], PILL[k])).join('') + `</div>`;
+    const list = p[k] || []; if (!list.length) return;
+    h += `<div class="grp ${k}"><div class="grp-head"><span class="gname">${label}</span><span class="gcount">${list.length}</span></div>${list.map(t => card(t, k)).join('')}</div>`;
   });
   return h + `</div>`;
 }
 function dayHTML(d) {
-  const cnt = k => NAMES.reduce((n, nm) => n + (d.people[nm][k] || []).length, 0);
-  const shown = d.plan ? GROUPS.filter(g => g[0] === 'plan') : GROUPS.filter(g => g[0] !== 'plan');
-  const stats = shown.map(([k, label]) => `<div class="stat ${k}"><div class="num">${cnt(k)}</div><div class="lbl">${d.plan ? 'Planned tasks' : PILL[k]}</div></div>`).join('');
-  return `<section class="day" data-key="${d.date}"><div class="day-head"><h2>${d.long}</h2><span class="kind ${d.plan ? 'Plan' : 'Update'}">${d.tag || 'DAY UPDATE'}</span></div>
-    <div class="summary">${stats}</div>${NAMES.map(nm => personHTML(nm, d.people[nm])).join('')}</section>`;
+  const cnt = k => DATA.names.reduce((n, nm) => n + (person(d, nm)[k] || []).length, 0);
+  const stats = GROUPS.filter(g => cnt(g[0]) > 0).map(g => `<div class="stat ${g[0]}"><div class="num">${cnt(g[0])}</div><div class="lbl">${g[2]}</div></div>`).join('');
+  return `<section class="day" data-key="${d.date}"><div class="day-head"><h2>${longDate(d.date)}</h2><span class="kind ${isPlan(d) ? 'Plan' : 'Update'}">${esc(d.tag)}</span></div>` +
+    `<div class="summary">${stats}</div>${DATA.names.map(nm => personHTML(d, nm)).join('')}</section>`;
 }
 function standingHTML() {
-  return `<section class="day" data-key="standing"><div class="day-head"><h2>Rest of week and standing items</h2><span class="kind Planned">STANDING</span></div>
-    ${STANDING.map(p => `<div class="person"><div class="person-head"><h3>${esc(p.name)}</h3></div>${p.items.map(i => card(i, 'standing', [], 'Standing')).join('')}</div>`).join('')}</section>`;
+  const people = DATA.names.map(nm => {
+    const items = (DATA.standing[nm] || []).slice().sort((a, b) => (a.since || '9999') < (b.since || '9999') ? -1 : 1);
+    return `<div class="person"><div class="person-head"><h3>${esc(nm)}</h3></div>${items.length ? items.map(t => card(t, 'standing')).join('') : '<div class="none">No standing items.</div>'}</div>`;
+  }).join('');
+  return `<section class="day" data-key="standing"><div class="day-head"><h2>Standing items</h2><span class="kind Plan">STANDING</span></div>` +
+    `<p class="lead">Work that stays open from day to day, not tied to one date. Each item shows when it started standing.</p>${people}</section>`;
 }
-document.getElementById('app').innerHTML = DAYS.map(dayHTML).join('') + standingHTML();
 
-const chips = [{key:'all', label:'All dates'}].concat(DAYS.map(d => ({key:d.date, label:d.short}))).concat([{key:'standing', label:'Standing'}]);
-const chipBox = document.getElementById('chips');
-chipBox.innerHTML = chips.map(c => `<button class="chip-btn" data-key="${c.key}">${c.label}</button>`).join('');
-function show(key) {
-  document.querySelectorAll('.chip-btn').forEach(b => b.classList.toggle('active', b.dataset.key === key));
-  document.querySelectorAll('.day').forEach(s => { s.style.display = (key === 'all' || s.dataset.key === key) ? '' : 'none'; });
-  const d = DAYS.find(x => x.date === key);
-  document.getElementById('eyebrow').textContent = d ? d.long.toUpperCase() : (key === 'standing' ? 'STANDING ITEMS' : 'ALL DATES');
-  if (history.replaceState) history.replaceState(null, '', '#' + key);
+/* ---------- efficiency ---------- */
+function pieSVG(c, o) {
+  const r = 58, cx = 70, cy = 70, tot = c + o, G = '#1F7A4D', Y = '#B08D57';
+  if (!tot) return `<svg viewBox="0 0 140 140" class="pie" role="img" aria-label="No data"><circle cx="70" cy="70" r="58" fill="#EDEEF0" stroke="#DADDE1"/></svg>`;
+  if (!o) return `<svg viewBox="0 0 140 140" class="pie" role="img" aria-label="All closed"><circle cx="70" cy="70" r="58" fill="${G}"/></svg>`;
+  if (!c) return `<svg viewBox="0 0 140 140" class="pie" role="img" aria-label="None closed"><circle cx="70" cy="70" r="58" fill="${Y}"/></svg>`;
+  const a = 2 * Math.PI * c / tot, x = cx + r * Math.sin(a), y = cy - r * Math.cos(a), large = a > Math.PI ? 1 : 0;
+  return `<svg viewBox="0 0 140 140" class="pie" role="img" aria-label="${c} closed, ${o} open"><circle cx="70" cy="70" r="58" fill="${Y}"/><path d="M${cx} ${cy} L${cx} ${cy - r} A${r} ${r} 0 ${large} 1 ${x.toFixed(2)} ${y.toFixed(2)} Z" fill="${G}" stroke="#fff" stroke-width="1.5"/></svg>`;
 }
-chipBox.addEventListener('click', e => { const b = e.target.closest('.chip-btn'); if (b) show(b.dataset.key); });
-const start = location.hash.slice(1);
-show(chips.some(c => c.key === start) ? start : DAYS[DAYS.length - 1].date);
+const EFF_ORDER = ['Sumit','Aditi','Abhishek','Nikita','Chetan','Rushikesh'];
+function effInner() {
+  const E = DATA.efficiency; if (!E) return '';
+  const sp = E.sprints.find(s => s.id === EFF.sprint) || E.sprints[0], hrs = EFF.metric === 'hours';
+  const ck = hrs ? 'closedHours' : 'closedTasks', ok = hrs ? 'openHours' : 'openTasks';
+  const fmt = v => hrs ? (Math.round(v * 10) / 10) + 'h' : String(v);
+  const names = EFF_ORDER.filter(n => sp.people[n]).concat(Object.keys(sp.people).filter(n => !EFF_ORDER.includes(n)));
+  const openLbl = sp.id === 's21' ? 'Carried to Sprint 22' : 'Still open'; let tc = 0, to = 0;
+  const cards = names.map(n => {
+    const p = sp.people[n], c = p[ck], o = p[ok], tot = c + o; tc += c; to += o; const pct = tot ? Math.round(c / tot * 100) : null;
+    return `<div class="effcard"><div class="effname">${esc(n)}</div>${pieSVG(c, o)}<div class="effpct">${pct === null ? 'No data' : pct + '%'}</div>` +
+      `<div class="efflbl">${pct === null ? (hrs ? 'No estimates yet' : 'No tickets') : `closed ${fmt(c)} of ${fmt(tot)}${hrs ? '' : ' tickets'}`}</div>` +
+      `<div class="effleg"><span><i style="background:#1F7A4D"></i>Closed ${fmt(c)}</span><span><i style="background:#B08D57"></i>${openLbl} ${fmt(o)}</span></div></div>`;
+  }).join('');
+  const tpct = (tc + to) ? Math.round(tc / (tc + to) * 100) : 0, u = hrs ? '' : ' tickets';
+  const ctl = `<div class="effctl"><div class="seg">${E.sprints.map(s => `<button class="segb${s.id === sp.id ? ' on' : ''}" data-eff="sprint:${s.id}">${esc(s.name)}</button>`).join('')}</div>` +
+    `<div class="seg"><button class="segb${!hrs ? ' on' : ''}" data-eff="metric:tasks">Tickets</button><button class="segb${hrs ? ' on' : ''}" data-eff="metric:hours">Hours</button></div></div>`;
+  const asOf = E.asOf ? (() => { const p = dparts(E.asOf); return `${p.d} ${MON[p.m - 1]} ${p.y}`; })() : '';
+  return `<div class="day-head"><h2>Team efficiency: closing tasks</h2><span class="kind Update">${esc(sp.status.toUpperCase())}</span></div>${ctl}` +
+    `<div class="effmeta">${esc(sp.name)}, ${esc(sp.dates)}. Share of each person's tickets that were closed. Figures from Jira as of ${asOf}.</div>` +
+    `<div class="effteam"><span><b>${tpct}%</b>team closed</span><span>${fmt(tc)}${u} closed</span><span>${fmt(to)}${u} ${sp.id === 's21' ? 'carried to Sprint 22' : 'still open'}</span></div>` +
+    `<div class="effgrid">${cards}</div><div class="effnote">${esc(sp.note)}</div>`;
+}
 
-/* ===== always show the latest version =====
-   GitHub Pages lets browsers cache this file for about 10 minutes. On load the page fetches a fresh copy
-   of itself and reloads once if the build tag differs. Change BUILD whenever you edit the page. */
-const BUILD = "2026-10-09-am";
+/* ---------- date filter ---------- */
+function panelHTML() {
+  const days = shownDays().reverse(), years = [];
+  days.forEach(d => { const p = dparts(d.date); let y = years.find(x => x.y === p.y); if (!y) years.push(y = { y:p.y, months:[] });
+    let m = y.months.find(x => x.m === p.m); if (!m) y.months.push(m = { m:p.m, days:[] }); m.days.push({ date:d.date, p }); });
+  return `<button class="ddall${active === 'all' ? ' on' : ''}" data-key="all">All dates</button>` +
+    years.map(y => `<div class="ddyear">${y.y}</div>` + y.months.map(m => `<div class="ddmonth">${MONFULL[m.m - 1]}</div><div class="ddgrid">` +
+      m.days.map(x => `<button class="ddday${active === x.date ? ' on' : ''}" data-key="${x.date}"><b>${x.p.d}</b><span>${WD[x.p.wd].slice(0, 3)}</span></button>`).join('') + `</div>`).join('')).join('');
+}
+function renderFilter() {
+  const isDate = /^\d{4}-/.test(active), lab = $('ddLabel');
+  lab.textContent = isDate ? fullShort(active) : active === 'all' ? 'All dates' : 'Select a date';
+  lab.classList.toggle('muted', !isDate && active !== 'all');
+  $('ddPanel').innerHTML = panelHTML();
+  document.querySelectorAll('.pagebtn').forEach(b => b.classList.toggle('on', b.dataset.page === active));
+}
+function closePanel() { $('ddPanel').hidden = true; $('ddBtn').setAttribute('aria-expanded', 'false'); }
+$('ddBtn').addEventListener('click', e => { e.stopPropagation(); const open = $('ddPanel').hidden; $('ddPanel').hidden = !open; $('ddBtn').setAttribute('aria-expanded', String(open)); if (open) { const on = $('ddPanel').querySelector('.on'); if (on) on.scrollIntoView({ block:'nearest' }); } });
+document.addEventListener('click', e => {
+  const pick = e.target.closest('.ddday, .ddall'); if (pick) { show(pick.dataset.key); closePanel(); return; }
+  const pg = e.target.closest('.pagebtn'); if (pg) { show(pg.dataset.page); closePanel(); return; }
+  const eb = e.target.closest('button[data-eff]'); if (eb) { const [k, v] = eb.dataset.eff.split(':'); EFF[k] = v; const sec = $('effSection'); if (sec) sec.innerHTML = effInner(); return; }
+  if (!e.target.closest('.ddwrap')) closePanel();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
+
+/* ---------- view ---------- */
+function fixActive() {
+  const days = shownDays(), keys = ['all', 'standing', 'efficiency'].concat(days.map(d => d.date));
+  if (!keys.includes(active) || (active === 'efficiency' && !DATA.efficiency)) active = days.length ? days[days.length - 1].date : 'all';
+}
+function render() {
+  fixActive();
+  $('app').innerHTML = shownDays().map(dayHTML).join('') + standingHTML() + (DATA.efficiency ? `<section class="day" data-key="efficiency" id="effSection">${effInner()}</section>` : '');
+  show(active, true);
+}
+function show(key, quiet) {
+  active = key;
+  document.querySelectorAll('.day').forEach(sec => { const sk = sec.dataset.key; sec.style.display = ((key === 'all' && sk !== 'efficiency') || sk === key) ? '' : 'none'; });
+  const d = DATA.days.find(x => x.date === key);
+  $('eyebrow').textContent = d ? longDate(d.date).toUpperCase() : (key === 'standing' ? 'STANDING ITEMS' : key === 'efficiency' ? 'TEAM EFFICIENCY' : 'ALL DATES');
+  renderFilter();
+  if (!quiet && history.replaceState) history.replaceState(null, '', '#' + key);
+}
+window.addEventListener('hashchange', () => { const k = location.hash.slice(1); if (!k || k === active || !DATA) return; active = k; fixActive(); show(active, true); });
+
+/* ---------- load, refresh ---------- */
+async function fetchData() {
+  if (location.protocol === 'file:') return null;
+  try { const r = await fetch('data.json?_=' + Date.now(), { cache:'no-store' }); return r.ok ? await r.json() : null; } catch (e) { return null; }
+}
+async function load() { DATA = (await fetchData()) || SEED; DATA.standing = DATA.standing || {}; active = location.hash.slice(1); render(); }
+async function poll() { if (document.hidden || !DATA) return; const r = await fetchData(); if (r && r.updated !== DATA.updated) { DATA = r; DATA.standing = DATA.standing || {}; render(); } }
+load(); setInterval(poll, 60000); document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
+
+/* Always show the latest version of this page: GitHub Pages lets browsers cache it for about 10 minutes. */
 (function checkForUpdate() {
   if (location.protocol === 'file:') return;
-  fetch(location.href.split('#')[0], { cache: 'reload' })
-    .then(r => r.text())
-    .then(t => {
-      const m = t.match(/const BUILD = "([^"]+)"/);
-      if (m && m[1] !== BUILD && !sessionStorage.getItem('tracker_reloaded')) {
-        sessionStorage.setItem('tracker_reloaded', '1');
-        location.reload();
-      }
-    })
-    .catch(() => {});
+  fetch(location.href.split('#')[0], { cache:'reload' }).then(r => r.text()).then(t => {
+    const m = t.match(/const BUILD = "([^"]+)"/);
+    if (m && m[1] !== BUILD && !sessionStorage.getItem('tracker_reloaded')) { sessionStorage.setItem('tracker_reloaded', '1'); location.reload(); }
+  }).catch(() => {});
 })();
 </script>
 </body>
