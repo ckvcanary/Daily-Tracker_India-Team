@@ -50,6 +50,20 @@
   .pagebtn:hover { border-color:var(--ink); color:var(--ink); }
   .pagebtn.on { background:var(--ink); border-color:var(--ink); color:#fff; }
 
+  /* deployments marked for the day, highlighted at the top */
+  .dep { margin-top:1.4rem; background:#FFF6DC; border:1.5px solid #E2B84A; border-left:6px solid #C98A00; border-radius:8px; padding:1rem 1.2rem 1.1rem; box-shadow:0 2px 10px rgba(201,138,0,.12); }
+  .dep-head { display:flex; flex-wrap:wrap; align-items:center; gap:.7rem; }
+  .dep-tag { font-family:"IBM Plex Mono",monospace; font-size:.72rem; letter-spacing:.06em; font-weight:500; background:#C98A00; color:#fff; padding:.22rem .65rem; border-radius:100px; }
+  .dep-head b { font-family:"Fraunces",Georgia,serif; font-size:1.15rem; font-weight:600; color:#5A3A0C; }
+  .dep-grid { display:grid; gap:.6rem; margin-top:.85rem; }
+  .dep-item { display:flex; gap:.9rem; align-items:flex-start; background:#fff; border:1px solid #EBD79A; border-radius:6px; padding:.7rem .9rem; }
+  .dep-env { flex-shrink:0; min-width:3.4rem; text-align:center; font-size:.74rem; font-weight:600; letter-spacing:.04em; padding:.3rem .55rem; border-radius:6px; margin-top:.1rem; }
+  .dep-env.UAT { background:var(--plan-bg); color:var(--plan); } .dep-env.Prod { background:var(--done-bg); color:var(--done); }
+  .dep-title { font-weight:600; font-size:.97rem; }
+  .dep-meta { margin-top:.15rem; font-size:.84rem; color:var(--soft); display:flex; flex-wrap:wrap; gap:.2rem 1.2rem; }
+  .dep-meta b { font-weight:600; color:var(--ink); }
+  .dep-note { margin-top:.2rem; font-size:.82rem; color:var(--faint); }
+
   /* days */
   .day { margin-top:2.75rem; }
   .day-head { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.6rem; }
@@ -129,6 +143,8 @@
     <p class="sub">Pick a date. Each person shows what closed, what is in progress and what is planned.</p>
   </header>
 
+  <div id="depBanner"></div>
+
   <div class="filter" id="filter">
     <div class="label">FILTER BY DATE</div>
     <div class="frow">
@@ -146,10 +162,10 @@
   </div>
 
   <main id="app"></main>
-  <footer>Version: 21 Oct, read-only tracker.</footer>
+  <footer>Version: 22 Oct, read-only tracker.</footer>
 </div>
 <script type="application/json" id="seed">{
- "updated": "2026-10-21T09:00:00.000Z",
+ "updated": "2026-10-22T04:30:00.000Z",
  "names": [
   "Sumit & Aditi",
   "Abhishek",
@@ -2542,6 +2558,355 @@
      "jira": "Estimates for Sprint 22: all original estimates up to date."
     }
    }
+  },
+  {
+   "date": "2026-10-22",
+   "tag": "MORNING PLAN",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [
+      {
+       "id": "n2001",
+       "t": "Michele's cell removed from the WOTC reminder DB",
+       "rows": [
+        [
+         "Landed",
+         "Performed on Wednesday, 21 Oct."
+        ]
+       ]
+      }
+     ],
+     "progress": [],
+     "notstarted": [
+      {
+       "id": "n2007",
+       "t": "Full I9 in Onboarding",
+       "rows": [
+        [
+         "Status",
+         "No info yet."
+        ],
+        [
+         "Sprint",
+         "To be picked in Sprint 23."
+        ]
+       ]
+      }
+     ],
+     "plan": [
+      {
+       "id": "n2002",
+       "t": "Priority: automate the test cases for Onboarding (Edgar cases)",
+       "rows": [
+        [
+         "Due",
+         "Call with Edgar and Nitin on 22 Oct, EOD IST."
+        ]
+       ]
+      },
+      {
+       "id": "n2003",
+       "t": "Priority: deploy the doc upload feature for Onboarding",
+       "rows": [
+        [
+         "Status",
+         "Build ready for QA."
+        ]
+       ]
+      },
+      {
+       "id": "n2004",
+       "t": "UI key generation (Aditi)",
+       "rows": [
+        [
+         "Status",
+         "UAT deployment pending."
+        ],
+        [
+         "Effort",
+         "30 minutes."
+        ]
+       ]
+      },
+      {
+       "id": "n2005",
+       "t": "Vertex AI Build DEV sync with Rushikesh",
+       "rows": [
+        [
+         "Status",
+         "Onboarding, I9 and E-Verify are already deployed to the test environment. On Wednesday, WOTC's test delivery was picked up and completed."
+        ],
+        [
+         "Pending",
+         "Prod delivery. All resources required for the respective DEV were shared by Infra on Wednesday."
+        ],
+        [
+         "Effort",
+         "3 to 4 hours."
+        ]
+       ]
+      },
+      {
+       "id": "n2006",
+       "t": "No email: R&D and DEV work",
+       "rows": [
+        [
+         "Next",
+         "Call with Nitin about this."
+        ]
+       ]
+      }
+     ],
+     "jira": "In progress in terms of closure and time logging."
+    },
+    "Abhishek": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n2008",
+       "t": "Priority: resolve the Audit Agent bugs and deploy to UAT",
+       "rows": [
+        [
+         "Status",
+         "2nd round of QA effort is required."
+        ],
+        [
+         "Deployment",
+         "Aim: 5 PM IST, 22 Oct."
+        ]
+       ]
+      },
+      {
+       "id": "n2009",
+       "t": "Care Advantage: keep the Audit Agent in sync for all the I-9 forms in Care Advantage's delivery",
+       "rows": []
+      },
+      {
+       "id": "n2010",
+       "t": "SuperAdmin and Dashboard DEV testing",
+       "rows": [
+        [
+         "Status",
+         "Planned for Monday. Only P0s are taken before DEV's capacity goes to Retail's work."
+        ]
+       ]
+      }
+     ],
+     "jira": "In progress in terms of closure and time logging."
+    },
+    "Nikita": {
+     "closed": [
+      {
+       "id": "n2011",
+       "t": "Priority: remove Michele's number from WOTC and Zippy reminders",
+       "rows": [
+        [
+         "Landed",
+         "Removed. Only the WOTC reminders needed a check."
+        ]
+       ]
+      },
+      {
+       "id": "n2012",
+       "t": "Follow-up with Pauline for the registration workflow",
+       "rows": [
+        [
+         "Landed",
+         "No longer needed. The registration flow is the single source of truth from now on."
+        ]
+       ]
+      }
+     ],
+     "progress": [],
+     "notstarted": [
+      {
+       "id": "n2015",
+       "t": "SMS in Zippy ATS",
+       "rows": [
+        [
+         "Status",
+         "DEV is waiting for the microservices to be ready. Integration is on hold."
+        ],
+        [
+         "Note",
+         "Part of the registration flow, so closing it in Sprint 22 is not expected."
+        ]
+       ]
+      },
+      {
+       "id": "n2016",
+       "t": "CRs by the U.S. team for Zippy ATS",
+       "rows": [
+        [
+         "Status",
+         "Not picked up before the registration flow is delivered."
+        ],
+        [
+         "Note",
+         "QA effort will be required."
+        ]
+       ]
+      }
+     ],
+     "plan": [
+      {
+       "id": "n2013",
+       "t": "Priority: Jira task creation for the Zippy ATS registration flow",
+       "rows": [
+        [
+         "Status",
+         "Estimations are done."
+        ],
+        [
+         "Due",
+         "Formal delivery in Jira in the first half of 22 Oct."
+        ],
+        [
+         "Next",
+         "List to be shared with Chetan for Jira delivery."
+        ]
+       ]
+      },
+      {
+       "id": "n2014",
+       "t": "Proliant",
+       "rows": [
+        [
+         "Status",
+         "Approaching closure. In communication with Proliant's team on testing for delivery."
+        ]
+       ]
+      }
+     ],
+     "jira": "In progress in terms of closure and time logging."
+    },
+    "Chetan": {
+     "closed": [
+      {
+       "id": "n2017",
+       "t": "Jira work for the ATS tasks",
+       "rows": [
+        [
+         "Landed",
+         "Done on Wednesday."
+        ]
+       ]
+      }
+     ],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n2018",
+       "t": "QA work for the custom page",
+       "rows": [
+        [
+         "Due",
+         "First half of Thursday, 22 Oct."
+        ]
+       ]
+      },
+      {
+       "id": "n2019",
+       "t": "Audit Agent bugs review",
+       "rows": [
+        [
+         "Due",
+         "Thursday, 22 Oct."
+        ]
+       ]
+      },
+      {
+       "id": "n2020",
+       "t": "Demo for I9 Remote with Kevin and Eddie",
+       "rows": [
+        [
+         "Due",
+         "22 Oct, EOD IST."
+        ]
+       ]
+      },
+      {
+       "id": "n2021",
+       "t": "ATS Registration flow task tickets",
+       "rows": [
+        [
+         "Due",
+         "To be created by Friday, 23 Oct, EOD."
+        ]
+       ]
+      }
+     ]
+    },
+    "Rushi": {
+     "closed": [
+      {
+       "id": "n2022",
+       "t": "P0: Infra Audit for Creslane",
+       "rows": [
+        [
+         "Landed",
+         "Closed."
+        ]
+       ]
+      }
+     ],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n2023",
+       "t": "Priority: Vertex AI changes delivery to Prod for WOTC, E-Verify and Onboarding",
+       "rows": [
+        [
+         "Status",
+         "Sumit and Aditi take care of the deployment for these products."
+        ],
+        [
+         "Then",
+         "30 minutes of effort from Infra's end once the deployment is done."
+        ]
+       ]
+      },
+      {
+       "id": "n2024",
+       "t": "Security controls",
+       "rows": [
+        [
+         "Aim",
+         "DEV aims for more than 80% task closure on the security controls tracker by 23 Oct, EOD IST."
+        ]
+       ]
+      }
+     ],
+     "jira": "In progress in terms of closure and time logging."
+    }
+   },
+   "deployments": [
+    {
+     "item": "Audit Agent bug fixes",
+     "env": "UAT",
+     "owner": "Abhishek",
+     "when": "5 PM IST",
+     "note": "2nd round of QA effort is required."
+    },
+    {
+     "item": "UI key generation",
+     "env": "UAT",
+     "owner": "Aditi",
+     "when": "30 minutes of effort",
+     "note": ""
+    },
+    {
+     "item": "Vertex AI changes for WOTC, E-Verify and Onboarding",
+     "env": "Prod",
+     "owner": "Sumit and Aditi, then Infra (Rushikesh)",
+     "when": "3 to 4 hours, then 30 minutes from Infra",
+     "note": "Prod delivery is pending. Test deliveries are already done."
+    }
+   ]
   }
  ],
  "standing": {
@@ -2720,7 +3085,7 @@
 }</script>
 
 <script>
-const BUILD = "2026-10-21-viewer-1";
+const BUILD = "2026-10-22-viewer-2";
 const JIRA = "https://canaryai.atlassian.net/browse/";
 const GROUPS = [["closed","CLOSED","Closed"],["progress","IN PROGRESS","In progress"],["notstarted","NOT STARTED","Not started"],["plan","PLANNED","Planned"]];
 const GKEYS = GROUPS.map(g => g[0]), LABEL = Object.fromEntries(GROUPS.map(g => [g[0], g[2]]));
@@ -2836,6 +3201,17 @@ document.addEventListener('click', e => {
 });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePanel(); });
 
+/* ---------- deployments banner ---------- */
+function depBannerHTML() {
+  const days = shownDays(), d = days[days.length - 1], list = (d && d.deployments) || [];
+  if (!list.length) return '';
+  const n = new Date(), today = `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`;
+  const tag = d.date === today ? 'DEPLOYMENTS TODAY' : 'DEPLOYMENTS MARKED';
+  return `<div class="dep" role="region" aria-label="Deployments"><div class="dep-head"><span class="dep-tag">${tag}</span><b>${longDate(d.date)}</b></div><div class="dep-grid">` +
+    list.map(x => `<div class="dep-item"><div class="dep-env ${esc(x.env)}">${esc(x.env)}</div><div><div class="dep-title">${linkify(x.item)}</div>` +
+      `<div class="dep-meta"><span><b>Owner</b> ${esc(x.owner)}</span>${x.when ? `<span><b>When</b> ${esc(x.when)}</span>` : ''}</div>${x.note ? `<div class="dep-note">${linkify(x.note)}</div>` : ''}</div></div>`).join('') + `</div></div>`;
+}
+
 /* ---------- view ---------- */
 function fixActive() {
   const days = shownDays(), keys = ['all', 'standing', 'efficiency'].concat(days.map(d => d.date));
@@ -2843,6 +3219,7 @@ function fixActive() {
 }
 function render() {
   fixActive();
+  $('depBanner').innerHTML = depBannerHTML();
   $('app').innerHTML = shownDays().map(dayHTML).join('') + standingHTML() + (DATA.efficiency ? `<section class="day" data-key="efficiency" id="effSection">${effInner()}</section>` : '');
   show(active, true);
 }
