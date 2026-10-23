@@ -173,10 +173,10 @@
   </div>
 
   <main id="app"></main>
-  <footer>Version: 22 Oct evening, read-only tracker.</footer>
+  <footer>Version: 23 Oct plan, read-only tracker.</footer>
 </div>
 <script type="application/json" id="seed">{
- "updated": "2026-10-22T16:30:00.000Z",
+ "updated": "2026-10-22T17:30:00.000Z",
  "names": [
   "Sumit & Aditi",
   "Abhishek",
@@ -2573,7 +2573,6 @@
   {
    "date": "2026-10-22",
    "tag": "EVENING UPDATE",
-   "forDate": "2026-10-23",
    "people": {
     "Sumit & Aditi": {
      "closed": [
@@ -2843,6 +2842,173 @@
      "notstarted": [],
      "plan": []
     }
+   }
+  },
+  {
+   "date": "2026-10-23",
+   "tag": "MORNING PLAN",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n4001",
+       "t": "Two I-9 remote bugs",
+       "rows": [
+        [
+         "Deploy",
+         "Prod, on Friday."
+        ]
+       ]
+      },
+      {
+       "id": "n4002",
+       "t": "Vertex AI changes for WOTC, E-Verify and Onboarding",
+       "rows": [
+        [
+         "Status",
+         "Only Prod delivery for Onboarding is pending."
+        ],
+        [
+         "Due",
+         "Deployment to Prod by Friday EOD, then Infra (Rushikesh)."
+        ]
+       ]
+      },
+      {
+       "id": "n4003",
+       "t": "Deploy the doc upload feature for Onboarding",
+       "rows": [
+        [
+         "Status",
+         "Bugs logged by QA on 22 Oct."
+        ],
+        [
+         "Due",
+         "QA round 1 bug fixes marked for deployment in the first half of Friday."
+        ]
+       ]
+      },
+      {
+       "id": "n4004",
+       "t": "SMS in Zippy ATS: microservices (Sumit)",
+       "rows": [
+        [
+         "Note",
+         "Integration is by Nikita."
+        ]
+       ]
+      }
+     ]
+    },
+    "Abhishek": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n4005",
+       "t": "Resolve the Audit Agent bugs and deploy to UAT",
+       "rows": [
+        [
+         "Round 1",
+         "Bug fixes marked for delivery on Friday, 23 Oct."
+        ],
+        [
+         "Round 2",
+         "Bug fixes delivered to DEV on 22 Oct."
+        ]
+       ]
+      },
+      {
+       "id": "n4006",
+       "t": "Care Advantage: keep the Audit Agent in sync for all the I-9 forms in Care Advantage's delivery",
+       "rows": [
+        [
+         "Next",
+         "Connect with Robert to get the latest token for the DEV workflow."
+        ]
+       ]
+      }
+     ]
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n4007",
+       "t": "Proliant",
+       "rows": [
+        [
+         "Status",
+         "In Testing. Latest communication done on Thursday, 22 Oct."
+        ]
+       ]
+      },
+      {
+       "id": "n4008",
+       "t": "SMS in Zippy ATS: integration (Nikita)",
+       "rows": [
+        [
+         "Note",
+         "Microservices are by Sumit."
+        ]
+       ]
+      }
+     ]
+    },
+    "Chetan": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n4009",
+       "t": "QA work for the custom page",
+       "rows": [
+        [
+         "Round 1",
+         "Bugs marked for deployment in the first half of Friday."
+        ],
+        [
+         "Round 2",
+         "Bugs shared with DEV on Thursday."
+        ]
+       ]
+      }
+     ]
+    },
+    "Rushi": {
+     "closed": [],
+     "progress": [],
+     "notstarted": [],
+     "plan": [
+      {
+       "id": "n4010",
+       "t": "Vertex AI changes delivery to Prod for WOTC, E-Verify and Onboarding",
+       "rows": [
+        [
+         "Due",
+         "Deployment to Prod by Friday EOD."
+        ]
+       ]
+      },
+      {
+       "id": "n4011",
+       "t": "Security controls",
+       "rows": [
+        [
+         "Aim",
+         "DEV aims for more than 80% task closure on the security controls tracker by 23 Oct, EOD IST."
+        ]
+       ]
+      }
+     ]
+    }
    },
    "deployments": [
     {
@@ -3099,7 +3265,7 @@
 }</script>
 
 <script>
-const BUILD = "2026-10-22-viewer-3";
+const BUILD = "2026-10-23-viewer-4";
 const JIRA = "https://canaryai.atlassian.net/browse/";
 const GROUPS = [["closed","CLOSED","Closed"],["progress","IN PROGRESS","In progress"],["notstarted","NOT STARTED","Not started"],["plan","PLANNED","Planned"]];
 const GKEYS = GROUPS.map(g => g[0]), LABEL = Object.fromEntries(GROUPS.map(g => [g[0], g[2]]));
