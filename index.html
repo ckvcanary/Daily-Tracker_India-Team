@@ -75,6 +75,15 @@
   .prio-item { display:flex; gap:.9rem; align-items:flex-start; background:#fff; border:1px solid #C9D6EA; border-radius:6px; padding:.65rem .9rem; }
   .prio-num { flex-shrink:0; width:1.7rem; height:1.7rem; border-radius:50%; background:#1E4E8C; color:#fff; font-weight:600; font-size:.82rem; display:flex; align-items:center; justify-content:center; margin-top:.05rem; }
 
+  .sprintstrip { display:inline-flex; flex-wrap:wrap; align-items:center; gap:.5rem .9rem; margin-top:1.1rem; padding:.45rem .9rem; background:var(--raised); border:1px solid var(--line2); border-radius:100px; font-size:.86rem; color:var(--soft); }
+  .sprintstrip b { font-family:"Fraunces",Georgia,serif; font-size:1rem; color:var(--ink); }
+  .sprintstrip .dot { width:.55rem; height:.55rem; border-radius:50%; background:var(--done); display:inline-block; }
+  .sprintbadge { font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.04em; padding:.2rem .6rem; border-radius:100px; background:var(--carry-bg); color:var(--carry); margin-right:.4rem; }
+  .headtags { display:flex; align-items:center; }
+
+  .ddleg { display:flex; flex-wrap:wrap; gap:.3rem .9rem; padding:.45rem .7rem .2rem; font-size:.74rem; color:var(--soft); }
+  .ddleg i { display:inline-block; width:.7rem; height:.28rem; border-radius:2px; margin-right:.35rem; vertical-align:middle; }
+
   /* days */
   .day { margin-top:2.75rem; }
   .day-head { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:.6rem; }
@@ -153,6 +162,7 @@
     <h1>Daily Tracker</h1>
     <p class="sub">Pick a date. Each person shows what closed, what is in progress and what is planned.</p>
   </header>
+  <div id="sprintStrip"></div>
 
   <div id="depBanner"></div>
 
@@ -168,15 +178,16 @@
         <div class="ddpanel" id="ddPanel" hidden></div>
       </div>
       <button class="pagebtn" type="button" data-page="standing">Standing items</button>
+      <button class="pagebtn" type="button" data-page="planning">Sprint planning</button>
       <button class="pagebtn" type="button" data-page="efficiency">Team efficiency</button>
     </div>
   </div>
 
   <main id="app"></main>
-  <footer>Version: 23 Oct plan, read-only tracker.</footer>
+  <footer>Version: 26 Oct, with Sprint planning.</footer>
 </div>
 <script type="application/json" id="seed">{
- "updated": "2026-10-22T17:30:00.000Z",
+ "updated": "2026-10-26T06:00:00.000Z",
  "names": [
   "Sumit & Aditi",
   "Abhishek",
@@ -2846,6 +2857,199 @@
   },
   {
    "date": "2026-10-23",
+   "tag": "DAY UPDATE",
+   "people": {
+    "Sumit & Aditi": {
+     "closed": [
+      {
+       "id": "n5001",
+       "t": "Vertex AI changes for Onboarding",
+       "rows": [
+        [
+         "Landed",
+         "Deployed to Prod on Friday."
+        ]
+       ]
+      },
+      {
+       "id": "n5002",
+       "t": "Doc upload feature for Onboarding",
+       "rows": [
+        [
+         "Landed",
+         "Delivered to Prod on Friday."
+        ],
+        [
+         "Note",
+         "A mail with the steps needed to use the feature was shared with the U.S. team, including Sunil."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n5003",
+       "t": "Two I-9 remote bugs",
+       "rows": [
+        [
+         "Status",
+         "As shared by Sumit on Friday: one was fixed and one was non-repro."
+        ],
+        [
+         "Next",
+         "Both to be deployed to UAT for I9 Remote."
+        ]
+       ]
+      },
+      {
+       "id": "n5004",
+       "t": "SMS in Zippy ATS: microservices (Sumit)",
+       "rows": [
+        [
+         "Status",
+         "In progress. High priority."
+        ],
+        [
+         "Note",
+         "Integration is planned by Nikita."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Abhishek": {
+     "closed": [
+      {
+       "id": "n5005",
+       "t": "Audit Agent bugs, QA Round 1",
+       "rows": [
+        [
+         "Landed",
+         "Delivered to UAT."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n5006",
+       "t": "Audit Agent bugs, QA Round 2",
+       "rows": [
+        [
+         "Next",
+         "Marked for delivery to UAT in the first half of Monday."
+        ],
+        [
+         "Note",
+         "QA needs to pick it up for testing, as there is a demo with the U.S. team on Monday evening."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [
+      {
+       "id": "n5007",
+       "t": "Care Advantage: keep the Audit Agent in sync for all the I-9 forms in Care Advantage's delivery",
+       "rows": [
+        [
+         "Next",
+         "To be picked up by Abhishek in the second half of Monday."
+        ],
+        [
+         "Blocker",
+         "Token expiry issue. Loop in Abhishek and Nitin."
+        ]
+       ]
+      }
+     ],
+     "plan": []
+    },
+    "Nikita": {
+     "closed": [],
+     "progress": [
+      {
+       "id": "n5008",
+       "t": "SMS in Zippy ATS: integration (Nikita)",
+       "rows": [
+        [
+         "Status",
+         "In progress. High priority."
+        ],
+        [
+         "Note",
+         "Microservices are by Sumit."
+        ]
+       ]
+      },
+      {
+       "id": "n5009",
+       "t": "Proliant",
+       "rows": [
+        [
+         "Status",
+         "In Testing. On priority for Monday."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    },
+    "Chetan": {
+     "closed": [
+      {
+       "id": "n5010",
+       "t": "QA work for the custom page",
+       "rows": [
+        [
+         "Landed",
+         "Completed."
+        ]
+       ]
+      }
+     ],
+     "progress": [],
+     "notstarted": [],
+     "plan": []
+    },
+    "Rushi": {
+     "closed": [
+      {
+       "id": "n5011",
+       "t": "Vertex AI changes delivery to Prod for WOTC, E-Verify and Onboarding",
+       "rows": [
+        [
+         "Landed",
+         "All delivered to Prod."
+        ]
+       ]
+      }
+     ],
+     "progress": [
+      {
+       "id": "n5012",
+       "t": "Security controls",
+       "rows": [
+        [
+         "Status",
+         "More than 80% task closure was planned for Friday."
+        ],
+        [
+         "Next",
+         "The remaining tickets are taken in Sprint 23."
+        ]
+       ]
+      }
+     ],
+     "notstarted": [],
+     "plan": []
+    }
+   }
+  },
+  {
+   "date": "2026-10-26",
    "tag": "MORNING PLAN",
    "people": {
     "Sumit & Aditi": {
@@ -2854,47 +3058,27 @@
      "notstarted": [],
      "plan": [
       {
-       "id": "n4001",
+       "id": "n5013",
        "t": "Two I-9 remote bugs",
        "rows": [
         [
+         "Status",
+         "One was fixed and one was non-repro, as shared by Sumit on Friday."
+        ],
+        [
          "Deploy",
-         "Prod, on Friday."
+         "Both to UAT for I9 Remote."
         ]
        ]
       },
       {
-       "id": "n4002",
-       "t": "Vertex AI changes for WOTC, E-Verify and Onboarding",
-       "rows": [
-        [
-         "Status",
-         "Only Prod delivery for Onboarding is pending."
-        ],
-        [
-         "Due",
-         "Deployment to Prod by Friday EOD, then Infra (Rushikesh)."
-        ]
-       ]
-      },
-      {
-       "id": "n4003",
-       "t": "Deploy the doc upload feature for Onboarding",
-       "rows": [
-        [
-         "Status",
-         "Bugs logged by QA on 22 Oct."
-        ],
-        [
-         "Due",
-         "QA round 1 bug fixes marked for deployment in the first half of Friday."
-        ]
-       ]
-      },
-      {
-       "id": "n4004",
+       "id": "n5014",
        "t": "SMS in Zippy ATS: microservices (Sumit)",
        "rows": [
+        [
+         "Priority",
+         "High priority today."
+        ],
         [
          "Note",
          "Integration is by Nikita."
@@ -2909,26 +3093,30 @@
      "notstarted": [],
      "plan": [
       {
-       "id": "n4005",
-       "t": "Resolve the Audit Agent bugs and deploy to UAT",
+       "id": "n5015",
+       "t": "Audit Agent bugs, QA Round 2",
        "rows": [
         [
-         "Round 1",
-         "Bug fixes marked for delivery on Friday, 23 Oct."
+         "Deploy",
+         "UAT, in the first half of Monday."
         ],
         [
-         "Round 2",
-         "Bug fixes delivered to DEV on 22 Oct."
+         "Note",
+         "Demo with the U.S. team in the evening."
         ]
        ]
       },
       {
-       "id": "n4006",
+       "id": "n5016",
        "t": "Care Advantage: keep the Audit Agent in sync for all the I-9 forms in Care Advantage's delivery",
        "rows": [
         [
-         "Next",
-         "Connect with Robert to get the latest token for the DEV workflow."
+         "Due",
+         "Second half of Monday."
+        ],
+        [
+         "Blocker",
+         "Token expiry issue. Loop in Abhishek and Nitin."
         ]
        ]
       }
@@ -2940,22 +3128,26 @@
      "notstarted": [],
      "plan": [
       {
-       "id": "n4007",
-       "t": "Proliant",
+       "id": "n5017",
+       "t": "SMS in Zippy ATS: integration (Nikita)",
        "rows": [
         [
-         "Status",
-         "In Testing. Latest communication done on Thursday, 22 Oct."
+         "Priority",
+         "High priority today."
+        ],
+        [
+         "Note",
+         "Microservices are by Sumit."
         ]
        ]
       },
       {
-       "id": "n4008",
-       "t": "SMS in Zippy ATS: integration (Nikita)",
+       "id": "n5018",
+       "t": "Proliant",
        "rows": [
         [
-         "Note",
-         "Microservices are by Sumit."
+         "Priority",
+         "On priority today. In Testing."
         ]
        ]
       }
@@ -2967,18 +3159,29 @@
      "notstarted": [],
      "plan": [
       {
-       "id": "n4009",
-       "t": "QA work for the custom page",
+       "id": "n5019",
+       "t": "QA testing of the Audit Agent Round 2 bug fixes",
        "rows": [
         [
-         "Round 1",
-         "Bugs marked for deployment in the first half of Friday."
-        ],
-        [
-         "Round 2",
-         "Bugs shared with DEV on Thursday."
+         "Due",
+         "After the UAT delivery, in time for the evening demo with the U.S. team."
         ]
        ]
+      },
+      {
+       "id": "n6001",
+       "t": "Presentation for the demo of the Audit Agent",
+       "rows": [
+        [
+         "Note",
+         "New task. The U.S. team always asks for a user guide."
+        ]
+       ]
+      },
+      {
+       "id": "n6002",
+       "t": "Sprint closure activities for Sprint 22",
+       "rows": []
       }
      ]
     },
@@ -2988,22 +3191,16 @@
      "notstarted": [],
      "plan": [
       {
-       "id": "n4010",
-       "t": "Vertex AI changes delivery to Prod for WOTC, E-Verify and Onboarding",
-       "rows": [
-        [
-         "Due",
-         "Deployment to Prod by Friday EOD."
-        ]
-       ]
-      },
-      {
-       "id": "n4011",
+       "id": "n5020",
        "t": "Security controls",
        "rows": [
         [
-         "Aim",
-         "DEV aims for more than 80% task closure on the security controls tracker by 23 Oct, EOD IST."
+         "Priority",
+         "On priority today."
+        ],
+        [
+         "Scope",
+         "The remaining tickets after Friday's 80% target are taken in Sprint 23."
         ]
        ]
       }
@@ -3012,79 +3209,65 @@
    },
    "deployments": [
     {
-     "item": "Two I-9 remote bugs",
-     "env": "Prod",
-     "owner": "Sumit and Aditi",
-     "when": "Friday",
-     "note": "Task on priority for Friday."
-    },
-    {
-     "item": "Vertex AI changes for Onboarding",
-     "env": "Prod",
-     "owner": "Sumit and Aditi, then Infra (Rushikesh)",
-     "when": "By Friday EOD",
-     "note": "Only Prod delivery for Onboarding is pending."
-    },
-    {
-     "item": "Doc upload feature for Onboarding, QA round 1 bug fixes",
-     "env": "TBC",
-     "owner": "Sumit and Aditi",
-     "when": "First half of Friday",
-     "note": "Environment not stated in the update. QA round 2 bugs were shared with DEV on Thursday."
-    },
-    {
-     "item": "Audit Agent bug fixes, QA Round 1",
+     "item": "Audit Agent bug fixes, QA Round 2",
      "env": "UAT",
      "owner": "Abhishek",
-     "when": "Friday, 23 Oct",
-     "note": "QA Round 2 bug fixes were delivered to DEV on 22 Oct."
+     "when": "First half of Monday",
+     "note": "QA needs to pick it up for testing. Demo with the U.S. team in the evening."
+    },
+    {
+     "item": "Two I-9 remote bugs",
+     "env": "UAT",
+     "owner": "Sumit",
+     "when": "Today",
+     "note": "One was fixed and one was non-repro. Both go to UAT for I9 Remote."
     }
    ],
    "priorities": [
     {
-     "item": "Two I-9 remote bugs",
-     "owner": "Sumit and Aditi",
-     "note": "Deployment to Prod marked for Friday."
+     "item": "Audit Agent delivery to UAT, QA Round 2 bug fixes",
+     "owner": "Abhishek, with QA from Chetan",
+     "note": "First half of Monday. Demo with the U.S. team in the evening."
     },
     {
-     "item": "Vertex AI changes for WOTC, E-Verify and Onboarding",
-     "owner": "Sumit and Aditi deploy, Rushikesh for Infra",
-     "note": "Only Prod delivery for Onboarding is pending. Deployment to Prod by Friday EOD."
-    },
-    {
-     "item": "Deploy the doc upload feature for Onboarding",
-     "owner": "Sumit and Aditi",
-     "note": "Bugs logged by QA on 22 Oct. Round 1 bug fixes marked for deployment in the first half of Friday."
-    },
-    {
-     "item": "Resolve the Audit Agent bugs and deploy to UAT",
-     "owner": "Abhishek",
-     "note": "QA Round 1 bug fixes marked for delivery on Friday, 23 Oct. Round 2 fixes are with DEV."
+     "item": "Delivery of the two I-9 remote bugs to UAT",
+     "owner": "Sumit",
+     "note": "One fixed and one non-repro. Both go to UAT for I9 Remote."
     },
     {
      "item": "Care Advantage: keep the Audit Agent in sync for all the I-9 forms",
      "owner": "Abhishek",
-     "note": "Connect with Robert to get the latest token for the DEV workflow."
+     "note": "Second half of Monday. Token expiry issue: loop in Abhishek and Nitin."
     },
     {
      "item": "SMS in Zippy ATS",
      "owner": "Sumit (microservices) and Nikita (integration)",
-     "note": ""
+     "note": "High priority today."
     },
     {
      "item": "Proliant",
      "owner": "Nikita",
-     "note": "In Testing. Latest communication done on Thursday, 22 Oct."
-    },
-    {
-     "item": "QA work for the custom page",
-     "owner": "Chetan",
-     "note": "Bugs shared with DEV on Thursday. Round 1 bugs are marked for deployment in the first half of Friday."
+     "note": "On priority today."
     },
     {
      "item": "Security controls",
      "owner": "Rushikesh",
-     "note": "DEV aims for more than 80% task closure on the tracker by 23 Oct, EOD IST."
+     "note": "The remaining tickets are taken in Sprint 23."
+    },
+    {
+     "item": "QA testing of the Audit Agent Round 2 bug fixes",
+     "owner": "Chetan",
+     "note": "After the UAT delivery, in time for the evening demo with the U.S. team."
+    },
+    {
+     "item": "Presentation for the demo of the Audit Agent",
+     "owner": "Chetan",
+     "note": "New task. The U.S. team always asks for a user guide."
+    },
+    {
+     "item": "Sprint closure activities for Sprint 22",
+     "owner": "Chetan",
+     "note": ""
     }
    ]
   }
@@ -3261,11 +3444,97 @@
     }
    }
   ]
+ },
+ "sprints": [
+  {
+   "id": "s21",
+   "name": "Sprint 21",
+   "start": "2026-09-28",
+   "end": "2026-10-09"
+  },
+  {
+   "id": "s22",
+   "name": "Sprint 22",
+   "start": "2026-10-12",
+   "end": "2026-10-23"
+  },
+  {
+   "id": "s23",
+   "name": "Sprint 23",
+   "start": "2026-10-26",
+   "end": "2026-11-06"
+  }
+ ],
+ "sprintPlanning": {
+  "sprints": [
+   {
+    "id": "s23",
+    "name": "Sprint 23",
+    "dates": "26 Oct to 6 Nov 2026",
+    "items": {
+     "Nikita": [
+      {
+       "id": "n6003",
+       "t": "Registration flow for ATS",
+       "rows": []
+      }
+     ],
+     "Abhishek": [
+      {
+       "id": "n6004",
+       "t": "U.S. team CRs for Zippy ATS",
+       "rows": []
+      },
+      {
+       "id": "n6005",
+       "t": "SuperAdmin Dashboard BUGs P0/P1",
+       "rows": []
+      },
+      {
+       "id": "n6006",
+       "t": "Retail Work",
+       "rows": []
+      }
+     ],
+     "Sumit & Aditi": [
+      {
+       "id": "n6007",
+       "t": "I9 in OnB",
+       "rows": []
+      },
+      {
+       "id": "n6008",
+       "t": "SMS Microservices for ATS",
+       "rows": []
+      }
+     ],
+     "Rushi": [
+      {
+       "id": "n6009",
+       "t": "Security Controls",
+       "rows": []
+      }
+     ],
+     "Chetan": [
+      {
+       "id": "n7001",
+       "t": "Ensuring Quality for every product release",
+       "rows": []
+      },
+      {
+       "id": "n7002",
+       "t": "Manage Jira",
+       "rows": []
+      }
+     ]
+    }
+   }
+  ]
  }
 }</script>
 
 <script>
-const BUILD = "2026-10-23-viewer-4";
+const BUILD = "2026-10-26-viewer-7";
 const JIRA = "https://canaryai.atlassian.net/browse/";
 const GROUPS = [["closed","CLOSED","Closed"],["progress","IN PROGRESS","In progress"],["notstarted","NOT STARTED","Not started"],["plan","PLANNED","Planned"]];
 const GKEYS = GROUPS.map(g => g[0]), LABEL = Object.fromEntries(GROUPS.map(g => [g[0], g[2]]));
@@ -3289,6 +3558,16 @@ const person = (day, nm) => day.people[nm] || {};
 const hasUpdate = d => DATA.names.some(nm => { const p = d.people[nm]; return p && GKEYS.some(k => (p[k] || []).length); });
 const shownDays = () => DATA.days.filter(hasUpdate).sort((a, b) => a.date < b.date ? -1 : 1);
 
+/* ---------- sprints ---------- */
+const sprintOf = date => ((DATA && DATA.sprints) || []).find(s => date >= s.start && date <= s.end) || null;
+function workdays(a, b) { let n = 0, d = a; while (d <= b) { const p = dparts(d); if (p.wd !== 0 && p.wd !== 6) n++; const q = new Date(Date.UTC(p.y, p.m - 1, p.d + 1)); d = q.toISOString().slice(0, 10); } return n; }
+function sprintStripHTML() {
+  const days = shownDays(), d = days[days.length - 1], sp = d && sprintOf(d.date); if (!sp) return '';
+  const ds = dparts(sp.start), de = dparts(sp.end), total = workdays(sp.start, sp.end), day = workdays(sp.start, d.date);
+  const range = ds.m === de.m ? `${ds.d} to ${de.d} ${MON[de.m - 1]} ${de.y}` : `${ds.d} ${MON[ds.m - 1]} to ${de.d} ${MON[de.m - 1]} ${de.y}`;
+  return `<div class="sprintstrip"><span class="dot"></span><b>${esc(sp.name)}</b><span>${range}</span><span>Day ${day} of ${total}</span></div>`;
+}
+
 /* ---------- days ---------- */
 function card(t, st) {
   const since = (st === 'standing' && t.since) ? (() => { const n = dayCount(t.since); return `<div class="since">Standing since <b>${dmy(t.since)}</b>, ${n} day${n === 1 ? '' : 's'} so far</div>`; })() : '';
@@ -3310,7 +3589,7 @@ function personHTML(day, name) {
 function dayHTML(d) {
   const cnt = k => DATA.names.reduce((n, nm) => n + (person(d, nm)[k] || []).length, 0);
   const stats = GROUPS.filter(g => cnt(g[0]) > 0).map(g => `<div class="stat ${g[0]}"><div class="num">${cnt(g[0])}</div><div class="lbl">${g[2]}</div></div>`).join('');
-  return `<section class="day" data-key="${d.date}"><div class="day-head"><h2>${longDate(d.date)}</h2><span class="kind ${isPlan(d) ? 'Plan' : 'Update'}">${esc(d.tag)}</span></div>` +
+  return `<section class="day" data-key="${d.date}"><div class="day-head"><h2>${longDate(d.date)}</h2><div class="headtags">${sprintOf(d.date) ? `<span class="sprintbadge">${esc(sprintOf(d.date).name)}</span>` : ''}<span class="kind ${isPlan(d) ? 'Plan' : 'Update'}">${esc(d.tag)}</span></div></div>` +
     `<div class="summary">${stats}</div>${DATA.names.map(nm => personHTML(d, nm)).join('')}</section>`;
 }
 function standingHTML() {
@@ -3321,6 +3600,20 @@ function standingHTML() {
   return `<section class="day" data-key="standing"><div class="day-head"><h2>Standing items</h2><span class="kind Plan">STANDING</span></div>` +
     `<p class="lead">Work that stays open from day to day, not tied to one date. Each item shows when it started standing.</p>${people}</section>`;
 }
+
+/* ---------- sprint planning ---------- */
+let PLAN = { sprint:null };
+function planInner() {
+  const sp = (DATA.sprintPlanning && DATA.sprintPlanning.sprints) || []; if (!sp.length) return '';
+  const cur = sp.find(s => s.id === PLAN.sprint) || sp[sp.length - 1];
+  const tabs = `<div class="effctl"><div class="seg">${sp.map(s => `<button class="segb${s.id === cur.id ? ' on' : ''}" data-plan="${esc(s.id)}">${esc(s.name)}</button>`).join('')}</div></div>`;
+  const total = DATA.names.reduce((n, nm) => n + ((cur.items[nm] || []).length), 0);
+  const people = DATA.names.map(nm => { const items = cur.items[nm] || [];
+    return `<div class="person"><div class="person-head"><h3>${esc(nm)}</h3></div>${items.length ? items.map(t => card(t, 'plan')).join('') : '<div class="none">No items listed yet.</div>'}</div>`; }).join('');
+  return `<div class="day-head"><h2>Sprint planning</h2><span class="kind Plan">${esc(cur.name.toUpperCase())}</span></div>${tabs}` +
+    `<p class="lead">${esc(cur.name)}, ${esc(cur.dates)}. ${total} planned items, by owner.</p>${people}`;
+}
+const planningHTML = () => (DATA.sprintPlanning && DATA.sprintPlanning.sprints && DATA.sprintPlanning.sprints.length) ? `<section class="day" data-key="planning" id="planSection">${planInner()}</section>` : '';
 
 /* ---------- efficiency ---------- */
 function pieSVG(c, o) {
@@ -3356,13 +3649,16 @@ function effInner() {
 }
 
 /* ---------- date filter ---------- */
+const SPCOL = ['#1E4E8C', '#B08D57', '#1F7A4D', '#8A5CF6'];
 function panelHTML() {
   const days = shownDays().reverse(), years = [];
   days.forEach(d => { const p = dparts(d.date); let y = years.find(x => x.y === p.y); if (!y) years.push(y = { y:p.y, months:[] });
     let m = y.months.find(x => x.m === p.m); if (!m) y.months.push(m = { m:p.m, days:[] }); m.days.push({ date:d.date, p }); });
-  return `<button class="ddall${active === 'all' ? ' on' : ''}" data-key="all">All dates</button>` +
+  const sps = (DATA.sprints || []), scol = date => { const i = sps.findIndex(s => date >= s.start && date <= s.end); return i < 0 ? '' : SPCOL[i % SPCOL.length]; };
+  const leg = sps.length ? `<div class="ddleg">${sps.filter(s => days.some(d => d.date >= s.start && d.date <= s.end)).map(s => `<span><i style="background:${SPCOL[sps.indexOf(s) % SPCOL.length]}"></i>${esc(s.name)}</span>`).join('')}</div>` : '';
+  return `<button class="ddall${active === 'all' ? ' on' : ''}" data-key="all">All dates</button>${leg}` +
     years.map(y => `<div class="ddyear">${y.y}</div>` + y.months.map(m => `<div class="ddmonth">${MONFULL[m.m - 1]}</div><div class="ddgrid">` +
-      m.days.map(x => `<button class="ddday${active === x.date ? ' on' : ''}" data-key="${x.date}"><b>${x.p.d}</b><span>${WD[x.p.wd].slice(0, 3)}</span></button>`).join('') + `</div>`).join('')).join('');
+      m.days.map(x => `<button class="ddday${active === x.date ? ' on' : ''}" data-key="${x.date}" title="${sprintOf(x.date) ? esc(sprintOf(x.date).name) : ''}" style="${scol(x.date) ? 'box-shadow:inset 0 -4px 0 ' + scol(x.date) : ''}"><b>${x.p.d}</b><span>${WD[x.p.wd].slice(0, 3)}</span></button>`).join('') + `</div>`).join('')).join('');
 }
 function renderFilter() {
   const isDate = /^\d{4}-/.test(active), lab = $('ddLabel');
@@ -3376,6 +3672,7 @@ $('ddBtn').addEventListener('click', e => { e.stopPropagation(); const open = $(
 document.addEventListener('click', e => {
   const pick = e.target.closest('.ddday, .ddall'); if (pick) { show(pick.dataset.key); closePanel(); return; }
   const pg = e.target.closest('.pagebtn'); if (pg) { show(pg.dataset.page); closePanel(); return; }
+  const pb = e.target.closest('button[data-plan]'); if (pb) { PLAN.sprint = pb.dataset.plan; const ps = $('planSection'); if (ps) ps.innerHTML = planInner(); return; }
   const eb = e.target.closest('button[data-eff]'); if (eb) { const [k, v] = eb.dataset.eff.split(':'); EFF[k] = v; const sec = $('effSection'); if (sec) sec.innerHTML = effInner(); return; }
   if (!e.target.closest('.ddwrap')) closePanel();
 });
@@ -3398,20 +3695,21 @@ function topSectionsHTML() {
 
 /* ---------- view ---------- */
 function fixActive() {
-  const days = shownDays(), keys = ['all', 'standing', 'efficiency'].concat(days.map(d => d.date));
-  if (!keys.includes(active) || (active === 'efficiency' && !DATA.efficiency)) active = days.length ? days[days.length - 1].date : 'all';
+  const days = shownDays(), keys = ['all', 'standing', 'planning', 'efficiency'].concat(days.map(d => d.date));
+  if (!keys.includes(active) || (active === 'efficiency' && !DATA.efficiency) || (active === 'planning' && !planningHTML())) active = days.length ? days[days.length - 1].date : 'all';
 }
 function render() {
   fixActive();
   $('depBanner').innerHTML = topSectionsHTML();
-  $('app').innerHTML = shownDays().map(dayHTML).join('') + standingHTML() + (DATA.efficiency ? `<section class="day" data-key="efficiency" id="effSection">${effInner()}</section>` : '');
+  $('sprintStrip').innerHTML = sprintStripHTML();
+  $('app').innerHTML = shownDays().map(dayHTML).join('') + standingHTML() + planningHTML() + (DATA.efficiency ? `<section class="day" data-key="efficiency" id="effSection">${effInner()}</section>` : '');
   show(active, true);
 }
 function show(key, quiet) {
   active = key;
-  document.querySelectorAll('.day').forEach(sec => { const sk = sec.dataset.key; sec.style.display = ((key === 'all' && sk !== 'efficiency') || sk === key) ? '' : 'none'; });
+  document.querySelectorAll('.day').forEach(sec => { const sk = sec.dataset.key; sec.style.display = ((key === 'all' && sk !== 'efficiency' && sk !== 'planning') || sk === key) ? '' : 'none'; });
   const d = DATA.days.find(x => x.date === key);
-  $('eyebrow').textContent = d ? longDate(d.date).toUpperCase() : (key === 'standing' ? 'STANDING ITEMS' : key === 'efficiency' ? 'TEAM EFFICIENCY' : 'ALL DATES');
+  $('eyebrow').textContent = d ? longDate(d.date).toUpperCase() : (key === 'standing' ? 'STANDING ITEMS' : key === 'efficiency' ? 'TEAM EFFICIENCY' : key === 'planning' ? 'SPRINT PLANNING' : 'ALL DATES');
   renderFilter();
   if (!quiet && history.replaceState) history.replaceState(null, '', '#' + key);
 }
