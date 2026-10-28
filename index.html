@@ -58,6 +58,8 @@
   .dep-grid { display:grid; gap:.6rem; margin-top:.85rem; }
   .dep-item { display:flex; gap:.9rem; align-items:flex-start; background:#fff; border:1px solid #EBD79A; border-radius:6px; padding:.7rem .9rem; }
   .dep-env { flex-shrink:0; min-width:3.4rem; text-align:center; font-size:.74rem; font-weight:600; letter-spacing:.04em; padding:.3rem .55rem; border-radius:6px; margin-top:.1rem; }
+  .prio-group { font-family:"IBM Plex Mono",monospace; font-size:.74rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:#1E4E8C; margin:.5rem 0 -.05rem; }
+  .dep-env.Test { background:var(--plan-bg); color:var(--plan); }
   .dep-env.UAT { background:var(--plan-bg); color:var(--plan); } .dep-env.Prod { background:var(--done-bg); color:var(--done); }
   .dep-title { font-weight:600; font-size:.97rem; }
   .dep-meta { margin-top:.15rem; font-size:.84rem; color:var(--soft); display:flex; flex-wrap:wrap; gap:.2rem 1.2rem; }
@@ -80,6 +82,11 @@
   .sprintstrip .dot { width:.55rem; height:.55rem; border-radius:50%; background:var(--done); display:inline-block; }
   .sprintbadge { font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.04em; padding:.2rem .6rem; border-radius:100px; background:var(--carry-bg); color:var(--carry); margin-right:.4rem; }
   .headtags { display:flex; align-items:center; }
+  .ampm { display:inline-flex; border:1px solid var(--line2); border-radius:100px; overflow:hidden; background:var(--raised); margin-right:.55rem; }
+  .amb { border:none; background:transparent; font-family:"IBM Plex Mono",monospace; font-size:.78rem; font-weight:600; letter-spacing:.06em; padding:.28rem .95rem; color:var(--soft); cursor:pointer; }
+  .amb.on { background:var(--ink); color:#fff; }
+  .amb:not(.on):hover { background:var(--paper); color:var(--ink); }
+  .amb:focus-visible { outline:2px solid var(--ink); outline-offset:-2px; }
 
   .ddleg { display:flex; flex-wrap:wrap; gap:.3rem .9rem; padding:.45rem .7rem .2rem; font-size:.74rem; color:var(--soft); }
   .ddleg i { display:inline-block; width:.7rem; height:.28rem; border-radius:2px; margin-right:.35rem; vertical-align:middle; }
@@ -174,7 +181,7 @@
   <header>
     <div class="eyebrow" id="eyebrow"></div>
     <h1>Daily Tracker</h1>
-    <p class="sub">Pick a date. Each person shows what closed, what is in progress and what is planned.</p>
+    <p class="sub">Daily status by person: what closed, what is in progress and what is planned.</p>
   </header>
   <div id="sprintStrip"></div>
 
@@ -198,10 +205,10 @@
   </div>
 
   <main id="app"></main>
-  <footer>Version: 27 Oct EOD, Sprint 23 day 2.</footer>
+  <footer>Version: 28 Oct, Sprint 23 day 3.</footer>
 </div>
 <script type="application/json" id="seed">{
- "updated": "2026-10-27T13:30:00.000Z",
+ "updated": "2026-10-28T08:00:00.000Z",
  "names": [
   "Sumit & Aditi",
   "Abhishek",
@@ -221,7 +228,7 @@
        "t": "GAuth and code review changes for E-Verify",
        "rows": [
         [
-         "Landed",
+         "Delivered",
          "Completed 6 Oct."
         ]
        ]
@@ -234,11 +241,11 @@
        "rows": [
         [
          "Context",
-         "Only Care Advantage was done so far."
+         "Only Care Advantage is complete so far."
         ],
         [
          "Due",
-         "Feature closure by DEV, Aditi and Sumit: 7 Oct EOD."
+         "DEV (Aditi and Sumit) to close the feature by 7 Oct EOD."
         ]
        ]
       }
@@ -253,7 +260,7 @@
        "t": "GAuth delivery: E-Verify",
        "rows": [
         [
-         "Landed",
+         "Delivered",
          "Completed 6 Oct."
         ]
        ]
@@ -266,7 +273,7 @@
        "rows": [
         [
          "Due",
-         "Closure 6 Oct EOD, 8 PM IST."
+         "Closure by 6 Oct EOD, 8 PM IST."
         ]
        ]
       },
@@ -276,7 +283,7 @@
        "rows": [
         [
          "Status",
-         "DEV picked it up on 6 Oct."
+         "DEV started on 6 Oct."
         ]
        ]
       }
@@ -288,7 +295,7 @@
        "rows": [
         [
          "Status",
-         "Rest all pending. I9 is next."
+         "All others pending; I9 is next."
         ]
        ]
       },
@@ -298,7 +305,7 @@
        "rows": [
         [
          "Status",
-         "Not picked yet."
+         "Not started."
         ]
        ]
       }
@@ -310,7 +317,7 @@
      "progress": [
       {
        "id": "t008",
-       "t": "CR requests from U.S. team",
+       "t": "CRs from the U.S. team",
        "rows": [
         [
          "Ticket",
@@ -318,11 +325,11 @@
         ],
         [
          "Status",
-         "6 done as of 6 Oct, deployment pending."
+         "6 complete as of 6 Oct; deployment pending."
         ],
         [
          "Next",
-         "2 estimated to be fixed and deployed by 9 Oct."
+         "Two bugs on track for fix and deployment by 9 Oct."
         ]
        ]
       },
@@ -332,7 +339,7 @@
        "rows": [
         [
          "Status",
-         "Waiting on feedback from the Proliant team. Latest outbound: 6 Oct."
+         "Awaiting feedback from the Proliant team. Latest outbound: 6 Oct."
         ]
        ]
       }
@@ -348,7 +355,7 @@
         ],
         [
          "Condition",
-         "Picked in Sprint 21 only after Proliant and the CRs from U.S. team are done."
+         "Starts in Sprint 21 only after Proliant and the U.S. team CRs are complete."
         ]
        ]
       }
@@ -360,7 +367,7 @@
      "progress": [
       {
        "id": "t00b",
-       "t": "Jira management",
+       "t": "Jira Management",
        "rows": []
       },
       {
@@ -381,21 +388,21 @@
        "rows": [
         [
          "Status",
-         "As of 6 Oct, 7:00 PM IST only I9 is complete."
+         "As of 6 Oct, 7:00 PM IST, only I9 is complete."
         ],
         [
          "Blocked on",
-         "Abhishek's approval that the change works, before other products."
+         "Abhishek to confirm the change works before it extends to other products."
         ]
        ]
       },
       {
        "id": "t00e",
-       "t": "Env vs action Excel for each product",
+       "t": "Excel of environment versus action for each product",
        "rows": [
         [
          "Purpose",
-         "Future clarity on what runs where."
+         "Gain clarity on what runs where."
         ]
        ]
       }
@@ -416,12 +423,12 @@
        "t": "Custom email templates for other companies",
        "rows": [
         [
-         "Landed",
-         "Code complete and DEV testing done on 7 Oct."
+         "Delivered",
+         "Code complete and DEV testing finished on 7 Oct."
         ],
         [
          "Note",
-         "Sunil has a new ask."
+         "Sunil has a new request."
         ]
        ]
       }
@@ -437,7 +444,7 @@
        "t": "GAuth delivery: Retention",
        "rows": [
         [
-         "Landed",
+         "Delivered",
          "Completed 7 Oct."
         ]
        ]
@@ -447,7 +454,7 @@
        "t": "GAuth delivery: Canary Dashboard",
        "rows": [
         [
-         "Landed",
+         "Delivered",
          "Completed 7 Oct."
         ]
        ]
@@ -457,7 +464,7 @@
        "t": "SuperAdmin QA bugs",
        "rows": [
         [
-         "Landed",
+         "Delivered",
          "5 bugs fixed on 7 Oct."
         ]
        ]
@@ -470,7 +477,7 @@
        "rows": [
         [
          "Blocked on",
-         "Could not deliver. Failures while deploying."
+         "Delivery missed due to deployment failures."
         ]
        ]
       },
@@ -480,11 +487,11 @@
        "rows": [
         [
          "Status",
-         "One final closure step pending. It can only be done after I9 is deployed to UAT."
+         "One closure step pending; it follows the I9 deployment to UAT."
         ],
         [
          "Missed",
-         "7 Oct 2:00 PM IST deadline, due to the deployment failure."
+         "Deadline of 7 Oct, 2:00 PM IST, following the deployment failure."
         ]
        ]
       },
@@ -494,11 +501,11 @@
        "rows": [
         [
          "Status",
-         "Approval was given on a success scenario, but it started failing again on 7 Oct."
+         "Approved on a success scenario, but failures recurred on 7 Oct."
         ],
         [
          "Impact",
-         "Hampered delivery dates."
+         "Delivery dates affected."
         ]
        ]
       }
@@ -510,7 +517,7 @@
        "rows": [
         [
          "Status",
-         "Not picked yet."
+         "Not started."
         ]
        ]
       }
@@ -522,7 +529,7 @@
      "progress": [
       {
        "id": "t00n",
-       "t": "CR requests from U.S. team",
+       "t": "CRs from the U.S. team",
        "rows": [
         [
          "Ticket",
@@ -530,7 +537,7 @@
         ],
         [
          "Status",
-         "DEV worked primarily on resolving these tasks on 7 Oct."
+         "DEV focused on resolving these tasks on 7 Oct."
         ]
        ]
       }
@@ -554,7 +561,7 @@
        "rows": [
         [
          "Status",
-         "Infra's share of work is near closure. Only a sync activity is required."
+         "Infra's share is nearing closure; only a sync activity remains."
         ]
        ]
       },
@@ -580,7 +587,7 @@
        "t": "Custom email template feature",
        "rows": [
         [
-         "Landed",
+         "Delivered",
          "Delivered to Sunil."
         ]
        ]
@@ -593,11 +600,11 @@
        "rows": [
         [
          "Pending",
-         "1 P2 pending from Aditi and Sumit."
+         "One P2 pending with Aditi and Sumit."
         ],
         [
          "Also open",
-         "1 P1 sits with Abhishek: Go to Dashboard SSO."
+         "One P1 with Abhishek: Go to Dashboard SSO."
         ]
        ]
       }
@@ -609,31 +616,31 @@
        "rows": [
         [
          "Due",
-         "To be delivered to UAT on the morning of 9 Oct, by 2 PM IST."
+         "Deliver to UAT on the morning of 9 Oct, by 2 PM IST."
         ],
         [
          "Earlier",
-         "Not picked on 8 Oct because of the deployment failure."
+         "Not started on 8 Oct due to the deployment failure."
         ]
        ]
       },
       {
        "id": "t00t",
-       "t": "New ask from Sunil: invite on phone number only, no email",
+       "t": "New request from Sunil: invite by phone number only, no email",
        "rows": [
         [
          "Timeline",
-         "Vague. Code complete by Tuesday EOD (13 Oct) for QA."
+         "Scope unclear. Code complete by Tuesday EOD (13 Oct) for QA."
         ],
         [
          "Effort",
-         "DEV needs 5 hrs."
+         "DEV needs 5 hours."
         ]
        ]
       }
      ],
      "plan": [],
-     "jira": "Aditi and Sumit: time logging and status updates done."
+     "jira": "Aditi and Sumit: time logging and status updates complete."
     },
     "Abhishek": {
      "closed": [],
@@ -644,7 +651,7 @@
        "rows": [
         [
          "Priority",
-         "P1, pending from Abhishek's end."
+         "P1, pending with Abhishek."
         ]
        ]
       },
@@ -654,11 +661,11 @@
        "rows": [
         [
          "Due",
-         "Bugs still pending on Abhishek's side need full closure by Friday, 9 Oct EOD."
+         "Abhishek's open bugs to close fully by Friday, 9 Oct EOD."
         ],
         [
          "Moved",
-         "Bugs that fall in Sumit's court are picked up in Sprint 22."
+         "Bugs owned by Sumit move into Sprint 22."
         ]
        ]
       }
@@ -670,27 +677,27 @@
        "rows": [
         [
          "Status",
-         "Not picked."
+         "Not started."
         ]
        ]
       }
      ],
      "plan": [],
-     "jira": "All tasks up to date on Jira."
+     "jira": "All Jira tasks are current."
     },
     "Nikita": {
      "closed": [
       {
        "id": "t00x",
-       "t": "CR requests from U.S. team, logged before 7 Oct",
+       "t": "CRs from the U.S. team, logged before 7 Oct",
        "rows": [
         [
          "Ticket",
          "PROD-3529"
         ],
         [
-         "Landed",
-         "All of those are closed."
+         "Delivered",
+         "All closed."
         ]
        ]
       }
@@ -698,7 +705,7 @@
      "progress": [
       {
        "id": "t00y",
-       "t": "CR request raised by Sunil",
+       "t": "CR raised by Sunil",
        "rows": [
         [
          "Ticket",
@@ -706,7 +713,7 @@
         ],
         [
          "Status",
-         "1 pending."
+         "One pending."
         ]
        ]
       },
@@ -716,19 +723,19 @@
        "rows": [
         [
          "Status",
-         "Everything is falling in place. DEV has captured no issues or concerns."
+         "On track. DEV has flagged no issues or concerns."
         ],
         [
          "Needs",
-         "Webhook and webhook integration, and their next step, need a green signal from DEV and a final call on delivery from Robert."
+         "Webhook and webhook integration, and the next step, need DEV's go-ahead and Robert's final call on delivery."
         ],
         [
          "Timeline",
-         "This stretches to Sprint 22."
+         "This extends into Sprint 22."
         ],
         [
          "Note",
-         "The India team got the first update on the 28 Sept query on the morning of 8 Oct. DEV introduced no blocker or delay."
+         "The India team received the first update on the 28 Sept query on the morning of 8 Oct. DEV introduced no blocker or delay."
         ]
        ]
       }
@@ -744,11 +751,11 @@
         ],
         [
          "Scope",
-         "DEV selected the review tasks that fit the 16 hr estimate for Sprint 21."
+         "DEV selected the review tasks that fit the 16-hour estimate for Sprint 21."
         ],
         [
          "Condition",
-         "Picked up only if there is no priority item in the plan."
+         "Starts only if no priority item remains in the plan."
         ]
        ]
       }
@@ -761,7 +768,7 @@
      "progress": [
       {
        "id": "t011",
-       "t": "Jira management",
+       "t": "Jira Management",
        "rows": []
       },
       {
@@ -775,7 +782,7 @@
        "rows": [
         [
          "Bugs",
-         "As of 8 Oct, 80 logged and 75 solved."
+         "As of 8 Oct: 80 logged, 75 resolved."
         ]
        ]
       }
@@ -791,7 +798,7 @@
        "t": "Deployment pipeline for I9: plan expiry issues",
        "rows": [
         [
-         "Landed",
+         "Delivered",
          "Fixed."
         ]
        ]
@@ -805,12 +812,12 @@
          "Nikita.DEV and Piyushh.DEV."
         ],
         [
-         "Landed",
+         "Delivered",
          "Closed."
         ],
         [
          "Pending",
-         "Testing from DEV."
+         "DEV testing."
         ]
        ]
       }
@@ -829,17 +836,17 @@
        "rows": [
         [
          "Scope",
-         "Plan and exercise the deployment pathway for every product."
+         "Plan and test the deployment pathway for every product."
         ],
         [
          "Effort",
-         "DEV needs 40 to 50 hrs, in Sprint 22."
+         "DEV needs 40 to 50 hours in Sprint 22."
         ]
        ]
       }
      ],
      "plan": [],
-     "jira": "All tasks up to date on Jira."
+     "jira": "All Jira tasks are current."
     }
    }
   },
@@ -854,8 +861,8 @@
        "t": "Remote I9 bugs logged by QA",
        "rows": [
         [
-         "Landed",
-         "All resolved until the previous day."
+         "Delivered",
+         "All resolved through the previous day."
         ]
        ]
       }
@@ -882,8 +889,8 @@
        "t": "GAuth and code review changes for I9",
        "rows": [
         [
-         "Landed",
-         "Done."
+         "Delivered",
+         "Complete."
         ]
        ]
       },
@@ -892,8 +899,8 @@
        "t": "SuperAdmin bugs, Abhishek's side",
        "rows": [
         [
-         "Landed",
-         "All done."
+         "Delivered",
+         "All complete."
         ]
        ]
       }
@@ -905,7 +912,7 @@
        "rows": [
         [
          "Status",
-         "RCA analysis done. To be fixed on Monday (Pauline)."
+         "RCA complete. Fix scheduled for Monday (Pauline)."
         ]
        ]
       },
@@ -929,7 +936,7 @@
         ],
         [
          "Due",
-         "Estimated closure: Monday."
+         "Expected closure: Monday."
         ]
        ]
       }
@@ -941,7 +948,7 @@
        "rows": [
         [
          "Status",
-         "Not picked."
+         "Not started."
         ]
        ]
       }
@@ -957,7 +964,7 @@
        "rows": [
         [
          "Status",
-         "Locally done. QA testing required."
+         "Complete locally; QA testing required."
         ]
        ]
       },
@@ -967,7 +974,7 @@
        "rows": [
         [
          "Status",
-         "Not reported as locally done."
+         "Not reported as complete locally."
         ]
        ]
       },
@@ -977,7 +984,7 @@
        "rows": [
         [
          "Status",
-         "Locally done. QA testing required."
+         "Complete locally; QA testing required."
         ]
        ]
       },
@@ -987,7 +994,7 @@
        "rows": [
         [
          "Status",
-         "Locally done. QA testing required."
+         "Complete locally; QA testing required."
         ]
        ]
       },
@@ -997,7 +1004,7 @@
        "rows": [
         [
          "Status",
-         "DEV needs to respond."
+         "DEV to respond."
         ]
        ]
       },
@@ -1007,11 +1014,11 @@
        "rows": [
         [
          "Status",
-         "Locally done."
+         "Complete locally."
         ],
         [
          "Due",
-         "Deployment to UAT marked for 9 Oct EOD."
+         "UAT deployment scheduled for 9 Oct EOD."
         ]
        ]
       }
@@ -1121,10 +1128,10 @@
      "closed": [
       {
        "id": "n1022",
-       "t": "Check RCA for the Tax Nav dashboard SSO bug",
+       "t": "Review the RCA for the Tax Nav dashboard SSO bug",
        "rows": [
         [
-         "Landed",
+         "Delivered",
          "RCA shared with Abhishek."
         ]
        ]
@@ -1141,7 +1148,7 @@
         ],
         [
          "Edgar",
-         "Connect planned by the India team on 13 Oct."
+         "India team connect scheduled for 13 Oct."
         ]
        ]
       }
@@ -1158,7 +1165,7 @@
        "rows": [
         [
          "Status",
-         "1 remaining (P0). Approval from Aditi required before a change in local."
+         "One P0 remaining. Aditi's approval is required before the change goes into the local environment."
         ],
         [
          "Next",
@@ -1190,7 +1197,7 @@
         ],
         [
          "Due",
-         "The 8 remaining close by 14 Oct EOD."
+         "The remaining 8 to close by 14 Oct EOD."
         ]
        ]
       }
@@ -1213,11 +1220,11 @@
       },
       {
        "id": "n1028",
-       "t": "Follow-up with Pauline for the Applicant workflow",
+       "t": "Follow up with Pauline on the Applicant workflow",
        "rows": [
         [
          "Status",
-         "Spec in progress. Final spec needed."
+         "Spec in progress; final spec required."
         ]
        ]
       },
@@ -1248,8 +1255,8 @@
        "t": "Clean up the DSS footprint (Nitin's ask for 321 forms)",
        "rows": [
         [
-         "Landed",
-         "Completely done."
+         "Delivered",
+         "Complete."
         ]
        ]
       }
@@ -1261,11 +1268,11 @@
        "rows": [
         [
          "Status",
-         "Halfway done."
+         "Halfway complete."
         ],
         [
          "Due",
-         "To be closed by 14 Oct, 4 PM."
+         "Close by 14 Oct, 4 PM."
         ]
        ]
       },
@@ -1275,7 +1282,7 @@
        "rows": [
         [
          "Status",
-         "Findings provided by Abhishek are in progress."
+         "Abhishek's findings are being addressed."
         ]
        ]
       }
@@ -1304,13 +1311,13 @@
         ],
         [
          "Edgar",
-         "DEV needs to prepare test cases for automation testing (Sumit)."
+         "Sumit to prepare test cases for automation testing."
         ]
        ]
       },
       {
        "id": "n1034",
-       "t": "Check RCA for the Tax Nav dashboard SSO bug (Aditi)",
+       "t": "Review the RCA for the Tax Nav dashboard SSO bug (Aditi)",
        "rows": [
         [
          "Status",
@@ -1341,7 +1348,7 @@
        "rows": [
         [
          "Status",
-         "1 remaining (P0). Approval from Aditi required before a change in local."
+         "One P0 remaining. Aditi's approval is required before the change goes into the local environment."
         ],
         [
          "Next",
@@ -1373,7 +1380,7 @@
         ],
         [
          "Due",
-         "The 8 remaining close by 14 Oct EOD."
+         "The remaining 8 to close by 14 Oct EOD."
         ]
        ]
       }
@@ -1396,7 +1403,7 @@
       },
       {
        "id": "n1041",
-       "t": "Follow-up with Pauline for the Applicant workflow",
+       "t": "Follow up with Pauline on the Applicant workflow",
        "rows": [
         [
          "Status",
@@ -1438,11 +1445,11 @@
        "rows": [
         [
          "Status",
-         "Halfway done."
+         "Halfway complete."
         ],
         [
          "Due",
-         "To be closed by 14 Oct, 4 PM."
+         "Close by 14 Oct, 4 PM."
         ]
        ]
       },
@@ -1452,7 +1459,7 @@
        "rows": [
         [
          "Status",
-         "Findings provided by Abhishek are in progress."
+         "Abhishek's findings are being addressed."
         ],
         [
          "Order",
@@ -1477,11 +1484,11 @@
      "closed": [
       {
        "id": "n1047",
-       "t": "Check RCA for the Tax Nav dashboard SSO bug (Aditi)",
+       "t": "Review the RCA for the Tax Nav dashboard SSO bug (Aditi)",
        "rows": [
         [
-         "Landed",
-         "Deployment done on the UAT environment."
+         "Delivered",
+         "Deployment to UAT complete."
         ]
        ]
       },
@@ -1490,8 +1497,8 @@
        "t": "SA bugs (Sumit)",
        "rows": [
         [
-         "Landed",
-         "500 Internal Server validation issues resolved and deployed to the test environment."
+         "Delivered",
+         "Resolved the 500 Internal Server validation issues and deployed the fixes to the test environment."
         ]
        ]
       },
@@ -1500,8 +1507,8 @@
        "t": "AWS access for 321 Onboarding",
        "rows": [
         [
-         "Landed",
-         "Done."
+         "Delivered",
+         "Complete."
         ]
        ]
       }
@@ -1513,11 +1520,11 @@
        "rows": [
         [
          "QA testing",
-         "Ongoing. Marked for 16 Oct, as 15 Oct was used for I9 Audit Agent testing."
+         "Ongoing. Rescheduled to 16 Oct, as 15 Oct went to I9 Audit Agent testing."
         ],
         [
          "Edgar",
-         "DEV needs to prepare automation test cases. Prepared from Sumit's end, pending from Edgar's end."
+         "DEV to prepare automation test cases. Sumit's cases are ready; Edgar's are pending."
         ]
        ]
       },
@@ -1527,11 +1534,11 @@
        "rows": [
         [
          "Status",
-         "Deployed to the test environment. DEV testing and QA testing pending."
+         "Deployed to the test environment. DEV and QA testing pending."
         ],
         [
          "Next",
-         "DEV needs to run it in the I-frame (fms) for testing with the same key."
+         "DEV to run it in the I-frame (fms) and test with the same key."
         ]
        ]
       }
@@ -1546,12 +1553,12 @@
        "t": "Remaining Dashboard bugs",
        "rows": [
         [
-         "Landed",
-         "Deployed to the UAT environment, along with Tax Nav."
+         "Delivered",
+         "Deployed to UAT, together with Tax Nav."
         ],
         [
          "Note",
-         "GAuth for Tax Nav was also marked for delivery on 15 Oct. Aditi's effort was required."
+         "GAuth for Tax Nav was also scheduled for delivery on 15 Oct and required Aditi's effort."
         ]
        ]
       }
@@ -1563,11 +1570,11 @@
        "rows": [
         [
          "Status",
-         "Whole end to end flow for I9 is complete. Deployment pending."
+         "End-to-end I9 flow complete; deployment pending."
         ],
         [
          "Next",
-         "Full closure for I9 Vertex activity: 30 to 45 minutes."
+         "Full closure of the I9 Vertex activity: 30 to 45 minutes."
         ]
        ]
       },
@@ -1581,7 +1588,7 @@
         ],
         [
          "Status",
-         "All resolved and in local. To be deployed to the test environment on 15 Oct."
+         "All resolved in the local environment. Test environment deployment on 15 Oct."
         ]
        ]
       }
@@ -1602,8 +1609,8 @@
        "t": "PROD-3602",
        "rows": [
         [
-         "Landed",
-         "All items raised in the ticket are deployed to the Prod environment."
+         "Delivered",
+         "All items in the ticket are deployed to Prod."
         ]
        ]
       }
@@ -1611,11 +1618,11 @@
      "progress": [
       {
        "id": "n1057",
-       "t": "Follow-up with Pauline for the Applicant workflow",
+       "t": "Follow up with Pauline on the Applicant workflow",
        "rows": [
         [
          "Status",
-         "Communication dates to be finalized, to avoid a bad impact on DEV's delivery."
+         "Finalize communication dates to protect DEV's delivery."
         ],
         [
          "Ticket",
@@ -1639,11 +1646,11 @@
        "rows": [
         [
          "Next",
-         "India team needs to instruct Caroline on the workflow for raising bugs."
+         "India team to brief Caroline on the workflow for raising bugs."
         ],
         [
          "Note",
-         "The bug raised by Caroline came through chat."
+         "Caroline raised the bug through chat."
         ]
        ]
       },
@@ -1653,7 +1660,7 @@
        "rows": [
         [
          "Next",
-         "Needs review by Chetan."
+         "Chetan to review."
         ]
        ]
       }
@@ -1670,7 +1677,7 @@
        "rows": [
         [
          "Source",
-         "Raised in the Nikita follow-up with Pauline."
+         "Raised in Nikita's follow-up with Pauline."
         ]
        ]
       },
@@ -1680,7 +1687,7 @@
        "rows": [
         [
          "Source",
-         "Needs review by Chetan."
+         "Chetan to review."
         ]
        ]
       }
@@ -1695,12 +1702,12 @@
        "t": "Changes to I9 deployment pipeline",
        "rows": [
         [
-         "Landed",
-         "Done on the DEV environment."
+         "Delivered",
+         "Complete in the DEV environment."
         ],
         [
          "Next",
-         "DEV aims to fix this deployment issue across all environments (I9 and Canary Dashboard)."
+         "DEV to resolve this deployment issue across all environments (I9 and Canary Dashboard)."
         ]
        ]
       }
@@ -1712,11 +1719,11 @@
        "rows": [
         [
          "Status",
-         "Abhishek gave his inputs on 14 Oct. Closure date: 15 Oct (deployment day for this fix)."
+         "Abhishek provided inputs on 14 Oct. Closure on 15 Oct, the deployment day for this fix."
         ],
         [
          "Next",
-         "E-Verify is picked today for the Vertex activity."
+         "E-Verify starts today for the Vertex activity."
         ]
        ]
       }
@@ -1728,7 +1735,7 @@
        "rows": [
         [
          "Condition",
-         "Picked up if the two tasks above are near closure."
+         "Starts if the two tasks above are nearing closure."
         ]
        ]
       }
@@ -1745,11 +1752,11 @@
      "closed": [
       {
        "id": "n1066",
-       "t": "Jira estimations for all Sprint 22 tasks",
+       "t": "Jira estimates for all Sprint 22 tasks",
        "rows": [
         [
-         "Landed",
-         "Aditi and Sumit are done."
+         "Delivered",
+         "Aditi and Sumit complete."
         ]
        ]
       }
@@ -1761,15 +1768,15 @@
        "rows": [
         [
          "Bugs",
-         "10 logged: 9 India team, 1 Edgar. QA testing completed with 6 bugs logged."
+         "10 bugs logged (9 India team, 1 Edgar). QA testing complete, with 6 bugs logged."
         ],
         [
          "Status",
-         "1 falls in Edgar's court, 3 in the India team's. The India team's bugs are resolved."
+         "One bug sits with Edgar and three with the India team. The India team's bugs are resolved."
         ],
         [
          "Edgar",
-         "DEV needs to prepare automation test cases. Prepared from Sumit's end, pending from Edgar's end."
+         "DEV to prepare automation test cases. Sumit's cases are ready; Edgar's are pending."
         ]
        ]
       },
@@ -1779,7 +1786,7 @@
        "rows": [
         [
          "Status",
-         "Bugs that fell in Sumit's court need a formal review by Abhishek before deploying to Prod: Canary Dashboard."
+         "Abhishek to formally review Sumit's bugs before the Prod deployment of Canary Dashboard."
         ]
        ]
       },
@@ -1789,17 +1796,17 @@
        "rows": [
         [
          "Status",
-         "QA testing pending. Deployment pending for Prod."
+         "QA testing and Prod deployment pending."
         ]
        ]
       },
       {
        "id": "n1070",
-       "t": "Deployment of two I9 remote bugs to Prod",
+       "t": "Deploy two I9 remote bug fixes to Prod",
        "rows": [
         [
          "Status",
-         "QA testing pending. Deployment pending for Prod."
+         "QA testing and Prod deployment pending."
         ]
        ]
       },
@@ -1809,14 +1816,14 @@
        "rows": [
         [
          "Status",
-         "Onboarding and E-Verify are reviewed. The WOTC document needs rectification from Infra's end."
+         "Onboarding and E-Verify reviewed. Infra to correct the WOTC document."
         ]
        ]
       }
      ],
      "notstarted": [],
      "plan": [],
-     "jira": "Estimates for Sprint 22: Aditi done, Sumit done."
+     "jira": "Sprint 22 estimates: Aditi and Sumit complete."
     },
     "Abhishek": {
      "closed": [
@@ -1825,7 +1832,7 @@
        "t": "Retention bugs",
        "rows": [
         [
-         "Landed",
+         "Delivered",
          "Delivered to Prod."
         ],
         [
@@ -1842,11 +1849,11 @@
        "rows": [
         [
          "Status",
-         "Changes are already in the test environment. Delivery to Prod for I9 in the next two days, along with the changes by Sumit and Aditi."
+         "Changes are in the test environment. I9 Prod delivery within two days, together with the changes by Sumit and Aditi."
         ],
         [
          "Note",
-         "I9 front-end changes need to be taken into account."
+         "Account for the I9 front-end changes."
         ]
        ]
       },
@@ -1856,13 +1863,13 @@
        "rows": [
         [
          "Bugs",
-         "28 bugs were logged via automation and need to be taken care of."
+         "Automation logged 28 bugs; all require resolution."
         ]
        ]
       },
       {
        "id": "n1075",
-       "t": "Jira estimations for all Sprint 22 tasks",
+       "t": "Jira estimates for all Sprint 22 tasks",
        "rows": [
         [
          "Status",
@@ -1878,20 +1885,20 @@
        "rows": [
         [
          "Status",
-         "Not to be picked, as DEV's capacity is used under retail."
+         "Not to be started; DEV capacity is committed to Retail work."
         ]
        ]
       }
      ],
      "plan": [],
-     "jira": "Estimates for Sprint 22: pending."
+     "jira": "Sprint 22 estimates: pending."
     },
     "Nikita": {
      "closed": [],
      "progress": [
       {
        "id": "n1077",
-       "t": "Follow-up with Pauline for the Applicant workflow (registration flow)",
+       "t": "Follow up with Pauline on the Applicant workflow (registration flow)",
        "rows": [
         [
          "Ticket",
@@ -1899,11 +1906,11 @@
         ],
         [
          "Status",
-         "Communication dates to be finalized. QA and DEV both need to give final remarks on the spec."
+         "Finalize communication dates. QA and DEV to provide final remarks on the spec."
         ],
         [
          "Due",
-         "Monday, first half: Chetan to give remarks."
+         "Monday, first half: Chetan to provide remarks."
         ]
        ]
       },
@@ -1913,11 +1920,11 @@
        "rows": [
         [
          "Status",
-         "Inbound received on 16 Oct from their end. The ask is raised in the email."
+         "Inbound received from their team on 16 Oct; the request is raised in the email."
         ],
         [
          "Due",
-         "DEV needs to reply by 16 Oct EOD."
+         "DEV to reply by 16 Oct EOD."
         ]
        ]
       },
@@ -1927,35 +1934,35 @@
        "rows": [
         [
          "Next",
-         "Needs review by Chetan."
+         "Chetan to review."
         ],
         [
          "Note",
-         "Sunil's bug: he tried it on the Director of Finance job for Canary and it did not work for him."
+         "Sunil's bug: the feature failed for him on the Director of Finance job for Canary."
         ]
        ]
       },
       {
        "id": "n1080",
-       "t": "Jira estimations for all Sprint 22 tasks",
+       "t": "Jira estimates for all Sprint 22 tasks",
        "rows": [
         [
          "Status",
-         "Pending, blocked due to sprint scope."
+         "Pending, blocked by sprint scope."
         ]
        ]
       }
      ],
      "notstarted": [],
      "plan": [],
-     "jira": "Estimates for Sprint 22: pending, blocked due to sprint scope."
+     "jira": "Sprint 22 estimates: pending, blocked by sprint scope."
     },
     "Chetan": {
      "closed": [],
      "progress": [
       {
        "id": "n1081",
-       "t": "PROD-3654: remarks on the registration flow spec",
+       "t": "PROD-3654: provide remarks on the registration flow spec",
        "rows": [
         [
          "Due",
@@ -1984,18 +1991,18 @@
        "t": "Changes to I9 deployment pipeline",
        "rows": [
         [
-         "Landed",
-         "Fixed for I9 and Canary Dashboard on the Test and DEV environments."
+         "Delivered",
+         "Fixed for I9 and Canary Dashboard in the Test and DEV environments."
         ]
        ]
       },
       {
        "id": "n1084",
-       "t": "Jira estimations for all Sprint 22 tasks",
+       "t": "Jira estimates for all Sprint 22 tasks",
        "rows": [
         [
-         "Landed",
-         "All original estimates up to date."
+         "Delivered",
+         "All original estimates are current."
         ]
        ]
       }
@@ -2007,7 +2014,7 @@
        "rows": [
         [
          "Status",
-         "I9 changes for the test environment are done, pending for Prod. Details shared with Aditi and Sumit for E-Verify, Onboarding and WOTC."
+         "I9 changes complete in the test environment; Prod pending. Details shared with Aditi and Sumit for E-Verify, Onboarding and WOTC."
         ],
         [
          "Due",
@@ -2023,17 +2030,17 @@
        "rows": [
         [
          "Condition",
-         "Picked up if the two tasks above are near closure."
+         "Starts if the two tasks above are nearing closure."
         ],
         [
          "Blocked on",
-         "Approval from Edgar for the closure activities."
+         "Edgar's approval required for the closure activities."
         ]
        ]
       }
      ],
      "plan": [],
-     "jira": "Estimates for Sprint 22: all original estimates up to date."
+     "jira": "Sprint 22 estimates: all original estimates current."
     }
    }
   },
@@ -2052,19 +2059,19 @@
        "rows": [
         [
          "Bugs",
-         "10 logged: 9 India team, 1 Edgar. QA testing completed with 6 bugs logged. The India team's bugs are resolved."
+         "10 bugs logged (9 India team, 1 Edgar). QA testing complete, with 6 bugs logged. India team bugs resolved."
         ],
         [
          "Edgar",
-         "Test cases prepared from Sumit's end, pending from Edgar's end. We can pick the test cases Edgar picked."
+         "Sumit's test cases are ready; Edgar's are pending. DEV can reuse the cases Edgar selected."
         ],
         [
          "Next",
-         "Discussion with Nitin. Email communication to be reviewed by Chetan."
+         "Discuss with Nitin. Chetan to review the email communication."
         ],
         [
          "Status",
-         "Parked until further notice, until Wednesday."
+         "Parked until Wednesday, pending further notice."
         ]
        ]
       },
@@ -2074,7 +2081,7 @@
        "rows": [
         [
          "Status",
-         "All resolved. Deployment for Prod pending."
+         "All resolved. Prod deployment pending."
         ]
        ]
       },
@@ -2084,17 +2091,17 @@
        "rows": [
         [
          "Status",
-         "QA testing pending. Deployment pending for Prod."
+         "QA testing and Prod deployment pending."
         ],
         [
          "Next",
-         "If the Onboarding task is on track for closure by EOD, Chetan and Aditi should connect with M."
+         "If the Onboarding task is on track to close by EOD, Chetan and Aditi to connect with M."
         ]
        ]
       },
       {
        "id": "n1090",
-       "t": "Deployment of two I9 remote bugs to Prod",
+       "t": "Deploy two I9 remote bug fixes to Prod",
        "rows": [
         [
          "Status",
@@ -2108,12 +2115,12 @@
        "rows": [
         [
          "Status",
-         "DEV needs this only for WOTC and WOTC automation. To be shared by Rushikesh in the first half."
+         "Required by DEV only for WOTC and WOTC automation. Rushikesh to share in the first half."
         ]
        ]
       }
      ],
-     "jira": "Estimates for Sprint 22: Aditi done, Sumit done."
+     "jira": "Sprint 22 estimates: Aditi and Sumit complete."
     },
     "Abhishek": {
      "closed": [],
@@ -2126,11 +2133,11 @@
        "rows": [
         [
          "Due",
-         "Should be deployed by Monday EOD."
+         "Deployment expected by Monday EOD."
         ],
         [
          "Note",
-         "I9 front-end changes need to be taken into account."
+         "Account for the I9 front-end changes."
         ]
        ]
       },
@@ -2140,11 +2147,11 @@
        "rows": [
         [
          "Status",
-         "Not to be picked, as DEV's capacity is used under retail."
+         "Not to be started; DEV capacity is committed to Retail work."
         ],
         [
          "Next",
-         "Picked after Abhishek is done with the Onboarding upload task."
+         "Starts once Abhishek completes the Onboarding upload task."
         ]
        ]
       },
@@ -2154,16 +2161,16 @@
        "rows": [
         [
          "Bugs",
-         "28 bugs were logged via automation and need to be taken care of."
+         "Automation logged 28 bugs; all require resolution."
         ],
         [
          "Next",
-         "Picked after the first two tasks."
+         "Starts after the first two tasks."
         ]
        ]
       }
      ],
-     "jira": "Estimates for Sprint 22: up to date."
+     "jira": "Sprint 22 estimates: current."
     },
     "Nikita": {
      "closed": [],
@@ -2172,7 +2179,7 @@
      "plan": [
       {
        "id": "n1095",
-       "t": "Follow-up with Pauline for the Applicant workflow (registration flow)",
+       "t": "Follow up with Pauline on the Applicant workflow (registration flow)",
        "rows": [
         [
          "Ticket",
@@ -2180,11 +2187,11 @@
         ],
         [
          "Status",
-         "Communication dates to be finalized. QA and DEV both need to give final remarks on the spec."
+         "Finalize communication dates. QA and DEV to provide final remarks on the spec."
         ],
         [
          "Due",
-         "Monday, first half: Chetan to give remarks. Meeting with Nitin by Monday EOD."
+         "Monday, first half: Chetan to provide remarks. Meeting with Nitin by Monday EOD."
         ]
        ]
       },
@@ -2194,7 +2201,7 @@
        "rows": [
         [
          "Status",
-         "Inbound received on 16 Oct. DEV to reply to the ask. In Testing."
+         "Inbound received on 16 Oct. DEV to respond to the request. In testing."
         ]
        ]
       },
@@ -2204,7 +2211,7 @@
        "rows": [
         [
          "Next",
-         "Needs review by Chetan."
+         "Chetan to review."
         ],
         [
          "Note",
@@ -2213,7 +2220,7 @@
        ]
       }
      ],
-     "jira": "Estimates for Sprint 22: pending, blocked due to sprint scope."
+     "jira": "Sprint 22 estimates: pending, blocked by sprint scope."
     },
     "Chetan": {
      "closed": [],
@@ -2222,7 +2229,7 @@
      "plan": [
       {
        "id": "n1098",
-       "t": "PROD-3654: remarks on the registration flow spec",
+       "t": "PROD-3654: provide remarks on the registration flow spec",
        "rows": [
         [
          "Due",
@@ -2246,7 +2253,7 @@
        "rows": [
         [
          "Condition",
-         "If the Onboarding task is on track for closure by EOD."
+         "Applies if the Onboarding task is on track to close by EOD."
         ]
        ]
       }
@@ -2259,12 +2266,12 @@
      "plan": [
       {
        "id": "n1102",
-       "t": "P0: certificates in sync with their timelines",
+       "t": "P0: Keep certificates in sync with their timelines",
        "rows": []
       },
       {
        "id": "n1103",
-       "t": "P0: HR2 servers sanity check",
+       "t": "P0: Sanity check of the HR2 servers",
        "rows": []
       },
       {
@@ -2273,7 +2280,7 @@
        "rows": [
         [
          "Status",
-         "All changes are in the test environment. Deployment planned for Wednesday. E-Verify and Onboarding done."
+         "All changes are in the test environment. Deployment planned for Wednesday. E-Verify and Onboarding complete."
         ],
         [
          "Due",
@@ -2287,20 +2294,20 @@
        "rows": [
         [
          "Condition",
-         "Picked up if the Vertex AI Build is near closure."
+         "Starts if the Vertex AI Build is nearing closure."
         ],
         [
          "Blocked on",
-         "Approval from Edgar for the closure activities."
+         "Edgar's approval required for the closure activities."
         ],
         [
          "Status",
-         "In the loop and in progress along with other tasks."
+         "Involved and progressing alongside other tasks."
         ]
        ]
       }
      ],
-     "jira": "Estimates for Sprint 22: all original estimates up to date."
+     "jira": "Sprint 22 estimates: all original estimates current."
     }
    }
   },
@@ -2365,11 +2372,11 @@
        "rows": [
         [
          "Next",
-         "Doc upload, then QA testing, then the custom page."
+         "Sequence: doc upload, then QA testing, then the custom page."
         ],
         [
          "Input",
-         "U.S. team: create doc_upload as a custom page, initiated from the employer. The type also needs to be specified."
+         "U.S. team request: create doc_upload as a custom page, initiated by the employer, with the type specified."
         ]
        ]
       },
@@ -2379,7 +2386,7 @@
        "rows": [
         [
          "Status",
-         "Making the label changes Michele asked for."
+         "Implementing the label changes Michele requested."
         ]
        ]
       },
@@ -2389,7 +2396,7 @@
        "rows": [
         [
          "Status",
-         "DEV needs this only for WOTC and WOTC automation. Yet to be shared, marked for Wednesday."
+         "Required by DEV only for WOTC and WOTC automation. Not yet shared; scheduled for Wednesday."
         ]
        ]
       },
@@ -2399,7 +2406,7 @@
        "rows": [
         [
          "Status",
-         "Parked until Thursday. 10 bugs logged: 9 India team, 1 Edgar. QA testing completed with 6 bugs logged."
+         "Parked until Thursday. 10 bugs logged (9 India team, 1 Edgar). QA testing complete, with 6 bugs logged."
         ]
        ]
       },
@@ -2414,7 +2421,7 @@
        ]
       }
      ],
-     "jira": "Estimates for Sprint 22: Aditi done, Sumit done."
+     "jira": "Sprint 22 estimates: Aditi and Sumit complete."
     },
     "Abhishek": {
      "closed": [],
@@ -2427,7 +2434,7 @@
        "rows": [
         [
          "Status",
-         "4 of 16 resolved. Marked for Wednesday EOD."
+         "4 of 16 resolved. Target: Wednesday EOD."
         ]
        ]
       },
@@ -2437,13 +2444,13 @@
        "rows": [
         [
          "Bugs",
-         "28 bugs were logged via automation and need to be taken care of."
+         "Automation logged 28 bugs; all require resolution."
         ]
        ]
       },
       {
        "id": "n1114",
-       "t": "Delivery of the two tasks above",
+       "t": "Deliver the two tasks above",
        "rows": [
         [
          "Due",
@@ -2452,7 +2459,7 @@
        ]
       }
      ],
-     "jira": "Estimates for Sprint 22: done."
+     "jira": "Sprint 22 estimates: complete."
     },
     "Nikita": {
      "closed": [],
@@ -2461,7 +2468,7 @@
      "plan": [
       {
        "id": "n1115",
-       "t": "Priority: Jira task creation for the Zippy ATS registration flow",
+       "t": "Priority: create Jira tasks for the Zippy ATS registration flow",
        "rows": []
       },
       {
@@ -2480,7 +2487,7 @@
        "rows": [
         [
          "Status",
-         "Inbound received on 16 Oct, ask raised in the email."
+         "Inbound received on 16 Oct; request raised in the email."
         ],
         [
          "Next",
@@ -2490,15 +2497,15 @@
       },
       {
        "id": "n1119",
-       "t": "Follow-up with Pauline for the registration workflow",
+       "t": "Follow up with Pauline on the registration workflow",
        "rows": [
         [
          "Status",
-         "Communication dates to be finalized. QA and DEV both need to give final remarks on the spec."
+         "Finalize communication dates. QA and DEV to provide final remarks on the spec."
         ],
         [
          "Due",
-         "Task estimations in progress, by Wednesday first half."
+         "Task estimates in progress; due the first half of Wednesday."
         ]
        ]
       },
@@ -2508,7 +2515,7 @@
        "rows": []
       }
      ],
-     "jira": "Estimates for Sprint 22: pending, blocked due to sprint scope."
+     "jira": "Sprint 22 estimates: pending, blocked by sprint scope."
     },
     "Chetan": {
      "closed": [],
@@ -2531,7 +2538,7 @@
        "rows": [
         [
          "Status",
-         "4 of 16 were resolved on Monday."
+         "4 of 16 resolved on Monday."
         ]
        ]
       },
@@ -2564,11 +2571,11 @@
       },
       {
        "id": "n1127",
-       "t": "Priority: Vertex AI changes delivery to Prod for WOTC, E-Verify and Onboarding",
+       "t": "Priority: deliver the Vertex AI changes to Prod for WOTC, E-Verify and Onboarding",
        "rows": [
         [
          "Status",
-         "All changes are in the test environment. Details shared with Aditi and Sumit. Prod items marked for deployment on Wednesday."
+         "All changes are in the test environment. Details shared with Aditi and Sumit. Prod items scheduled for deployment on Wednesday."
         ]
        ]
       },
@@ -2578,933 +2585,1946 @@
        "rows": [
         [
          "Condition",
-         "Picked up if the Vertex AI Build is near closure."
+         "Starts if the Vertex AI Build is nearing closure."
         ],
         [
          "Blocked on",
-         "Approval from Edgar for the closure activities."
+         "Edgar's approval required for the closure activities."
         ],
         [
          "Status",
-         "In the loop and in progress along with other tasks."
+         "Involved and progressing alongside other tasks."
         ]
        ]
       }
      ],
-     "jira": "Estimates for Sprint 22: all original estimates up to date."
+     "jira": "Sprint 22 estimates: all original estimates current."
     }
    }
   },
   {
    "date": "2026-10-22",
-   "tag": "EVENING UPDATE",
-   "people": {
-    "Sumit & Aditi": {
-     "closed": [
-      {
-       "id": "n3001",
-       "t": "UI key generation (Aditi)",
-       "rows": [
-        [
-         "Landed",
-         "Deployed to UAT."
+   "am": {
+    "tag": "MORNING PLAN",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [
+       {
+        "id": "n2001",
+        "t": "Michele's cell removed from the WOTC reminder DB",
+        "rows": [
+         [
+          "Delivered",
+          "Completed on Wednesday, 21 Oct."
+         ]
         ]
-       ]
-      }
-     ],
-     "progress": [
-      {
-       "id": "n3002",
-       "t": "Two I-9 remote bugs",
-       "rows": [
-        [
-         "Priority",
-         "Task on priority for Friday."
+       }
+      ],
+      "progress": [],
+      "notstarted": [
+       {
+        "id": "n2007",
+        "t": "Full I9 in Onboarding",
+        "rows": [
+         [
+          "Status",
+          "No information yet."
+         ],
+         [
+          "Sprint",
+          "Planned for Sprint 23."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3003",
-       "t": "Vertex AI changes for WOTC, E-Verify and Onboarding",
-       "rows": [
-        [
-         "Status",
-         "Only Prod delivery for Onboarding is pending."
-        ],
-        [
-         "Priority",
-         "Task on priority for Friday."
+       }
+      ],
+      "plan": [
+       {
+        "id": "n2002",
+        "t": "Priority: automate the test cases for Onboarding (Edgar cases)",
+        "rows": [
+         [
+          "Due",
+          "Call with Edgar and Nitin on 22 Oct, EOD IST."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3004",
-       "t": "Priority: automate the test cases for Onboarding (Edgar cases)",
-       "rows": [
-        [
-         "Next",
-         "Call scheduled on 22 Oct, EOD IST, with Nitin and Sunil."
+       },
+       {
+        "id": "n2003",
+        "t": "Priority: deploy the doc upload feature for Onboarding",
+        "rows": [
+         [
+          "Status",
+          "Build ready for QA."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3005",
-       "t": "Priority: deploy the doc upload feature for Onboarding",
-       "rows": [
-        [
-         "Status",
-         "Bugs logged by QA on 22 Oct. Round 1 bug fixes are marked for deployment in the first half of Friday."
-        ],
-        [
-         "Priority",
-         "Task on priority for Friday."
+       },
+       {
+        "id": "n2004",
+        "t": "UI key generation (Aditi)",
+        "rows": [
+         [
+          "Status",
+          "UAT deployment pending."
+         ],
+         [
+          "Effort",
+          "30 minutes."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3006",
-       "t": "No email: R&D and DEV work",
-       "rows": [
-        [
-         "Bug",
-         "No Email Invite, Deactivate Account Dialog Missing for Same Phone Number."
+       },
+       {
+        "id": "n2005",
+        "t": "Vertex AI Build DEV sync with Rushikesh",
+        "rows": [
+         [
+          "Status",
+          "Onboarding, I9 and E-Verify are deployed to the test environment. WOTC's test delivery was completed on Wednesday."
+         ],
+         [
+          "Pending",
+          "Prod delivery. Infra shared all resources the respective DEVs require on Wednesday."
+         ],
+         [
+          "Effort",
+          "3 to 4 hours."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3007",
-       "t": "SMS in Zippy ATS: microservices (Sumit)",
-       "rows": [
-        [
-         "Status",
-         "Microservices to be taken up by Sumit."
-        ],
-        [
-         "Priority",
-         "Task on priority for Friday."
+       },
+       {
+        "id": "n2006",
+        "t": "No email: R&D and DEV work",
+        "rows": [
+         [
+          "Next",
+          "Discuss with Nitin."
+         ]
         ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
+       }
+      ],
+      "jira": "Closure and time logging in progress."
+     },
+     "Abhishek": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n2008",
+        "t": "Priority: resolve the Audit Agent bugs and deploy to UAT",
+        "rows": [
+         [
+          "Status",
+          "A second QA round is required."
+         ],
+         [
+          "Deployment",
+          "Target: 5 PM IST, 22 Oct."
+         ]
+        ]
+       },
+       {
+        "id": "n2009",
+        "t": "Care Advantage: keep the Audit Agent in sync with all I-9 forms in Care Advantage's delivery",
+        "rows": []
+       },
+       {
+        "id": "n2010",
+        "t": "SuperAdmin and Dashboard DEV testing",
+        "rows": [
+         [
+          "Status",
+          "Planned for Monday. Only P0s are addressed before DEV capacity moves to Retail work."
+         ]
+        ]
+       }
+      ],
+      "jira": "Closure and time logging in progress."
+     },
+     "Nikita": {
+      "closed": [
+       {
+        "id": "n2011",
+        "t": "Priority: remove Michele's number from WOTC and Zippy reminders",
+        "rows": [
+         [
+          "Delivered",
+          "Removed. Only the WOTC reminders required a check."
+         ]
+        ]
+       },
+       {
+        "id": "n2012",
+        "t": "Follow up with Pauline on the registration workflow",
+        "rows": [
+         [
+          "Delivered",
+          "No longer needed; the registration flow is now the single source of truth."
+         ]
+        ]
+       }
+      ],
+      "progress": [],
+      "notstarted": [
+       {
+        "id": "n2015",
+        "t": "SMS in Zippy ATS",
+        "rows": [
+         [
+          "Status",
+          "Integration on hold until the microservices are ready."
+         ],
+         [
+          "Note",
+          "Part of the registration flow; closure in Sprint 22 is not expected."
+         ]
+        ]
+       },
+       {
+        "id": "n2016",
+        "t": "CRs by the U.S. team for Zippy ATS",
+        "rows": [
+         [
+          "Status",
+          "Not started before the registration flow is delivered."
+         ],
+         [
+          "Note",
+          "QA effort required."
+         ]
+        ]
+       }
+      ],
+      "plan": [
+       {
+        "id": "n2013",
+        "t": "Priority: create Jira tasks for the Zippy ATS registration flow",
+        "rows": [
+         [
+          "Status",
+          "Estimates complete."
+         ],
+         [
+          "Due",
+          "Formal delivery in Jira in the first half of 22 Oct."
+         ],
+         [
+          "Next",
+          "Share the list with Chetan for Jira delivery."
+         ]
+        ]
+       },
+       {
+        "id": "n2014",
+        "t": "Proliant",
+        "rows": [
+         [
+          "Status",
+          "Nearing closure. Aligning with the Proliant team on testing ahead of delivery."
+         ]
+        ]
+       }
+      ],
+      "jira": "Closure and time logging in progress."
+     },
+     "Chetan": {
+      "closed": [
+       {
+        "id": "n2017",
+        "t": "Jira work for the ATS tasks",
+        "rows": [
+         [
+          "Delivered",
+          "Complete on Wednesday."
+         ]
+        ]
+       }
+      ],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n2018",
+        "t": "QA work for the custom page",
+        "rows": [
+         [
+          "Due",
+          "First half of Thursday, 22 Oct."
+         ]
+        ]
+       },
+       {
+        "id": "n2019",
+        "t": "Audit Agent bugs review",
+        "rows": [
+         [
+          "Due",
+          "Thursday, 22 Oct."
+         ]
+        ]
+       },
+       {
+        "id": "n2020",
+        "t": "Demo for I9 Remote with Kevin and Eddie",
+        "rows": [
+         [
+          "Due",
+          "22 Oct, EOD IST."
+         ]
+        ]
+       },
+       {
+        "id": "n2021",
+        "t": "Task tickets for the ATS registration flow",
+        "rows": [
+         [
+          "Due",
+          "Create by Friday, 23 Oct, EOD."
+         ]
+        ]
+       }
+      ]
+     },
+     "Rushi": {
+      "closed": [
+       {
+        "id": "n2022",
+        "t": "P0: Infra Audit for Creslane",
+        "rows": [
+         [
+          "Delivered",
+          "Closed."
+         ]
+        ]
+       }
+      ],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n2023",
+        "t": "Priority: deliver the Vertex AI changes to Prod for WOTC, E-Verify and Onboarding",
+        "rows": [
+         [
+          "Status",
+          "Sumit and Aditi to deploy these products."
+         ],
+         [
+          "Then",
+          "30 minutes of Infra effort after deployment."
+         ]
+        ]
+       },
+       {
+        "id": "n2024",
+        "t": "Security controls",
+        "rows": [
+         [
+          "Target",
+          "DEV targets over 80% task closure on the security controls tracker by 23 Oct, EOD IST."
+         ]
+        ]
+       }
+      ],
+      "jira": "Closure and time logging in progress."
+     }
     },
-    "Abhishek": {
-     "closed": [],
-     "progress": [
-      {
-       "id": "n3008",
-       "t": "Priority: resolve the Audit Agent bugs and deploy to UAT",
-       "rows": [
-        [
-         "Status",
-         "QA Round 1 bug fixes are marked for delivery on Friday, 23 Oct. QA Round 2 bug fixes were delivered to DEV on 22 Oct."
-        ],
-        [
-         "Priority",
-         "Task on priority for Friday."
+    "deployments": [
+     {
+      "item": "Audit Agent bug fixes",
+      "env": "UAT",
+      "owner": "Abhishek",
+      "when": "5 PM IST",
+      "note": "A second QA round is required."
+     },
+     {
+      "item": "UI key generation",
+      "env": "UAT",
+      "owner": "Aditi",
+      "when": "30 minutes of effort",
+      "note": ""
+     },
+     {
+      "item": "Vertex AI changes for WOTC, E-Verify and Onboarding",
+      "env": "Prod",
+      "owner": "Sumit and Aditi, then Infra (Rushikesh)",
+      "when": "3 to 4 hours, then 30 minutes from Infra",
+      "note": "Prod delivery pending; test deliveries complete."
+     }
+    ]
+   },
+   "pm": {
+    "tag": "EVENING UPDATE",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [
+       {
+        "id": "n3001",
+        "t": "UI key generation (Aditi)",
+        "rows": [
+         [
+          "Delivered",
+          "Deployed to UAT."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3009",
-       "t": "Care Advantage: keep the Audit Agent in sync for all the I-9 forms in Care Advantage's delivery",
-       "rows": [
-        [
-         "Next",
-         "Connect with Robert to get the latest token for the DEV workflow."
-        ],
-        [
-         "Priority",
-         "Task on priority for Friday."
+       }
+      ],
+      "progress": [
+       {
+        "id": "n3002",
+        "t": "Two I-9 remote bugs",
+        "rows": [
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
         ]
-       ]
-      }
-     ],
-     "notstarted": [
-      {
-       "id": "n3010",
-       "t": "CRs by the U.S. team for Zippy ATS",
-       "rows": [
-        [
-         "Status",
-         "To be taken up by Abhishek, in Sprint 23."
+       },
+       {
+        "id": "n3003",
+        "t": "Vertex AI changes for WOTC, E-Verify and Onboarding",
+        "rows": [
+         [
+          "Status",
+          "Only Onboarding's Prod delivery is pending."
+         ],
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
         ]
-       ]
-      }
-     ],
-     "plan": []
-    },
-    "Nikita": {
-     "closed": [],
-     "progress": [
-      {
-       "id": "n3011",
-       "t": "SMS in Zippy ATS: integration (Nikita)",
-       "rows": [
-        [
-         "Status",
-         "Integration by Nikita. Microservices are with Sumit."
-        ],
-        [
-         "Priority",
-         "Task on priority for Friday."
+       },
+       {
+        "id": "n3004",
+        "t": "Priority: automate the test cases for Onboarding (Edgar cases)",
+        "rows": [
+         [
+          "Next",
+          "Call with Nitin and Sunil on 22 Oct, EOD IST."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3012",
-       "t": "Priority: Jira task creation for the Zippy ATS registration flow",
-       "rows": [
-        [
-         "Status",
-         "Created on Thursday, ready for review by Nikita."
+       },
+       {
+        "id": "n3005",
+        "t": "Priority: deploy the doc upload feature for Onboarding",
+        "rows": [
+         [
+          "Status",
+          "QA logged bugs on 22 Oct. Round 1 fixes scheduled for deployment in the first half of Friday."
+         ],
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3013",
-       "t": "Proliant",
-       "rows": [
-        [
-         "Status",
-         "In Testing. Latest communication done on Thursday, 22 Oct."
-        ],
-        [
-         "Priority",
-         "Task on priority for Friday."
+       },
+       {
+        "id": "n3006",
+        "t": "No email: R&D and DEV work",
+        "rows": [
+         [
+          "Bug",
+          "No Email Invite, Deactivate Account Dialog Missing for Same Phone Number."
+         ]
         ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
-    },
-    "Chetan": {
-     "closed": [
-      {
-       "id": "n3014",
-       "t": "Jira work for the ATS tasks",
-       "rows": [
-        [
-         "Landed",
-         "Mail shared with DEV for the same, with action items for Sprint 22."
+       },
+       {
+        "id": "n3007",
+        "t": "SMS in Zippy ATS: microservices (Sumit)",
+        "rows": [
+         [
+          "Status",
+          "Sumit to lead the microservices."
+         ],
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3015",
-       "t": "Demo for I9 Remote with Kevin and Eddie",
-       "rows": [
-        [
-         "Landed",
-         "Feedback shared with Nitin in the evening DSU on Thursday."
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Abhishek": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n3008",
+        "t": "Priority: resolve the Audit Agent bugs and deploy to UAT",
+        "rows": [
+         [
+          "Status",
+          "QA Round 1 bug fixes scheduled for delivery on Friday, 23 Oct. QA Round 2 bug fixes delivered to DEV on 22 Oct."
+         ],
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3016",
-       "t": "ATS Registration flow task tickets",
-       "rows": [
-        [
-         "Landed",
-         "Shared with DEV on Thursday."
+       },
+       {
+        "id": "n3009",
+        "t": "Care Advantage: keep the Audit Agent in sync with all I-9 forms in Care Advantage's delivery",
+        "rows": [
+         [
+          "Next",
+          "Obtain the latest token from Robert for the DEV workflow."
+         ],
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
         ]
-       ]
-      }
-     ],
-     "progress": [
-      {
-       "id": "n3017",
-       "t": "QA work for the custom page",
-       "rows": [
-        [
-         "Status",
-         "Bugs shared with the DEV team on Thursday. QA round 2 bugs shared with DEV on Thursday. Round 1 bugs are marked for deployment in the first half of Friday."
-        ],
-        [
-         "Priority",
-         "Task on priority for Friday."
+       }
+      ],
+      "notstarted": [
+       {
+        "id": "n3010",
+        "t": "CRs by the U.S. team for Zippy ATS",
+        "rows": [
+         [
+          "Status",
+          "Abhishek to take this in Sprint 23."
+         ]
         ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
-    },
-    "Rushi": {
-     "closed": [],
-     "progress": [
-      {
-       "id": "n3018",
-       "t": "Priority: Vertex AI changes delivery to Prod for WOTC, E-Verify and Onboarding",
-       "rows": [
-        [
-         "Due",
-         "Deployment to Prod for the above items by Friday EOD."
-        ],
-        [
-         "Priority",
-         "Task on priority for Friday."
+       }
+      ],
+      "plan": []
+     },
+     "Nikita": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n3011",
+        "t": "SMS in Zippy ATS: integration (Nikita)",
+        "rows": [
+         [
+          "Status",
+          "Nikita owns integration; Sumit owns the microservices."
+         ],
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n3019",
-       "t": "Security controls",
-       "rows": [
-        [
-         "Aim",
-         "DEV aims for more than 80% task closure on the security controls tracker by 23 Oct, EOD IST."
-        ],
-        [
-         "Priority",
-         "Task on priority for Friday."
+       },
+       {
+        "id": "n3012",
+        "t": "Priority: create Jira tasks for the Zippy ATS registration flow",
+        "rows": [
+         [
+          "Status",
+          "Created on Thursday; ready for Nikita's review."
+         ]
         ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
+       },
+       {
+        "id": "n3013",
+        "t": "Proliant",
+        "rows": [
+         [
+          "Status",
+          "In testing. Latest communication on Thursday, 22 Oct."
+         ],
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Chetan": {
+      "closed": [
+       {
+        "id": "n3014",
+        "t": "Jira work for the ATS tasks",
+        "rows": [
+         [
+          "Delivered",
+          "Email with Sprint 22 action items shared with DEV."
+         ]
+        ]
+       },
+       {
+        "id": "n3015",
+        "t": "Demo for I9 Remote with Kevin and Eddie",
+        "rows": [
+         [
+          "Delivered",
+          "Feedback shared with Nitin at the Thursday evening DSU."
+         ]
+        ]
+       },
+       {
+        "id": "n3016",
+        "t": "Task tickets for the ATS registration flow",
+        "rows": [
+         [
+          "Delivered",
+          "Shared with DEV on Thursday."
+         ]
+        ]
+       }
+      ],
+      "progress": [
+       {
+        "id": "n3017",
+        "t": "QA work for the custom page",
+        "rows": [
+         [
+          "Status",
+          "Bugs shared with DEV on Thursday, including QA Round 2. Round 1 fixes scheduled for deployment in the first half of Friday."
+         ],
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Rushi": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n3018",
+        "t": "Priority: deliver the Vertex AI changes to Prod for WOTC, E-Verify and Onboarding",
+        "rows": [
+         [
+          "Due",
+          "Prod deployment of the above items by Friday EOD."
+         ],
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
+        ]
+       },
+       {
+        "id": "n3019",
+        "t": "Security controls",
+        "rows": [
+         [
+          "Target",
+          "DEV targets over 80% task closure on the security controls tracker by 23 Oct, EOD IST."
+         ],
+         [
+          "Priority",
+          "Priority task for Friday."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     }
     }
    }
   },
   {
    "date": "2026-10-23",
-   "tag": "DAY UPDATE",
-   "people": {
-    "Sumit & Aditi": {
-     "closed": [
-      {
-       "id": "n5001",
-       "t": "Vertex AI changes for Onboarding",
-       "rows": [
-        [
-         "Landed",
-         "Deployed to Prod on Friday."
+   "am": {
+    "tag": "MORNING PLAN",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n4001",
+        "t": "Two I-9 remote bugs",
+        "rows": [
+         [
+          "Deploy",
+          "Prod, Friday."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n5002",
-       "t": "Doc upload feature for Onboarding",
-       "rows": [
-        [
-         "Landed",
-         "Delivered to Prod on Friday."
-        ],
-        [
-         "Note",
-         "A mail with the steps needed to use the feature was shared with the U.S. team, including Sunil."
+       },
+       {
+        "id": "n4002",
+        "t": "Vertex AI changes for WOTC, E-Verify and Onboarding",
+        "rows": [
+         [
+          "Status",
+          "Only Onboarding's Prod delivery is pending."
+         ],
+         [
+          "Due",
+          "Prod deployment by Friday EOD, then Infra (Rushikesh)."
+         ]
         ]
-       ]
-      }
-     ],
-     "progress": [
-      {
-       "id": "n5003",
-       "t": "Two I-9 remote bugs",
-       "rows": [
-        [
-         "Status",
-         "As shared by Sumit on Friday: one was fixed and one was non-repro."
-        ],
-        [
-         "Next",
-         "Both to be deployed to UAT for I9 Remote."
+       },
+       {
+        "id": "n4003",
+        "t": "Deploy the doc upload feature for Onboarding",
+        "rows": [
+         [
+          "Status",
+          "Bugs logged by QA on 22 Oct."
+         ],
+         [
+          "Due",
+          "QA Round 1 bug fixes scheduled for deployment in the first half of Friday."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n5004",
-       "t": "SMS in Zippy ATS: microservices (Sumit)",
-       "rows": [
-        [
-         "Status",
-         "In progress. High priority."
-        ],
-        [
-         "Note",
-         "Integration is planned by Nikita."
+       },
+       {
+        "id": "n4004",
+        "t": "SMS in Zippy ATS: microservices (Sumit)",
+        "rows": [
+         [
+          "Note",
+          "Nikita owns integration."
+         ]
         ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
+       }
+      ]
+     },
+     "Abhishek": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n4005",
+        "t": "Resolve the Audit Agent bugs and deploy to UAT",
+        "rows": [
+         [
+          "Round 1",
+          "Bug fixes scheduled for delivery on Friday, 23 Oct."
+         ],
+         [
+          "Round 2",
+          "Bug fixes delivered to DEV on 22 Oct."
+         ]
+        ]
+       },
+       {
+        "id": "n4006",
+        "t": "Care Advantage: keep the Audit Agent in sync with all I-9 forms in Care Advantage's delivery",
+        "rows": [
+         [
+          "Next",
+          "Obtain the latest token from Robert for the DEV workflow."
+         ]
+        ]
+       }
+      ]
+     },
+     "Nikita": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n4007",
+        "t": "Proliant",
+        "rows": [
+         [
+          "Status",
+          "In testing. Latest communication on Thursday, 22 Oct."
+         ]
+        ]
+       },
+       {
+        "id": "n4008",
+        "t": "SMS in Zippy ATS: integration (Nikita)",
+        "rows": [
+         [
+          "Note",
+          "Sumit owns the microservices."
+         ]
+        ]
+       }
+      ]
+     },
+     "Chetan": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n4009",
+        "t": "QA work for the custom page",
+        "rows": [
+         [
+          "Round 1",
+          "Bug fixes scheduled for deployment in the first half of Friday."
+         ],
+         [
+          "Round 2",
+          "Bugs shared with DEV on Thursday."
+         ]
+        ]
+       }
+      ]
+     },
+     "Rushi": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n4010",
+        "t": "Deliver the Vertex AI changes to Prod for WOTC, E-Verify and Onboarding",
+        "rows": [
+         [
+          "Due",
+          "Prod deployment by Friday EOD."
+         ]
+        ]
+       },
+       {
+        "id": "n4011",
+        "t": "Security controls",
+        "rows": [
+         [
+          "Target",
+          "DEV targets over 80% task closure on the security controls tracker by 23 Oct, EOD IST."
+         ]
+        ]
+       }
+      ]
+     }
     },
-    "Abhishek": {
-     "closed": [
-      {
-       "id": "n5005",
-       "t": "Audit Agent bugs, QA Round 1",
-       "rows": [
-        [
-         "Landed",
-         "Delivered to UAT."
-        ]
-       ]
-      }
-     ],
-     "progress": [
-      {
-       "id": "n5006",
-       "t": "Audit Agent bugs, QA Round 2",
-       "rows": [
-        [
-         "Next",
-         "Marked for delivery to UAT in the first half of Monday."
-        ],
-        [
-         "Note",
-         "QA needs to pick it up for testing, as there is a demo with the U.S. team on Monday evening."
-        ]
-       ]
-      }
-     ],
-     "notstarted": [
-      {
-       "id": "n5007",
-       "t": "Care Advantage: keep the Audit Agent in sync for all the I-9 forms in Care Advantage's delivery",
-       "rows": [
-        [
-         "Next",
-         "To be picked up by Abhishek in the second half of Monday."
-        ],
-        [
-         "Blocker",
-         "Token expiry issue. Loop in Abhishek and Nitin."
-        ]
-       ]
-      }
-     ],
-     "plan": []
-    },
-    "Nikita": {
-     "closed": [],
-     "progress": [
-      {
-       "id": "n5008",
-       "t": "SMS in Zippy ATS: integration (Nikita)",
-       "rows": [
-        [
-         "Status",
-         "In progress. High priority."
-        ],
-        [
-         "Note",
-         "Microservices are by Sumit."
-        ]
-       ]
-      },
-      {
-       "id": "n5009",
-       "t": "Proliant",
-       "rows": [
-        [
-         "Status",
-         "In Testing. On priority for Monday."
-        ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
-    },
-    "Chetan": {
-     "closed": [
-      {
-       "id": "n5010",
-       "t": "QA work for the custom page",
-       "rows": [
-        [
-         "Landed",
-         "Completed."
-        ]
-       ]
-      }
-     ],
-     "progress": [],
-     "notstarted": [],
-     "plan": []
-    },
-    "Rushi": {
-     "closed": [
-      {
-       "id": "n5011",
-       "t": "Vertex AI changes delivery to Prod for WOTC, E-Verify and Onboarding",
-       "rows": [
-        [
-         "Landed",
-         "All delivered to Prod."
-        ]
-       ]
-      }
-     ],
-     "progress": [
-      {
-       "id": "n5012",
-       "t": "Security controls",
-       "rows": [
-        [
-         "Status",
-         "More than 80% task closure was planned for Friday."
-        ],
-        [
-         "Next",
-         "The remaining tickets are taken in Sprint 23."
-        ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
-    }
+    "deployments": [
+     {
+      "item": "Two I-9 remote bugs",
+      "env": "Prod",
+      "owner": "Sumit and Aditi",
+      "when": "Friday",
+      "note": "Priority task for Friday."
+     },
+     {
+      "item": "Vertex AI changes for Onboarding",
+      "env": "Prod",
+      "owner": "Sumit and Aditi, then Infra (Rushikesh)",
+      "when": "By Friday EOD",
+      "note": "Only Onboarding's Prod delivery is pending. WOTC and E-Verify are in the same Prod delivery list."
+     },
+     {
+      "item": "Doc upload feature for Onboarding, QA round 1 bug fixes",
+      "env": "TBC",
+      "owner": "Sumit and Aditi",
+      "when": "First half of Friday",
+      "note": "Environment not stated in the update. QA Round 2 bugs shared with DEV on Thursday."
+     },
+     {
+      "item": "Audit Agent bug fixes, QA Round 1",
+      "env": "UAT",
+      "owner": "Abhishek",
+      "when": "Friday, 23 Oct",
+      "note": "QA Round 2 bug fixes delivered to DEV on 22 Oct."
+     }
+    ],
+    "priorities": [
+     {
+      "item": "Two I-9 remote bugs",
+      "owner": "Sumit and Aditi",
+      "note": "Prod deployment scheduled for Friday."
+     },
+     {
+      "item": "Vertex AI changes for WOTC, E-Verify and Onboarding",
+      "owner": "Sumit and Aditi deploy, Rushikesh for Infra",
+      "note": "Only Onboarding's Prod delivery is pending. Prod deployment by Friday EOD."
+     },
+     {
+      "item": "Deploy the doc upload feature for Onboarding",
+      "owner": "Sumit and Aditi",
+      "note": "QA logged bugs on 22 Oct. Round 1 fixes scheduled for deployment in the first half of Friday."
+     },
+     {
+      "item": "Resolve the Audit Agent bugs and deploy to UAT",
+      "owner": "Abhishek",
+      "note": "QA Round 1 bug fixes scheduled for delivery on Friday, 23 Oct. Round 2 fixes are with DEV."
+     },
+     {
+      "item": "Care Advantage: keep the Audit Agent in sync with all I-9 forms",
+      "owner": "Abhishek",
+      "note": "Obtain the latest token from Robert for the DEV workflow."
+     },
+     {
+      "item": "SMS in Zippy ATS",
+      "owner": "Sumit (microservices) and Nikita (integration)",
+      "note": ""
+     },
+     {
+      "item": "Proliant",
+      "owner": "Nikita",
+      "note": "In testing. Latest communication on Thursday, 22 Oct."
+     },
+     {
+      "item": "QA work for the custom page",
+      "owner": "Chetan",
+      "note": "Bugs shared with DEV on Thursday. Round 1 fixes scheduled for deployment in the first half of Friday."
+     },
+     {
+      "item": "Security controls",
+      "owner": "Rushikesh",
+      "note": "DEV targets over 80% task closure on the tracker by 23 Oct, EOD IST."
+     }
+    ]
    },
-   "deployments": [
-    {
-     "item": "Two I-9 remote bugs",
-     "env": "Prod",
-     "owner": "Sumit and Aditi",
-     "when": "Friday",
-     "note": "Task on priority for Friday."
-    },
-    {
-     "item": "Vertex AI changes for Onboarding",
-     "env": "Prod",
-     "owner": "Sumit and Aditi, then Infra (Rushikesh)",
-     "when": "By Friday EOD",
-     "note": "Only Prod delivery for Onboarding is pending."
-    },
-    {
-     "item": "Doc upload feature for Onboarding, QA round 1 bug fixes",
-     "env": "TBC",
-     "owner": "Sumit and Aditi",
-     "when": "First half of Friday",
-     "note": "Environment not stated in the update. QA round 2 bugs were shared with DEV on Thursday."
-    },
-    {
-     "item": "Audit Agent bug fixes, QA Round 1",
-     "env": "UAT",
-     "owner": "Abhishek",
-     "when": "Friday, 23 Oct",
-     "note": "QA Round 2 bug fixes were delivered to DEV on 22 Oct."
+   "pm": {
+    "tag": "DAY UPDATE",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [
+       {
+        "id": "n5001",
+        "t": "Vertex AI changes for Onboarding",
+        "rows": [
+         [
+          "Delivered",
+          "Deployed to Prod on Friday."
+         ]
+        ]
+       },
+       {
+        "id": "n5002",
+        "t": "Doc upload feature for Onboarding",
+        "rows": [
+         [
+          "Delivered",
+          "Delivered to Prod on Friday."
+         ],
+         [
+          "Note",
+          "Emailed the steps to use the feature to the U.S. team, including Sunil."
+         ]
+        ]
+       }
+      ],
+      "progress": [
+       {
+        "id": "n5003",
+        "t": "Two I-9 remote bugs",
+        "rows": [
+         [
+          "Status",
+          "Per Sumit on Friday: one fixed, one not reproducible."
+         ],
+         [
+          "Next",
+          "Both to be deployed to UAT for I9 Remote."
+         ]
+        ]
+       },
+       {
+        "id": "n5004",
+        "t": "SMS in Zippy ATS: microservices (Sumit)",
+        "rows": [
+         [
+          "Status",
+          "In progress; high priority."
+         ],
+         [
+          "Note",
+          "Nikita to lead integration."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Abhishek": {
+      "closed": [
+       {
+        "id": "n5005",
+        "t": "Audit Agent bugs, QA Round 1",
+        "rows": [
+         [
+          "Delivered",
+          "Delivered to UAT."
+         ]
+        ]
+       }
+      ],
+      "progress": [
+       {
+        "id": "n5006",
+        "t": "Audit Agent bugs, QA Round 2",
+        "rows": [
+         [
+          "Next",
+          "UAT delivery scheduled for the first half of Monday."
+         ],
+         [
+          "Note",
+          "QA to test ahead of the U.S. team demo on Monday evening."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [
+       {
+        "id": "n5007",
+        "t": "Care Advantage: keep the Audit Agent in sync with all I-9 forms in Care Advantage's delivery",
+        "rows": [
+         [
+          "Next",
+          "Abhishek to start in the second half of Monday."
+         ],
+         [
+          "Blocker",
+          "Token expiry issue. Involve Abhishek and Nitin."
+         ]
+        ]
+       }
+      ],
+      "plan": []
+     },
+     "Nikita": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n5008",
+        "t": "SMS in Zippy ATS: integration (Nikita)",
+        "rows": [
+         [
+          "Status",
+          "In progress; high priority."
+         ],
+         [
+          "Note",
+          "Sumit owns the microservices."
+         ]
+        ]
+       },
+       {
+        "id": "n5009",
+        "t": "Proliant",
+        "rows": [
+         [
+          "Status",
+          "In testing. Priority for Monday."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Chetan": {
+      "closed": [
+       {
+        "id": "n5010",
+        "t": "QA work for the custom page",
+        "rows": [
+         [
+          "Delivered",
+          "Completed."
+         ]
+        ]
+       }
+      ],
+      "progress": [],
+      "notstarted": [],
+      "plan": []
+     },
+     "Rushi": {
+      "closed": [
+       {
+        "id": "n5011",
+        "t": "Deliver the Vertex AI changes to Prod for WOTC, E-Verify and Onboarding",
+        "rows": [
+         [
+          "Delivered",
+          "All delivered to Prod."
+         ]
+        ]
+       }
+      ],
+      "progress": [
+       {
+        "id": "n5012",
+        "t": "Security controls",
+        "rows": [
+         [
+          "Status",
+          "Over 80% task closure was planned for Friday."
+         ],
+         [
+          "Next",
+          "Remaining tickets move to Sprint 23."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     }
     }
-   ],
-   "priorities": [
-    {
-     "item": "Two I-9 remote bugs",
-     "owner": "Sumit and Aditi",
-     "note": "Deployment to Prod marked for Friday."
-    },
-    {
-     "item": "Vertex AI changes for WOTC, E-Verify and Onboarding",
-     "owner": "Sumit and Aditi deploy, Rushikesh for Infra",
-     "note": "Only Prod delivery for Onboarding is pending. Deployment to Prod by Friday EOD."
-    },
-    {
-     "item": "Deploy the doc upload feature for Onboarding",
-     "owner": "Sumit and Aditi",
-     "note": "Bugs logged by QA on 22 Oct. Round 1 bug fixes marked for deployment in the first half of Friday."
-    },
-    {
-     "item": "Resolve the Audit Agent bugs and deploy to UAT",
-     "owner": "Abhishek",
-     "note": "QA Round 1 bug fixes marked for delivery on Friday, 23 Oct. Round 2 fixes are with DEV."
-    },
-    {
-     "item": "Care Advantage: keep the Audit Agent in sync for all the I-9 forms",
-     "owner": "Abhishek",
-     "note": "Connect with Robert to get the latest token for the DEV workflow."
-    },
-    {
-     "item": "SMS in Zippy ATS",
-     "owner": "Sumit (microservices) and Nikita (integration)",
-     "note": ""
-    },
-    {
-     "item": "Proliant",
-     "owner": "Nikita",
-     "note": "In Testing. Latest communication done on Thursday, 22 Oct."
-    },
-    {
-     "item": "QA work for the custom page",
-     "owner": "Chetan",
-     "note": "Bugs shared with DEV on Thursday. Round 1 bugs are marked for deployment in the first half of Friday."
-    },
-    {
-     "item": "Security controls",
-     "owner": "Rushikesh",
-     "note": "DEV aims for more than 80% task closure on the tracker by 23 Oct, EOD IST."
-    }
-   ]
+   }
   },
   {
    "date": "2026-10-26",
-   "tag": "EVENING UPDATE",
-   "people": {
-    "Sumit & Aditi": {
-     "closed": [
-      {
-       "id": "n8001",
-       "t": "Two I-9 remote bugs",
-       "rows": [
-        [
-         "Landed",
-         "One was delivered to UAT. One was non-repro."
+   "am": {
+    "tag": "MORNING PLAN",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n5013",
+        "t": "Two I-9 remote bugs",
+        "rows": [
+         [
+          "Status",
+          "One fixed, one not reproducible, per Sumit on Friday."
+         ],
+         [
+          "Deploy",
+          "Both go to UAT for I9 Remote."
+         ]
         ]
-       ]
-      }
-     ],
-     "progress": [
-      {
-       "id": "n8002",
-       "t": "SMS in Zippy ATS: microservices (Sumit)",
-       "rows": [
-        [
-         "Status",
-         "Microservice created. Integration pending."
-        ],
-        [
-         "Note",
-         "Both the SMS and email microservices are in the test environment right now."
+       },
+       {
+        "id": "n5014",
+        "t": "SMS in Zippy ATS: microservices (Sumit)",
+        "rows": [
+         [
+          "Priority",
+          "High priority today."
+         ],
+         [
+          "Note",
+          "Nikita owns integration."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n8003",
-       "t": "Email microservice",
-       "rows": [
-        [
-         "Status",
-         "DEV planned and created the microservice. It is in the test environment."
+       }
+      ]
+     },
+     "Abhishek": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n5015",
+        "t": "Audit Agent bugs, QA Round 2",
+        "rows": [
+         [
+          "Deploy",
+          "UAT, first half of Monday."
+         ],
+         [
+          "Note",
+          "U.S. team demo in the evening."
+         ]
         ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
+       },
+       {
+        "id": "n5016",
+        "t": "Care Advantage: keep the Audit Agent in sync with all I-9 forms in Care Advantage's delivery",
+        "rows": [
+         [
+          "Due",
+          "Second half of Monday."
+         ],
+         [
+          "Blocker",
+          "Token expiry issue. Involve Abhishek and Nitin."
+         ]
+        ]
+       }
+      ]
+     },
+     "Nikita": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n5017",
+        "t": "SMS in Zippy ATS: integration (Nikita)",
+        "rows": [
+         [
+          "Priority",
+          "High priority today."
+         ],
+         [
+          "Note",
+          "Sumit owns the microservices."
+         ]
+        ]
+       },
+       {
+        "id": "n5018",
+        "t": "Proliant",
+        "rows": [
+         [
+          "Priority",
+          "Priority today. In testing."
+         ]
+        ]
+       }
+      ]
+     },
+     "Chetan": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n5019",
+        "t": "QA testing of the Audit Agent Round 2 bug fixes",
+        "rows": [
+         [
+          "Due",
+          "Test after the UAT delivery, ahead of the evening U.S. team demo."
+         ]
+        ]
+       },
+       {
+        "id": "n6001",
+        "t": "Prepare the Audit Agent demo presentation",
+        "rows": [
+         [
+          "Note",
+          "New task. The U.S. team consistently requests a user guide."
+         ]
+        ]
+       },
+       {
+        "id": "n6002",
+        "t": "Complete the Sprint 22 closure activities",
+        "rows": []
+       }
+      ]
+     },
+     "Rushi": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n5020",
+        "t": "Security controls",
+        "rows": [
+         [
+          "Priority",
+          "Priority today."
+         ],
+         [
+          "Scope",
+          "Tickets remaining after Friday's 80% target move to Sprint 23."
+         ]
+        ]
+       }
+      ]
+     }
     },
-    "Abhishek": {
-     "closed": [
-      {
-       "id": "n8004",
-       "t": "Audit Agent bugs, QA Round 2",
-       "rows": [
-        [
-         "Landed",
-         "Delivered to UAT."
-        ]
-       ]
-      }
-     ],
-     "progress": [],
-     "notstarted": [
-      {
-       "id": "n8005",
-       "t": "Care Advantage: keep the Audit Agent in sync for all the I-9 forms in Care Advantage's delivery",
-       "rows": [
-        [
-         "Status",
-         "Not picked."
-        ]
-       ]
-      }
-     ],
-     "plan": []
-    },
-    "Nikita": {
-     "closed": [],
-     "progress": [],
-     "notstarted": [],
-     "plan": []
-    },
-    "Chetan": {
-     "closed": [],
-     "progress": [
-      {
-       "id": "n8006",
-       "t": "Infra discussion",
-       "rows": [
-        [
-         "When",
-         "2 PM, with Nitin and Rushikesh."
-        ],
-        [
-         "Note",
-         "Planned for Tuesday, 27 Oct."
-        ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
-    },
-    "Rushi": {
-     "closed": [],
-     "progress": [
-      {
-       "id": "n8007",
-       "t": "Infra discussion",
-       "rows": [
-        [
-         "When",
-         "2 PM, with Nitin and Chetan."
-        ],
-        [
-         "Note",
-         "Planned for Tuesday, 27 Oct."
-        ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
-    }
+    "deployments": [
+     {
+      "item": "Audit Agent bug fixes, QA Round 2",
+      "env": "UAT",
+      "owner": "Abhishek",
+      "when": "First half of Monday",
+      "note": "QA to test ahead of the U.S. team demo in the evening."
+     },
+     {
+      "item": "Two I-9 remote bugs",
+      "env": "UAT",
+      "owner": "Sumit",
+      "when": "Today",
+      "note": "One fixed, one not reproducible. Both deployed to UAT for I9 Remote."
+     }
+    ],
+    "priorities": [
+     {
+      "item": "Audit Agent delivery to UAT, QA Round 2 bug fixes",
+      "owner": "Abhishek, with QA from Chetan",
+      "note": "First half of Monday. U.S. team demo in the evening."
+     },
+     {
+      "item": "Deliver the two I-9 remote bug fixes to UAT",
+      "owner": "Sumit",
+      "note": "One fixed, one not reproducible. Both go to UAT for I9 Remote."
+     },
+     {
+      "item": "Care Advantage: keep the Audit Agent in sync with all I-9 forms",
+      "owner": "Abhishek",
+      "note": "Second half of Monday. Token expiry issue: involve Abhishek and Nitin."
+     },
+     {
+      "item": "SMS in Zippy ATS",
+      "owner": "Sumit (microservices) and Nikita (integration)",
+      "note": "High priority today."
+     },
+     {
+      "item": "Proliant",
+      "owner": "Nikita",
+      "note": "Priority today."
+     },
+     {
+      "item": "Security controls",
+      "owner": "Rushikesh",
+      "note": "Remaining tickets move to Sprint 23."
+     },
+     {
+      "item": "QA testing of the Audit Agent Round 2 bug fixes",
+      "owner": "Chetan",
+      "note": "Test after the UAT delivery, ahead of the evening U.S. team demo."
+     },
+     {
+      "item": "Prepare the Audit Agent demo presentation",
+      "owner": "Chetan",
+      "note": "New task. The U.S. team consistently requests a user guide."
+     },
+     {
+      "item": "Complete the Sprint 22 closure activities",
+      "owner": "Chetan",
+      "note": ""
+     }
+    ]
    },
-   "deployments": [
-    {
-     "item": "Audit Agent bug fixes, QA Round 2",
-     "env": "UAT",
-     "owner": "Abhishek",
-     "when": "First half of Monday",
-     "note": "QA needs to pick it up for testing. Demo with the U.S. team in the evening."
-    },
-    {
-     "item": "Two I-9 remote bugs",
-     "env": "UAT",
-     "owner": "Sumit",
-     "when": "Today",
-     "note": "One was fixed and one was non-repro. Both go to UAT for I9 Remote."
+   "pm": {
+    "tag": "EVENING UPDATE",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [
+       {
+        "id": "n8001",
+        "t": "Two I-9 remote bugs",
+        "rows": [
+         [
+          "Delivered",
+          "One delivered to UAT; one not reproducible."
+         ]
+        ]
+       }
+      ],
+      "progress": [
+       {
+        "id": "n8002",
+        "t": "SMS in Zippy ATS: microservices (Sumit)",
+        "rows": [
+         [
+          "Status",
+          "Microservice built; integration pending."
+         ],
+         [
+          "Note",
+          "SMS and email microservices are both in the test environment."
+         ]
+        ]
+       },
+       {
+        "id": "n8003",
+        "t": "Email microservice",
+        "rows": [
+         [
+          "Status",
+          "DEV planned and built the microservice, now in the test environment."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Abhishek": {
+      "closed": [
+       {
+        "id": "n8004",
+        "t": "Audit Agent bugs, QA Round 2",
+        "rows": [
+         [
+          "Delivered",
+          "Delivered to UAT."
+         ]
+        ]
+       }
+      ],
+      "progress": [],
+      "notstarted": [
+       {
+        "id": "n8005",
+        "t": "Care Advantage: keep the Audit Agent in sync with all I-9 forms in Care Advantage's delivery",
+        "rows": [
+         [
+          "Status",
+          "Not started."
+         ]
+        ]
+       }
+      ],
+      "plan": []
+     },
+     "Nikita": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": []
+     },
+     "Chetan": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n8006",
+        "t": "Infra discussion",
+        "rows": [
+         [
+          "When",
+          "2 PM with Nitin and Rushikesh."
+         ],
+         [
+          "Note",
+          "Scheduled for Tuesday, 27 Oct."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Rushi": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n8007",
+        "t": "Infra discussion",
+        "rows": [
+         [
+          "When",
+          "2 PM with Nitin and Chetan."
+         ],
+         [
+          "Note",
+          "Scheduled for Tuesday, 27 Oct."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     }
     }
-   ],
-   "priorities": [
-    {
-     "item": "Audit Agent delivery to UAT, QA Round 2 bug fixes",
-     "owner": "Abhishek, with QA from Chetan",
-     "note": "First half of Monday. Demo with the U.S. team in the evening."
-    },
-    {
-     "item": "Delivery of the two I-9 remote bugs to UAT",
-     "owner": "Sumit",
-     "note": "One fixed and one non-repro. Both go to UAT for I9 Remote."
-    },
-    {
-     "item": "Care Advantage: keep the Audit Agent in sync for all the I-9 forms",
-     "owner": "Abhishek",
-     "note": "Second half of Monday. Token expiry issue: loop in Abhishek and Nitin."
-    },
-    {
-     "item": "SMS in Zippy ATS",
-     "owner": "Sumit (microservices) and Nikita (integration)",
-     "note": "High priority today."
-    },
-    {
-     "item": "Proliant",
-     "owner": "Nikita",
-     "note": "On priority today."
-    },
-    {
-     "item": "Security controls",
-     "owner": "Rushikesh",
-     "note": "The remaining tickets are taken in Sprint 23."
-    },
-    {
-     "item": "QA testing of the Audit Agent Round 2 bug fixes",
-     "owner": "Chetan",
-     "note": "After the UAT delivery, in time for the evening demo with the U.S. team."
-    },
-    {
-     "item": "Presentation for the demo of the Audit Agent",
-     "owner": "Chetan",
-     "note": "New task. The U.S. team always asks for a user guide."
-    },
-    {
-     "item": "Sprint closure activities for Sprint 22",
-     "owner": "Chetan",
-     "note": ""
-    }
-   ]
+   }
   },
   {
    "date": "2026-10-27",
-   "tag": "EVENING UPDATE",
-   "people": {
-    "Sumit & Aditi": {
-     "closed": [],
-     "progress": [
-      {
-       "id": "n9001",
-       "t": "Microservices for other Products",
-       "rows": [
-        [
-         "Status",
-         "Integration pending. I9 completed. Rest products pending."
+   "am": {
+    "tag": "MORNING PLAN",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n8008",
+        "t": "Microservices for other Products",
+        "rows": [
+         [
+          "Priority",
+          "Priority item for 27 Oct."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n9002",
-       "t": "SSO using phone number for all products (excluding ATS)",
-       "rows": [
-        [
-         "Status",
-         "I9, E-Verify and Dashboard. Front end dev work done, integration is pending and testing."
-        ],
-        [
-         "Expected closure",
-         "Thursday morning."
+       },
+       {
+        "id": "n8009",
+        "t": "I9 in Onboarding",
+        "rows": []
+       },
+       {
+        "id": "n8010",
+        "t": "SSO using phone number for all products (excluding ATS)",
+        "rows": []
+       }
+      ]
+     },
+     "Abhishek": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n8011",
+        "t": "P0: Connect actual company data to the Audit Agent for Care Advantage",
+        "rows": [
+         [
+          "Priority",
+          "Priority item for 27 Oct."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n9003",
-       "t": "P0: Connect actual company data, Care Advantage with Audit Agent",
-       "rows": [
-        [
-         "Owner",
-         "Sumit"
-        ],
-        [
-         "Status",
-         "Audit Agent APIs creation, a combined effort with Abhishek."
+       },
+       {
+        "id": "n8012",
+        "t": "U.S. team CRs for Zippy ATS",
+        "rows": []
+       },
+       {
+        "id": "n8013",
+        "t": "SuperAdmin Dashboard Automation BUGs P0/P1",
+        "rows": []
+       },
+       {
+        "id": "n8014",
+        "t": "Retail Work",
+        "rows": []
+       }
+      ]
+     },
+     "Nikita": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n8015",
+        "t": "Integrate the SMS microservice into Zippy ATS",
+        "rows": []
+       },
+       {
+        "id": "n8016",
+        "t": "Develop and deploy the new registration flow",
+        "rows": [
+         [
+          "Priority",
+          "Priority item for 27 Oct."
+         ]
         ]
-       ]
-      },
-      {
-       "id": "n9004",
-       "t": "I9 doc creation for Care Advantage",
-       "rows": [
-        [
-         "Owner",
-         "Aditi"
+       }
+      ]
+     },
+     "Chetan": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n8019",
+        "t": "Manage Jira for Sprints 22 and 23",
+        "rows": []
+       },
+       {
+        "id": "n8020",
+        "t": "Test the Audit Agent on prod data",
+        "rows": []
+       },
+       {
+        "id": "n8021",
+        "t": "Build QA automation for the Audit Agent",
+        "rows": []
+       }
+      ]
+     },
+     "Rushi": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n8017",
+        "t": "Infrastructure call with Nitin and Chetan at 2 PM",
+        "rows": [
+         [
+          "Priority",
+          "Priority item for 27 Oct."
+         ]
         ]
-       ]
-      }
-     ],
-     "notstarted": [],
-     "plan": []
+       },
+       {
+        "id": "n8018",
+        "t": "Audit infrastructure readiness",
+        "rows": [
+         [
+          "Priority",
+          "Priority item for 27 Oct."
+         ]
+        ]
+       }
+      ]
+     }
     },
-    "Abhishek": {
-     "closed": [],
-     "progress": [],
-     "notstarted": [],
-     "plan": []
-    },
-    "Nikita": {
-     "closed": [
-      {
-       "id": "n9005",
-       "t": "(No email, only phone) for Zippy Workflow R&D",
-       "rows": [
-        [
-         "Landed",
-         "Done."
-        ]
-       ]
-      },
-      {
-       "id": "n9006",
-       "t": "Pricing plan",
-       "rows": [
-        [
-         "Landed",
-         "Ready, prepared by Pauline."
-        ]
-       ]
-      }
-     ],
-     "progress": [
-      {
-       "id": "n9007",
-       "t": "Integration for SMS Microservice in Zippy ATS",
-       "rows": [
-        [
-         "Status",
-         "Done. Dev testing pending, to be tested with Robert and Pauline."
-        ]
-       ]
-      },
-      {
-       "id": "n9008",
-       "t": "Communication from the Proliant team",
-       "rows": [
-        [
-         "Status",
-         "Asking for release. Reply to be shared on 27 Oct EOD."
-        ]
-       ]
-      },
-      {
-       "id": "n9009",
-       "t": "Registration flow",
-       "rows": []
-      },
-      {
-       "id": "n9010",
-       "t": "Pauline's query for redirection URL to be changed to default URL",
-       "rows": []
-      }
-     ],
-     "notstarted": [],
-     "plan": []
-    },
-    "Chetan": {
-     "closed": [],
-     "progress": [],
-     "notstarted": [],
-     "plan": []
-    },
-    "Rushi": {
-     "closed": [],
-     "progress": [
-      {
-       "id": "n9011",
-       "t": "SOPs to be prepared so that during leave we can actually tackle it",
-       "rows": []
-      },
-      {
-       "id": "n9012",
-       "t": "Security controls applied by the end of the sprint",
-       "rows": []
-      },
-      {
-       "id": "n9013",
-       "t": "Product by product plan for infra security",
-       "rows": []
-      }
-     ],
-     "notstarted": [],
-     "plan": []
-    }
+    "priorities": [
+     {
+      "item": "Microservices for other Products",
+      "owner": "Sumit, with Aditi",
+      "note": ""
+     },
+     {
+      "item": "P0: Connect actual company data to the Audit Agent for Care Advantage",
+      "owner": "Abhishek",
+      "note": ""
+     },
+     {
+      "item": "Develop and deploy the new registration flow",
+      "owner": "Nikita",
+      "note": ""
+     },
+     {
+      "item": "Infrastructure call with Nitin and Chetan at 2 PM",
+      "owner": "Rushikesh, with Chetan",
+      "note": ""
+     },
+     {
+      "item": "Audit infrastructure readiness",
+      "owner": "Rushikesh",
+      "note": ""
+     }
+    ]
    },
-   "priorities": [
-    {
-     "item": "Microservices for other Products",
-     "owner": "Sumit, with Aditi",
-     "note": ""
-    },
-    {
-     "item": "P0: Connect actual company data, Care Advantage with Audit Agent",
-     "owner": "Abhishek",
-     "note": ""
-    },
-    {
-     "item": "Developing and Deployment of new registration flow",
-     "owner": "Nikita",
-     "note": ""
-    },
-    {
-     "item": "Call with Nitin and Chetan for Infra at 2 PM",
-     "owner": "Rushikesh, with Chetan",
-     "note": ""
-    },
-    {
-     "item": "Auditing for Infra readiness",
-     "owner": "Rushikesh",
-     "note": ""
+   "pm": {
+    "tag": "EVENING UPDATE",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n9001",
+        "t": "Microservices for other Products",
+        "rows": [
+         [
+          "Status",
+          "I9 complete. Integration and remaining products pending."
+         ]
+        ]
+       },
+       {
+        "id": "n9002",
+        "t": "SSO using phone number for all products (excluding ATS)",
+        "rows": [
+         [
+          "Status",
+          "I9, E-Verify and Dashboard: front-end development complete; integration and testing pending."
+         ],
+         [
+          "Expected closure",
+          "Thursday morning."
+         ]
+        ]
+       },
+       {
+        "id": "n9003",
+        "t": "P0: Connect actual company data to the Audit Agent for Care Advantage",
+        "rows": [
+         [
+          "Owner",
+          "Sumit"
+         ],
+         [
+          "Status",
+          "Build the Audit Agent APIs, a joint effort with Abhishek."
+         ]
+        ]
+       },
+       {
+        "id": "n9004",
+        "t": "I9 doc creation for Care Advantage",
+        "rows": [
+         [
+          "Owner",
+          "Aditi"
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Abhishek": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": []
+     },
+     "Nikita": {
+      "closed": [
+       {
+        "id": "n9005",
+        "t": "No email, phone only, for Zippy Workflow R&D",
+        "rows": [
+         [
+          "Delivered",
+          "Complete."
+         ]
+        ]
+       },
+       {
+        "id": "n9006",
+        "t": "Pricing plan",
+        "rows": [
+         [
+          "Delivered",
+          "Ready; prepared by Pauline."
+         ]
+        ]
+       }
+      ],
+      "progress": [
+       {
+        "id": "n9007",
+        "t": "Integrate the SMS microservice into Zippy ATS",
+        "rows": [
+         [
+          "Status",
+          "Integration complete. DEV testing pending, to be run with Robert and Pauline."
+         ]
+        ]
+       },
+       {
+        "id": "n9008",
+        "t": "Proliant team communication",
+        "rows": [
+         [
+          "Status",
+          "Proliant requests the release. Response due 27 Oct EOD."
+         ]
+        ]
+       },
+       {
+        "id": "n9009",
+        "t": "Registration flow",
+        "rows": []
+       },
+       {
+        "id": "n9010",
+        "t": "Pauline's query: change the redirection URL to the default URL",
+        "rows": []
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Chetan": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": []
+     },
+     "Rushi": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n9011",
+        "t": "Prepare SOPs so the team can handle issues during leave",
+        "rows": []
+       },
+       {
+        "id": "n9012",
+        "t": "Apply the security controls by the end of the sprint",
+        "rows": []
+       },
+       {
+        "id": "n9013",
+        "t": "Product-by-product plan for infra security",
+        "rows": []
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     }
     }
-   ]
+   }
+  },
+  {
+   "date": "2026-10-28",
+   "am": {
+    "tag": "MORNING PLAN",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n9501",
+        "t": "Microservices for other Products",
+        "rows": [
+         [
+          "Status",
+          "Microservices are ready. Integration for I9, E-Verify and Dashboard to be picked up on a requirement basis."
+         ],
+         [
+          "Next",
+          "Today: integrate the SMS microservice for I9 once the 321 API task for the Audit Agent is up and running."
+         ]
+        ]
+       },
+       {
+        "id": "n9502",
+        "t": "I9 in Onboarding",
+        "rows": [
+         [
+          "Status",
+          "No spec yet."
+         ]
+        ]
+       },
+       {
+        "id": "n9503",
+        "t": "SSO using phone number for all products (excluding ATS)",
+        "rows": [
+         [
+          "Status",
+          "In progress."
+         ]
+        ]
+       }
+      ]
+     },
+     "Abhishek": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n9504",
+        "t": "Deploy the Audit Agent to the test env",
+        "rows": [
+         [
+          "Note",
+          "Prod data, standalone, on test env."
+         ]
+        ]
+       },
+       {
+        "id": "n9505",
+        "t": "Integrate the Audit Agent with the 321 APIs built by Sumit",
+        "rows": []
+       }
+      ]
+     },
+     "Nikita": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n9506",
+        "t": "Integrate the SMS microservice into Zippy ATS",
+        "rows": [
+         [
+          "Status",
+          "Testing pending."
+         ]
+        ]
+       },
+       {
+        "id": "n9507",
+        "t": "Develop the new registration flow",
+        "rows": [
+         [
+          "Status",
+          "Development in progress."
+         ]
+        ]
+       }
+      ]
+     },
+     "Chetan": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n9508",
+        "t": "Jira Management",
+        "rows": []
+       },
+       {
+        "id": "n9509",
+        "t": "Validate the Audit Agent against Care Advantage's I9 forms",
+        "rows": []
+       },
+       {
+        "id": "n9510",
+        "t": "Review Zippy's new pricing plan",
+        "rows": []
+       },
+       {
+        "id": "n9511",
+        "t": "Align with Sunil on the priority CRs for Zippy ATS",
+        "rows": []
+       }
+      ]
+     },
+     "Rushi": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n9512",
+        "t": "Infrastructure Control and Documentation Plan",
+        "rows": [
+         [
+          "1",
+          "Billing cycle"
+         ],
+         [
+          "2",
+          "Security controls"
+         ],
+         [
+          "3",
+          "Deep audit of each product, with findings such as certificate expiry in 321 OnB"
+         ]
+        ]
+       }
+      ]
+     }
+    },
+    "deployments": [
+     {
+      "item": "I9 Audit Agent",
+      "env": "Test",
+      "owner": "Abhishek",
+      "when": "Today",
+      "note": "The only deployment scheduled today. Prod data, standalone, on the test env."
+     }
+    ],
+    "priorities": [
+     {
+      "group": "Product: I9 Audit Agent",
+      "item": "Integrate the Audit Agent with standalone and 321",
+      "owner": "Abhishek",
+      "note": "Integrate the Audit Agent with the 321 APIs built by Sumit."
+     },
+     {
+      "group": "Product: I9 Audit Agent",
+      "item": "QA testing of the Audit Agent on the I9 test env",
+      "owner": "Chetan",
+      "note": ""
+     },
+     {
+      "group": "Product: Zippy ATS",
+      "item": "SMS microservice in Zippy ATS",
+      "owner": "Nikita",
+      "note": "Testing pending."
+     },
+     {
+      "group": "Vertical: Infrastructure",
+      "item": "Infrastructure resilience plan: billing, audit findings and cyber-attack response",
+      "owner": "Rushikesh",
+      "note": "Three areas agreed with Chetan on 28 Oct: billing, audit findings (for example, 321 certificate expiry) and cyber-attack response."
+     },
+     {
+      "group": "Vertical: Scrum",
+      "item": "Run the Sprint 22 retrospective",
+      "owner": "Chetan",
+      "note": ""
+     },
+     {
+      "group": "Vertical: Scrum",
+      "item": "Set original estimates on Sprint 23 Jira tickets",
+      "owner": "Chetan",
+      "note": ""
+     }
+    ]
+   }
   }
  ],
  "standing": {
@@ -3537,7 +4557,7 @@
    },
    {
     "id": "t01q",
-    "t": "Retention and Tax Agent to code complete",
+    "t": "Bring Retention and Tax Agent to code complete",
     "rows": [],
     "since": "2026-10-06"
    }
@@ -3565,7 +4585,7 @@
   "Chetan": [
    {
     "id": "t01u",
-    "t": "Work towards code review and Google Auth fixes release (not to be picked up today)",
+    "t": "Prepare the code review and Google Auth fixes release (not for today)",
     "rows": [],
     "since": "2026-10-06"
    }
@@ -3732,7 +4752,7 @@
      "Abhishek": [
       {
        "id": "n8011",
-       "t": "P0: Connect actual company data, Care Advantage with Audit Agent",
+       "t": "P0: Connect actual company data to the Audit Agent for Care Advantage",
        "rows": [
         [
          "Priority",
@@ -3759,12 +4779,12 @@
      "Nikita": [
       {
        "id": "n8015",
-       "t": "Integration for SMS Microservice in Zippy ATS",
+       "t": "Integrate the SMS microservice into Zippy ATS",
        "rows": []
       },
       {
        "id": "n8016",
-       "t": "Developing and Deployment of new registration flow",
+       "t": "Develop and deploy the new registration flow",
        "rows": [
         [
          "Priority",
@@ -3776,7 +4796,7 @@
      "Rushi": [
       {
        "id": "n8017",
-       "t": "Call with Nitin and Chetan for Infra at 2 PM",
+       "t": "Infrastructure call with Nitin and Chetan at 2 PM",
        "rows": [
         [
          "Priority",
@@ -3786,7 +4806,7 @@
       },
       {
        "id": "n8018",
-       "t": "Auditing for Infra readiness",
+       "t": "Audit infrastructure readiness",
        "rows": [
         [
          "Priority",
@@ -3798,17 +4818,17 @@
      "Chetan": [
       {
        "id": "n8019",
-       "t": "Jira management for Sprint 22 and 23",
+       "t": "Manage Jira for Sprints 22 and 23",
        "rows": []
       },
       {
        "id": "n8020",
-       "t": "Audit Agent testing for prod data",
+       "t": "Test the Audit Agent on prod data",
        "rows": []
       },
       {
        "id": "n8021",
-       "t": "Audit Agent QA Automation build creation",
+       "t": "Build QA automation for the Audit Agent",
        "rows": []
       }
      ]
@@ -3819,7 +4839,7 @@
 }</script>
 
 <script>
-const BUILD = "2026-10-27-viewer-13";
+const BUILD = "2026-10-28-viewer-17";
 const JIRA = "https://canaryai.atlassian.net/browse/";
 const GROUPS = [["closed","CLOSED","Closed"],["progress","IN PROGRESS","In progress"],["notstarted","NOT STARTED","Not started"],["plan","PLANNED","Planned"]];
 const GKEYS = GROUPS.map(g => g[0]), LABEL = Object.fromEntries(GROUPS.map(g => [g[0], g[2]]));
@@ -3840,8 +4860,21 @@ const fullShort = d => { const p = dparts(d); return `${WD[p.wd].slice(0, 3)} ${
 const dayCount = d => { const p = dparts(d), n = new Date(); return Math.max(0, Math.round((Date.UTC(n.getFullYear(), n.getMonth(), n.getDate()) - Date.UTC(p.y, p.m - 1, p.d)) / 86400000)); };
 const isPlan = day => /PLAN/i.test(day.tag || '');
 const isDateKey = k => /^\d{4}-\d{2}-\d{2}$/.test(k || '');
-const person = (day, nm) => day.people[nm] || {};
-const hasUpdate = d => DATA.names.some(nm => { const p = d.people[nm]; return p && GKEYS.some(k => (p[k] || []).length); });
+const SESS = {};
+const sessHas = s => DATA.names.some(nm => { const p = s.people && s.people[nm]; return p && GKEYS.some(k => (p[k] || []).length); });
+function sessionsOf(d) {
+  if (d._ss) return d._ss;
+  let out = [];
+  if (d.am) out.push(Object.assign({ key:'am' }, d.am));
+  if (d.pm) out.push(Object.assign({ key:'pm' }, d.pm));
+  if (!out.length) out.push({ key: /PLAN/i.test(d.tag || '') ? 'am' : /EVENING/i.test(d.tag || '') ? 'pm' : 'day', tag:d.tag, people:d.people || {}, deployments:d.deployments, priorities:d.priorities, forDate:d.forDate });
+  out = out.filter(sessHas);
+  Object.defineProperty(d, '_ss', { value:out, enumerable:false }); return out;
+}
+const sessionOf = d => { const ss = sessionsOf(d); return ss.find(s => s.key === SESS[d.date]) || ss[ss.length - 1] || null; };
+const person = (s, nm) => (s.people && s.people[nm]) || {};
+const hasUpdate = d => sessionsOf(d).length > 0;
+function parseHash(h) { const m = /^(\d{4}-\d{2}-\d{2})-(am|pm)$/.exec(h || ''); if (m) { SESS[m[1]] = m[2]; return m[1]; } return h || ''; }
 const shownDays = () => DATA.days.filter(hasUpdate).sort((a, b) => a.date < b.date ? -1 : 1);
 
 /* ---------- sprints ---------- */
@@ -3866,7 +4899,7 @@ function personHTML(day, name) {
   let h = `<div class="person"><div class="person-head"><h3>${esc(name)}</h3></div>`;
   if (p.jira) h += `<div class="meta"><b>Jira:</b> ${esc(p.jira)}</div>`;
   if (p.leave) return h + `<div class="none">${/HOLIDAY/i.test(day.tag) ? 'Holiday.' : 'On leave.'}</div></div>`;
-  if (!total) return h + `<div class="none">${isPlan(day) ? 'No plan reported.' : 'No update reported.'}</div></div>`;
+  if (!total) return h + `<div class="none">${isPlan(day) ? 'No plan recorded.' : 'No update recorded.'}</div></div>`;
   GROUPS.forEach(([k, label]) => {
     const list = p[k] || []; if (!list.length) return;
     h += `<div class="grp ${k}"><div class="grp-head"><span class="gname">${label}</span><span class="gcount">${list.length}</span></div>${list.map(t => card(t, k)).join('')}</div>`;
@@ -3874,10 +4907,12 @@ function personHTML(day, name) {
   return h + `</div>`;
 }
 function dayHTML(d) {
-  const cnt = k => DATA.names.reduce((n, nm) => n + (person(d, nm)[k] || []).length, 0);
+  const ss = sessionsOf(d), s = sessionOf(d); if (!s) return '';
+  const cnt = k => DATA.names.reduce((n, nm) => n + (person(s, nm)[k] || []).length, 0);
   const stats = GROUPS.filter(g => cnt(g[0]) > 0).map(g => `<div class="stat ${g[0]}"><div class="num">${cnt(g[0])}</div><div class="lbl">${g[2]}</div></div>`).join('');
-  return `<section class="day" data-key="${d.date}"><div class="day-head"><h2>${longDate(d.date)}</h2><div class="headtags">${sprintOf(d.date) ? `<span class="sprintbadge">${esc(sprintOf(d.date).name)}</span>` : ''}<span class="kind ${isPlan(d) ? 'Plan' : 'Update'}">${esc(d.tag)}</span></div></div>` +
-    `<div class="summary">${stats}</div>${DATA.names.map(nm => personHTML(d, nm)).join('')}</section>`;
+  const toggle = ss.length > 1 ? `<div class="ampm" role="group" aria-label="Morning or evening">${ss.map(x => `<button type="button" class="amb${x.key === s.key ? ' on' : ''}" data-day="${d.date}" data-sess="${x.key}" aria-pressed="${x.key === s.key}">${x.key === 'am' ? 'AM' : 'PM'}</button>`).join('')}</div>` : '';
+  return `<section class="day" data-key="${d.date}"><div class="day-head"><h2>${longDate(d.date)}</h2><div class="headtags">${sprintOf(d.date) ? `<span class="sprintbadge">${esc(sprintOf(d.date).name)}</span>` : ''}${toggle}<span class="kind ${isPlan(s) ? 'Plan' : 'Update'}">${esc(s.tag)}</span></div></div>` +
+    `<div class="summary">${stats}</div>${DATA.names.map(nm => personHTML(s, nm)).join('')}</section>`;
 }
 function standingHTML() {
   const people = DATA.names.map(nm => {
@@ -3885,7 +4920,7 @@ function standingHTML() {
     return `<div class="person"><div class="person-head"><h3>${esc(nm)}</h3></div>${items.length ? items.map(t => card(t, 'standing')).join('') : '<div class="none">No standing items.</div>'}</div>`;
   }).join('');
   return `<section class="day" data-key="standing"><div class="day-head"><h2>Standing items</h2><span class="kind Plan">STANDING</span></div>` +
-    `<p class="lead">Work that stays open from day to day, not tied to one date. Each item shows when it started standing.</p>${people}</section>`;
+    `<p class="lead">Work that stays open across days, independent of any single date. Each item shows when it became standing.</p>${people}</section>`;
 }
 
 /* ---------- sprint planning ---------- */
@@ -3973,6 +5008,7 @@ function renderFilter() {
 function closePanel() { $('ddPanel').hidden = true; $('ddBtn').setAttribute('aria-expanded', 'false'); }
 $('ddBtn').addEventListener('click', e => { e.stopPropagation(); const open = $('ddPanel').hidden; $('ddPanel').hidden = !open; $('ddBtn').setAttribute('aria-expanded', String(open)); if (open) { const on = $('ddPanel').querySelector('.on'); if (on) on.scrollIntoView({ block:'nearest' }); } });
 document.addEventListener('click', e => {
+  const am = e.target.closest('.amb'); if (am) { const dt = am.dataset.day, day = DATA.days.find(x => x.date === dt), sec = document.querySelector('.day[data-key="' + dt + '"]'); SESS[dt] = am.dataset.sess; if (day && sec) { sec.outerHTML = dayHTML(day); show(active); } return; }
   const pick = e.target.closest('.ddday, .ddall'); if (pick) { show(pick.dataset.key); closePanel(); return; }
   const pg = e.target.closest('.pagebtn'); if (pg) { show(pg.dataset.page); closePanel(); return; }
   const pl = e.target.closest('.plansp'); if (pl) { PLAN.sprint = pl.dataset.plan; PLAN.open = false; PLAN.q = ''; rerenderPlan(); return; }
@@ -3987,16 +5023,16 @@ document.addEventListener('input', e => { if (e.target.id !== 'planSearch') retu
 
 /* ---------- top sections: deployments and priority items ---------- */
 function topSectionsHTML(key) {
-  const d = isDateKey(key) ? DATA.days.find(x => x.date === key) : null; if (!d) return '';
-  const dep = d.deployments || [], pri = d.priorities || []; if (!dep.length && !pri.length) return '';
-  const fd = d.forDate || d.date, n = new Date();
+  const d = isDateKey(key) ? DATA.days.find(x => x.date === key) : null, s = d && sessionOf(d); if (!s) return '';
+  const dep = s.deployments || [], pri = s.priorities || []; if (!dep.length && !pri.length) return '';
+  const fd = s.forDate || d.date, n = new Date();
   const today = `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`;
   const when = fd === today ? 'TODAY' : 'MARKED FOR';
   const depHTML = dep.length ? `<div class="dep" role="region" aria-label="Deployments"><div class="dep-head"><span class="dep-tag">DEPLOYMENTS ${when}</span><b>${longDate(fd)}</b></div><div class="dep-grid">` +
     dep.map(x => `<div class="dep-item"><div class="dep-env ${esc(x.env)}">${esc(x.env)}</div><div><div class="dep-title">${linkify(x.item)}</div>` +
       `<div class="dep-meta"><span><b>Owner</b> ${esc(x.owner)}</span>${x.when ? `<span><b>When</b> ${esc(x.when)}</span>` : ''}</div>${x.note ? `<div class="dep-note">${linkify(x.note)}</div>` : ''}</div></div>`).join('') + `</div></div>` : '';
   const priHTML = pri.length ? `<div class="prio" role="region" aria-label="Priority items"><div class="dep-head"><span class="prio-tag">PRIORITY ITEMS ${when === 'TODAY' ? 'TODAY' : 'FOR'}</span><b>${longDate(fd)}</b></div><div class="prio-list">` +
-    pri.map((x, i) => `<div class="prio-item"><div class="prio-num">${i + 1}</div><div><div class="dep-title">${linkify(x.item)}</div><div class="dep-meta"><span><b>Owner</b> ${esc(x.owner)}</span></div>${x.note ? `<div class="dep-note">${linkify(x.note)}</div>` : ''}</div></div>`).join('') + `</div></div>` : '';
+    pri.map((x, i) => (x.group && x.group !== (pri[i - 1] || {}).group ? `<div class="prio-group">${esc(x.group)}</div>` : '') + `<div class="prio-item"><div class="prio-num">${i + 1}</div><div><div class="dep-title">${linkify(x.item)}</div><div class="dep-meta"><span><b>Owner</b> ${esc(x.owner)}</span></div>${x.note ? `<div class="dep-note">${linkify(x.note)}</div>` : ''}</div></div>`).join('') + `</div></div>` : '';
   return depHTML + priHTML;
 }
 
@@ -4017,16 +5053,16 @@ function show(key, quiet) {
   $('eyebrow').textContent = d ? longDate(d.date).toUpperCase() : (key === 'standing' ? 'STANDING ITEMS' : key === 'efficiency' ? 'TEAM EFFICIENCY' : key === 'planning' ? 'SPRINT PLANNING' : 'ALL DATES');
   renderFilter();
   $('depBanner').innerHTML = topSectionsHTML(key); $('sprintStrip').innerHTML = sprintStripHTML(key);
-  if (!quiet && history.replaceState) history.replaceState(null, '', '#' + key);
+  if (!quiet && history.replaceState) { const sd = d && sessionsOf(d).length > 1 ? sessionOf(d) : null; history.replaceState(null, '', '#' + key + (sd ? '-' + sd.key : '')); }
 }
-window.addEventListener('hashchange', () => { const k = location.hash.slice(1); if (!k || k === active || !DATA) return; active = k; fixActive(); show(active, true); });
+window.addEventListener('hashchange', () => { const k = parseHash(location.hash.slice(1)); if (!k || !DATA) return; active = k; render(); });
 
 /* ---------- load, refresh ---------- */
 async function fetchData() {
   if (location.protocol === 'file:') return null;
   try { const r = await fetch('data.json?_=' + Date.now(), { cache:'no-store' }); return r.ok ? await r.json() : null; } catch (e) { return null; }
 }
-async function load() { DATA = (await fetchData()) || SEED; DATA.standing = DATA.standing || {}; active = location.hash.slice(1); render(); }
+async function load() { DATA = (await fetchData()) || SEED; DATA.standing = DATA.standing || {}; active = parseHash(location.hash.slice(1)); render(); }
 async function poll() { if (document.hidden || !DATA) return; const r = await fetchData(); if (r && r.updated !== DATA.updated) { DATA = r; DATA.standing = DATA.standing || {}; render(); } }
 load(); setInterval(poll, 60000); document.addEventListener('visibilitychange', () => { if (!document.hidden) poll(); });
 
