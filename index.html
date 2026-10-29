@@ -207,8 +207,9 @@
   <main id="app"></main>
   <footer>Version: 28 Oct, Sprint 23 day 3.</footer>
 </div>
-<script type="application/json" id="seed">{
- "updated": "2026-10-28T08:00:00.000Z",
+<script type="application/json" id="seed">
+{
+ "updated": "2026-10-29T05:21:03.000Z",
  "names": [
   "Sumit & Aditi",
   "Abhishek",
@@ -4524,6 +4525,163 @@
       "note": ""
      }
     ]
+   },
+   "pm": {
+    "tag": "EVENING UPDATE",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n9701",
+        "t": "Integrate the SMS microservice into I9",
+        "rows": [
+         [
+          "Status",
+          "Integrate once the 321 API task for the Audit Agent is up and running."
+         ],
+         [
+          "Pending",
+          "DEV testing and QAT."
+         ]
+        ]
+       },
+       {
+        "id": "n9702",
+        "t": "SSO using phone number for all products (excluding ATS)",
+        "rows": [
+         [
+          "Status",
+          "Started in sync with the first task, for Dashboard and E-Verify."
+         ],
+         [
+          "Expected closure",
+          "I9: tomorrow (Thursday 29 Oct). Dashboard and E-Verify: by Friday morning (30 Oct)."
+         ]
+        ]
+       },
+       {
+        "id": "n9703",
+        "t": "Extend the Audit Agent to 321",
+        "rows": [
+         [
+          "Status",
+          "APIs created. Integration in progress."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Abhishek": {
+      "closed": [
+       {
+        "id": "n9704",
+        "t": "Deploy the Audit Agent to the test env",
+        "rows": [
+         [
+          "Delivered",
+          "Deployed."
+         ]
+        ]
+       }
+      ],
+      "progress": [
+       {
+        "id": "n9705",
+        "t": "Integrate the Audit Agent with the 321 APIs built by Sumit",
+        "rows": [
+         [
+          "Status",
+          "50% complete."
+         ],
+         [
+          "Expected closure",
+          "Tomorrow EOD (Thursday 29 Oct)."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Nikita": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n9707",
+        "t": "Integrate the SMS microservice into Zippy ATS",
+        "rows": [
+         [
+          "Next",
+          "Call with Robert."
+         ]
+        ]
+       },
+       {
+        "id": "n9708",
+        "t": "Develop the new registration flow",
+        "rows": [
+         [
+          "Status",
+          "In progress."
+         ]
+        ]
+       },
+       {
+        "id": "n9709",
+        "t": "Proliant release",
+        "rows": [
+         [
+          "Status",
+          "Approval pending from the Proliant team."
+         ],
+         [
+          "Next",
+          "Deployment by the India team."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [
+       {
+        "id": "n9706",
+        "t": "Customer bug raised by the U.S. team for Zippy ATS",
+        "rows": [
+         [
+          "Status",
+          "To be picked up."
+         ]
+        ]
+       }
+      ],
+      "plan": []
+     },
+     "Chetan": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": []
+     },
+     "Rushi": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n9710",
+        "t": "Infrastructure resilience plan: billing cycle",
+        "rows": [
+         [
+          "Status",
+          "Data is ready. Structuring it for presentation is taking time."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     }
+    }
    }
   }
  ],
@@ -4606,7 +4764,7 @@
   ]
  },
  "efficiency": {
-  "asOf": "2026-10-21",
+  "asOf": "2026-10-29",
   "sprints": [
    {
     "id": "s21",
@@ -4656,45 +4814,90 @@
    {
     "id": "s22",
     "name": "Sprint 22",
-    "dates": "12 to 26 Oct 2026",
-    "status": "In progress, as of 21 Oct",
-    "note": "Sprint 22 is still running, so these are progress figures and will rise. Hours are Jira original estimates, so people with unestimated tickets show fewer hours. One unassigned ticket is not counted.",
+    "dates": "12 to 23 Oct 2026",
+    "status": "Closed",
+    "note": "Closed means a ticket was in a final stage (Deployed to UAT, Deployed to Prod, In Documentation, or Technical Review where no deployment is involved) when Sprint 22 ended. Open means the ticket moved to Sprint 23 (33 tasks) or went to the backlog (7 tasks). Hours are Jira original estimates, so people with unestimated tickets show fewer hours. Open includes six U.S. team request tasks that are now assigned to Abhishek. One unassigned closed ticket is not counted.",
+    "people": {
+     "Sumit": {
+      "closedTasks": 8,
+      "openTasks": 3,
+      "closedHours": 58.0,
+      "openHours": 6.0
+     },
+     "Aditi": {
+      "closedTasks": 31,
+      "openTasks": 3,
+      "closedHours": 60.0,
+      "openHours": 15.0
+     },
+     "Abhishek": {
+      "closedTasks": 5,
+      "openTasks": 6,
+      "closedHours": 74.0,
+      "openHours": 0.0
+     },
+     "Nikita": {
+      "closedTasks": 8,
+      "openTasks": 27,
+      "closedHours": 30.5,
+      "openHours": 312.0
+     },
+     "Chetan": {
+      "closedTasks": 10,
+      "openTasks": 0,
+      "closedHours": 55.0,
+      "openHours": 0.0
+     },
+     "Rushikesh": {
+      "closedTasks": 15,
+      "openTasks": 1,
+      "closedHours": 88.0,
+      "openHours": 0.0
+     }
+    }
+   },
+   {
+    "id": "s23",
+    "name": "Sprint 23",
+    "dates": "26 Oct to 6 Nov 2026",
+    "status": "In progress, as of 29 Oct (day 4 of 10)",
+    "note": "Sprint 23 is running, so these are progress figures. No ticket has reached a final stage yet. Open includes 33 tasks carried over from Sprint 22 and 17 added since. Hours are Jira original estimates; the 11 new stories are not estimated yet, so only Nikita shows hours.",
     "people": {
      "Sumit": {
       "closedTasks": 0,
-      "openTasks": 6,
+      "openTasks": 4,
       "closedHours": 0.0,
-      "openHours": 34.0
+      "openHours": 0.0
      },
      "Aditi": {
       "closedTasks": 0,
-      "openTasks": 21,
+      "openTasks": 0,
       "closedHours": 0.0,
-      "openHours": 50.0
+      "openHours": 0.0
      },
      "Abhishek": {
-      "closedTasks": 2,
-      "openTasks": 3,
-      "closedHours": 22.0,
-      "openHours": 12.0
+      "closedTasks": 0,
+      "openTasks": 11,
+      "closedHours": 0.0,
+      "openHours": 0.0
      },
      "Nikita": {
-      "closedTasks": 1,
-      "openTasks": 16,
-      "closedHours": 16.0,
-      "openHours": 23.5
+      "closedTasks": 0,
+      "openTasks": 28,
+      "closedHours": 0.0,
+      "openHours": 320.0
      },
      "Chetan": {
       "closedTasks": 0,
-      "openTasks": 3,
+      "openTasks": 4,
       "closedHours": 0.0,
       "openHours": 0.0
      },
      "Rushikesh": {
-      "closedTasks": 1,
-      "openTasks": 15,
-      "closedHours": 16.0,
-      "openHours": 76.0
+      "closedTasks": 0,
+      "openTasks": 3,
+      "closedHours": 0.0,
+      "openHours": 0.0
      }
     }
    }
@@ -4729,124 +4932,304 @@
     "items": {
      "Sumit & Aditi": [
       {
-       "id": "n8008",
-       "t": "Microservices for other Products",
+       "id": "n9808",
+       "t": "Microservices for Other Products",
        "rows": [
         [
-         "Priority",
-         "Priority item for 27 Oct."
+         "Ticket",
+         "PROD-3774"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "Not yet estimated"
         ]
        ]
       },
       {
-       "id": "n8009",
+       "id": "n9809",
        "t": "I9 in Onboarding",
-       "rows": []
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3775"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "Not yet estimated"
+        ]
+       ]
       },
       {
-       "id": "n8010",
-       "t": "SSO using phone number for all products (excluding ATS)",
-       "rows": []
+       "id": "n9810",
+       "t": "Phone Number SSO for All Products, Excluding ATS",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3776"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "Not yet estimated"
+        ]
+       ]
+      },
+      {
+       "id": "n9815",
+       "t": "API Creation for Extending Audit Agent to 321 Companies",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3787"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "Not yet estimated"
+        ]
+       ]
       }
      ],
      "Abhishek": [
       {
-       "id": "n8011",
-       "t": "P0: Connect actual company data to the Audit Agent for Care Advantage",
+       "id": "n9803",
+       "t": "Requests from U.S. Team for Zippy",
        "rows": [
         [
-         "Priority",
-         "Priority item for 27 Oct."
+         "Ticket",
+         "PROD-3767"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "8 tasks, not yet estimated"
         ]
        ]
       },
       {
-       "id": "n8012",
-       "t": "U.S. team CRs for Zippy ATS",
-       "rows": []
+       "id": "n9804",
+       "t": "Extend Audit Agent functionality for standalone and 321 OnB",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3768"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Priority",
+         "Highest"
+        ],
+        [
+         "Effort",
+         "2 tasks, not yet estimated"
+        ]
+       ]
       },
       {
-       "id": "n8013",
-       "t": "SuperAdmin Dashboard Automation BUGs P0/P1",
-       "rows": []
+       "id": "n9806",
+       "t": "SuperAdmin and Dashboard Automation Bugs, P0 and P1",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3772"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "Not yet estimated"
+        ]
+       ]
       },
       {
-       "id": "n8014",
+       "id": "n9807",
        "t": "Retail Work",
-       "rows": []
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3773"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "Not yet estimated"
+        ]
+       ]
       }
      ],
      "Nikita": [
       {
-       "id": "n8015",
-       "t": "Integrate the SMS microservice into Zippy ATS",
-       "rows": []
-      },
-      {
-       "id": "n8016",
-       "t": "Develop and deploy the new registration flow",
+       "id": "n9801",
+       "t": "Zippy Employer Registration Flow, Development",
        "rows": [
         [
-         "Priority",
-         "Priority item for 27 Oct."
-        ]
-       ]
-      }
-     ],
-     "Rushi": [
-      {
-       "id": "n8017",
-       "t": "Infrastructure call with Nitin and Chetan at 2 PM",
-       "rows": [
+         "Ticket",
+         "PROD-3705"
+        ],
         [
-         "Priority",
-         "Priority item for 27 Oct."
+         "Status",
+         "In Progress"
+        ],
+        [
+         "Effort",
+         "22 tasks, 296 h"
         ]
        ]
       },
       {
-       "id": "n8018",
-       "t": "Audit infrastructure readiness",
+       "id": "n9802",
+       "t": "Proliant Integration, Production Release",
        "rows": [
         [
-         "Priority",
-         "Priority item for 27 Oct."
+         "Ticket",
+         "PROD-3766"
+        ],
+        [
+         "Status",
+         "On-Hold"
+        ],
+        [
+         "Effort",
+         "5 tasks, 16 h"
+        ]
+       ]
+      },
+      {
+       "id": "n9805",
+       "t": "SMS Service Integration for Zippy ATS",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3771"
+        ],
+        [
+         "Status",
+         "In Testing"
+        ],
+        [
+         "Effort",
+         "8 h"
         ]
        ]
       }
      ],
      "Chetan": [
       {
-       "id": "n8019",
-       "t": "Manage Jira for Sprints 22 and 23",
-       "rows": []
+       "id": "n9812",
+       "t": "Jira Management",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3781"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "Not yet estimated"
+        ]
+       ]
       },
       {
-       "id": "n8020",
-       "t": "Test the Audit Agent on prod data",
-       "rows": []
+       "id": "n9813",
+       "t": "QA Testing, Audit Agent on Prod Data",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3782"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "Not yet estimated"
+        ]
+       ]
       },
       {
-       "id": "n8021",
-       "t": "Build QA automation for the Audit Agent",
-       "rows": []
+       "id": "n9814",
+       "t": "Audit Agent QA Automation Build",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3783"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "Not yet estimated"
+        ]
+       ]
+      }
+     ],
+     "Rushi": [
+      {
+       "id": "n9811",
+       "t": "Infra Readiness Audit",
+       "rows": [
+        [
+         "Ticket",
+         "PROD-3777"
+        ],
+        [
+         "Status",
+         "Backlog"
+        ],
+        [
+         "Effort",
+         "3 tasks, not yet estimated"
+        ]
+       ]
       }
      ]
     }
    }
   ]
  }
-}</script>
+}
+</script>
 
 <script>
-const BUILD = "2026-10-28-viewer-17";
+const BUILD = "2026-10-29-viewer-20";
 const JIRA = "https://canaryai.atlassian.net/browse/";
 const GROUPS = [["closed","CLOSED","Closed"],["progress","IN PROGRESS","In progress"],["notstarted","NOT STARTED","Not started"],["plan","PLANNED","Planned"]];
 const GKEYS = GROUPS.map(g => g[0]), LABEL = Object.fromEntries(GROUPS.map(g => [g[0], g[2]]));
 const MON = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const MONFULL = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 const WD = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
-let DATA = null, active = '', EFF = { sprint:'s21', metric:'tasks' };
+let DATA = null, active = '', EFF = { sprint:'s22', metric:'tasks' };
 const $ = id => document.getElementById(id);
 const SEED = JSON.parse($('seed').textContent);
 
