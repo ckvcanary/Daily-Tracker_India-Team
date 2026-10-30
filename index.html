@@ -209,7 +209,7 @@
 </div>
 <script type="application/json" id="seed">
 {
- "updated": "2026-10-29T06:24:19.000Z",
+ "updated": "2026-10-30T05:29:32.000Z",
  "names": [
   "Sumit & Aditi",
   "Abhishek",
@@ -4814,6 +4814,163 @@
     },
     "deployments": [],
     "priorities": []
+   },
+   "pm": {
+    "tag": "EVENING UPDATE",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n9931",
+        "t": "SSO using phone number for all products (excluding ATS)",
+        "rows": [
+         [
+          "Status",
+          "Dev testing completed for I9 and E-Verify."
+         ],
+         [
+          "Pending",
+          "Dev testing for Remote I9."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Abhishek": {
+      "closed": [],
+      "progress": [
+       {
+        "id": "n9932",
+        "t": "Integrate the Audit Agent with the 321 APIs built by Sumit",
+        "rows": [
+         [
+          "Next",
+          "QA build on the test env by 5 PM."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": []
+     },
+     "Nikita": {
+      "closed": [
+       {
+        "id": "n9933",
+        "t": "Integrate the SMS microservice into Zippy ATS",
+        "rows": [
+         [
+          "Delivered",
+          "Deployed to UAT."
+         ]
+        ]
+       },
+       {
+        "id": "n9934",
+        "t": "Rejection bug validated",
+        "rows": [
+         [
+          "Delivered",
+          "Added to Abhishek's Zippy tracker (PROD-3786)."
+         ]
+        ]
+       }
+      ],
+      "progress": [
+       {
+        "id": "n9935",
+        "t": "Customer bug from Eddie",
+        "rows": [
+         [
+          "Status",
+          "Not reproducible."
+         ]
+        ]
+       }
+      ],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n9936",
+        "t": "Proliant release",
+        "rows": [
+         [
+          "Status",
+          "Inbound reception on 28 Oct, IST EOD."
+         ]
+        ]
+       },
+       {
+        "id": "n9937",
+        "t": "Develop the new registration flow",
+        "rows": []
+       }
+      ]
+     },
+     "Chetan": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n9938",
+        "t": "Jira management",
+        "rows": []
+       },
+       {
+        "id": "n9939",
+        "t": "Test cases for automating I9 QA",
+        "rows": []
+       },
+       {
+        "id": "n9940",
+        "t": "Demo of the Audit Agent to the U.S. team",
+        "rows": []
+       }
+      ]
+     },
+     "Rushi": {
+      "closed": [
+       {
+        "id": "n9938",
+        "t": "PHP vulnerability for 321 OnB (Edgar APIs)",
+        "rows": [
+         [
+          "Delivered",
+          "Fixed on 28 Oct IST."
+         ],
+         [
+          "Next",
+          "RCA required."
+         ]
+        ]
+       }
+      ],
+      "progress": [],
+      "notstarted": [
+       {
+        "id": "n9939",
+        "t": "RCA for the 321 APIs downtime (29 Oct)",
+        "rows": [
+         [
+          "Status",
+          "RCA required."
+         ]
+        ]
+       }
+      ],
+      "plan": [
+       {
+        "id": "n9941",
+        "t": "Infrastructure readiness audit",
+        "rows": []
+       }
+      ]
+     }
+    }
    }
   }
  ],
@@ -4830,6 +4987,12 @@
     "t": "UI for key generation",
     "rows": [],
     "since": "2026-10-06"
+   },
+   {
+    "id": "s2901",
+    "t": "Cost analysis task for the Audit Agent APIs (Sumit)",
+    "rows": [],
+    "since": "2026-10-29"
    }
   ],
   "Abhishek": [
@@ -4850,6 +5013,17 @@
     "t": "Bring Retention and Tax Agent to code complete",
     "rows": [],
     "since": "2026-10-06"
+   },
+   {
+    "id": "s2902",
+    "t": "DB schema analysis for the Audit Agent",
+    "rows": [
+     [
+      "Note",
+      "Performance for the Audit Agent is not a priority. Scalability will be picked up when required."
+     ]
+    ],
+    "since": "2026-10-29"
    }
   ],
   "Nikita": [
@@ -5408,7 +5582,7 @@
 </script>
 
 <script>
-const BUILD = "2026-10-29-viewer-23";
+const BUILD = "2026-10-29-viewer-24";
 const JIRA = "https://canaryai.atlassian.net/browse/";
 const GROUPS = [["closed","CLOSED","Closed"],["progress","IN PROGRESS","In progress"],["notstarted","NOT STARTED","Not started"],["plan","PLANNED","Planned"]];
 const GKEYS = GROUPS.map(g => g[0]), LABEL = Object.fromEntries(GROUPS.map(g => [g[0], g[2]]));
