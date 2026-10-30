@@ -205,11 +205,11 @@
   </div>
 
   <main id="app"></main>
-  <footer>Version: 29 Oct, Sprint 23 day 4.</footer>
+  <footer>Version: 30 Oct, Sprint 23 day 5.</footer>
 </div>
 <script type="application/json" id="seed">
 {
- "updated": "2026-10-30T05:29:32.000Z",
+ "updated": "2026-10-30T09:50:07.000Z",
  "names": [
   "Sumit & Aditi",
   "Abhishek",
@@ -4972,6 +4972,179 @@
      }
     }
    }
+  },
+  {
+   "date": "2026-10-30",
+   "am": {
+    "tag": "MORNING PLAN",
+    "people": {
+     "Sumit & Aditi": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n3001",
+        "t": "DEV testing for Phone SSO on Remote I9",
+        "rows": [
+         [
+          "Owner",
+          "Sumit"
+         ]
+        ]
+       },
+       {
+        "id": "n3002",
+        "t": "Phone SSO for Retention",
+        "rows": [
+         [
+          "Owner",
+          "Sumit"
+         ]
+        ]
+       },
+       {
+        "id": "n3003",
+        "t": "R&D for the authentication service, for all products including Zippy ATS",
+        "rows": [
+         [
+          "Owner",
+          "Sumit"
+         ]
+        ]
+       },
+       {
+        "id": "n3004",
+        "t": "R&D on Bitbucket: monitor and sync PRs that could lead to failures or downtime",
+        "rows": [
+         [
+          "Owner",
+          "Aditi"
+         ]
+        ]
+       }
+      ]
+     },
+     "Abhishek": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n3005",
+        "t": "Deploy the standalone web app",
+        "rows": []
+       },
+       {
+        "id": "n3006",
+        "t": "QA build at 5 PM",
+        "rows": []
+       },
+       {
+        "id": "n3007",
+        "t": "Share the DB schema details for the Audit Agent with Nitin",
+        "rows": []
+       }
+      ]
+     },
+     "Nikita": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n3008",
+        "t": "Hand out the list of all establishments (org: GoMart)",
+        "rows": [
+         [
+          "Time required",
+          "30 minutes."
+         ],
+         [
+          "Ticket",
+          "Already created by Sunil."
+         ]
+        ]
+       },
+       {
+        "id": "n3009",
+        "t": "PROD-3789: attach a video showing the non-repro",
+        "rows": [
+         [
+          "Next",
+          "DEV to attach a video to the ticket showing the non-repro."
+         ]
+        ]
+       },
+       {
+        "id": "n3010",
+        "t": "Customer bug from the U.S. team",
+        "rows": []
+       },
+       {
+        "id": "n3011",
+        "t": "Develop the new registration flow",
+        "rows": []
+       }
+      ]
+     },
+     "Chetan": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n3012",
+        "t": "Demo preparation and QA work for the Audit Agent",
+        "rows": []
+       },
+       {
+        "id": "n3013",
+        "t": "Jira management",
+        "rows": []
+       },
+       {
+        "id": "n3014",
+        "t": "Sprint planning report",
+        "rows": []
+       }
+      ]
+     },
+     "Rushi": {
+      "closed": [],
+      "progress": [],
+      "notstarted": [],
+      "plan": [
+       {
+        "id": "n3015",
+        "t": "Infrastructure audit",
+        "rows": []
+       }
+      ]
+     }
+    },
+    "deployments": [],
+    "priorities": [
+     {
+      "group": "Key dates",
+      "item": "Registration flow for Zippy",
+      "owner": "Nikita",
+      "note": "Due 22 or 23 Nov."
+     },
+     {
+      "group": "Key dates",
+      "item": "All Hands",
+      "owner": "Team",
+      "note": "Ideally 20 Nov."
+     },
+     {
+      "group": "Key dates",
+      "item": "Delivery estimates for the All Hands",
+      "owner": "Team",
+      "note": "Due a week before the All Hands: 13 Nov if the All Hands is on 20 Nov."
+     }
+    ]
+   }
   }
  ],
  "standing": {
@@ -5582,7 +5755,7 @@
 </script>
 
 <script>
-const BUILD = "2026-10-29-viewer-24";
+const BUILD = "2026-10-30-viewer-25";
 const JIRA = "https://canaryai.atlassian.net/browse/";
 const GROUPS = [["closed","CLOSED","Closed"],["progress","IN PROGRESS","In progress"],["notstarted","NOT STARTED","Not started"],["plan","PLANNED","Planned"]];
 const GKEYS = GROUPS.map(g => g[0]), LABEL = Object.fromEntries(GROUPS.map(g => [g[0], g[2]]));
